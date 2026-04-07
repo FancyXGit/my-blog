@@ -35,7 +35,7 @@
     "remark-directive": "^3.0.0",
     "satori": "0.12.0",
     "satori-html": "^0.3.2",
-    "sharp": "^0.33.5",
+    "sharp": "0.33.5",
     "unified": "^11.0.5",
     "unist-util-visit": "^5.0.0"
   },
@@ -60,6 +60,10 @@
     "typescript": "^5.7.2"
   },
   "pnpm": {
-		"onlyBuiltDependencies": ["@biomejs/biome", "esbuild", "sharp"]
-	}
+    "onlyBuiltDependencies": [
+      "@biomejs/biome",
+      "esbuild",
+      "sharp"
+    ]
+  }
 }

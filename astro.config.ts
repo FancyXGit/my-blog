@@ -115,7 +115,7 @@ export default defineConfig({
   // https://docs.astro.build/en/guides/prefetch/
   prefetch: true,
   // ! Please remember to replace the following site property with your own domain
-  site: "http://astrocitrus.artemkutsan.pp.ua/",
+  site: "http://localhost:45873/",
   vite: {
     build: {
       sourcemap: true, // Source maps generation
@@ -145,7 +145,7 @@ export default defineConfig({
     },
   },
   server: {
-    // port: 1234,
+    port: 45873,
     host: true,
   },
 });
