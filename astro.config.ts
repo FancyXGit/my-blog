@@ -115,7 +115,7 @@ export default defineConfig({
   // https://docs.astro.build/en/guides/prefetch/
   prefetch: true,
   // ! Please remember to replace the following site property with your own domain
-  site: "http://localhost:45873/",
+  site: "http://43.167.194.89:45873/",
   vite: {
     build: {
       sourcemap: true, // Source maps generation
