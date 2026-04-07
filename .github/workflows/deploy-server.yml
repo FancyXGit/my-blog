@@ -68,9 +68,19 @@ jobs:
             # Prevent stale content routes after deleting markdown files.
             rm -rf .astro node_modules/.astro dist
 
-            corepack enable || true
-            pnpm install --frozen-lockfile
-            pnpm build
+            run_pnpm() {
+              if command -v pnpm >/dev/null 2>&1; then
+                pnpm "$@"
+              elif command -v corepack >/dev/null 2>&1; then
+                corepack pnpm "$@"
+              else
+                echo "Neither pnpm nor corepack is available on server."
+                exit 1
+              fi
+            }
+
+            run_pnpm install --frozen-lockfile
+            run_pnpm build
 
             if [ -n "$SERVER_WEB_ROOT" ]; then
               if [ "$SERVER_WEB_ROOT" = "/" ]; then
