@@ -1,7 +1,7 @@
 ---
 title: "权力的游戏 第1季"
-publishDate: "2024-04-08"
-description: "这是我看 权力的游戏 第1季 的观后感以及笔记"
+publishDate: "2026-04-08"
+description: "这是我看权力的游戏第1季的观后感以及笔记"
 seriesId: tv-series
 orderInSeries: 1
 featured: false
