@@ -1,7 +1,7 @@
 ---
 title: "博客站将来计划"
-publishDate: "2199-02-01T18:26:00Z"
-updateDate: "1998-02-19T14:32:00Z"
+publishDate: "2026-04-08"
+updateDate: "2026-04-08"
 ---
 
 > I never think of the future. It comes soon enough.
