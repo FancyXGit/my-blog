@@ -63,7 +63,9 @@ jobs:
               git checkout -b "$BRANCH_NAME" "origin/$BRANCH_NAME"
             fi
 
-            git pull --ff-only origin "$BRANCH_NAME"
+            # Force-sync with remote branch, including rollback after force-push.
+            git reset --hard "origin/$BRANCH_NAME"
+            git clean -fd
 
             # Prevent stale content routes after deleting markdown files.
             rm -rf .astro node_modules/.astro dist
