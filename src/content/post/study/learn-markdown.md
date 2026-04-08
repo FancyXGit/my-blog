@@ -2,7 +2,7 @@
 title: "学习MARKDOWN格式"
 publishDate: "2026-04-08"
 updatedDate: "2026-04-08"
-description: "这是我学习MARKDOWN格式的笔记以及经理"
+description: "这是我学习MARKDOWN格式的笔记"
 tags: ["学习", "MARKDOWN", "笔记"]
 coverImage: 
     src: "./learn-markdown-cover.png"
@@ -132,9 +132,9 @@ coverImage:
 (START)    ```cpp
 (LINE1)    #include <iostream>
 (LINE2)    int main() {
-(LINE3)        std::cout << "Hello, World!" << (LINE4)    std::endl;
-(LINE5)        return 0;
-(LINE6)    }
+(LINE3)        std::cout << "Hello, World!" << std::endl;
+(LINE4)        return 0;
+(LINE5)    }
 (ENDLN)    ```
 ```
 
