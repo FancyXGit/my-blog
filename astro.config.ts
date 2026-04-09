@@ -10,11 +10,13 @@ import { siteConfig } from "./src/site.config";
 
 // Remark plugins
 import remarkDirective from "remark-directive"; /* handle ::: directives as nodes */
+import remarkMath from "remark-math";
 import { remarkAdmonitions } from "./src/plugins/remark-admonitions"; /* add admonitions */
 import { remarkReadingTime } from "./src/plugins/remark-reading-time";
 
 // Rehype plugins
 import rehypeExternalLinks from "rehype-external-links";
+import rehypeKatex from "rehype-katex";
 import rehypeUnwrapImages from "rehype-unwrap-images";
 
 import rehypePrettyCode from "rehype-pretty-code";
@@ -81,7 +83,7 @@ export default defineConfig({
   markdown: {
     syntaxHighlight: false,
 
-    remarkPlugins: [remarkReadingTime, remarkDirective, remarkAdmonitions],
+    remarkPlugins: [remarkReadingTime, remarkMath, remarkDirective, remarkAdmonitions],
     remarkRehype: {
       footnoteLabelProperties: {
         className: [""],
@@ -90,6 +92,7 @@ export default defineConfig({
     },
 
     rehypePlugins: [
+      rehypeKatex,
       [
         rehypeExternalLinks,
         {
