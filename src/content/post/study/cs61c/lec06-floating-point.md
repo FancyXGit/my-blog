@@ -5,10 +5,10 @@ updatedDate: "2026-04-09"
 description: "浮点数的表示方法，包括IEEE 754标准等内容。"
 seriesId: cs61c
 orderInSeries: 2
-tags: ["学习", "CS61C", "笔记"]
+tags: ["学习", "CS61C", "笔记", "浮点数"]
 coverImage:
     src: "./lec02-cover.png"
-    alt: "森林"
+    alt: "森林，丁达尔效应"
 ---
 
 ## 科学计数法
