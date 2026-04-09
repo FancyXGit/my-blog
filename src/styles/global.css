@@ -363,3 +363,50 @@
 		@apply bg-transparent;
 	}
 }
+
+/* Rounded images and double-click zoom support for markdown body content */
+.prose.prose-citrus img {
+	border-radius: 0.85rem;
+	box-shadow: 0 10px 30px rgba(15, 23, 42, 0.12);
+	cursor: zoom-in;
+	transition: filter 0.2s ease;
+}
+
+.prose.prose-citrus img:hover {
+	filter: brightness(1.02);
+}
+
+.image-zoom-overlay {
+	position: fixed;
+	inset: 0;
+	z-index: 9999;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 1.5rem;
+	background: rgba(2, 6, 23, 0.78);
+	backdrop-filter: blur(4px);
+	opacity: 0;
+	transition: opacity 0.18s ease;
+}
+
+.image-zoom-overlay.is-open {
+	opacity: 1;
+}
+
+.image-zoom-overlay img {
+	max-width: min(94vw, 1200px);
+	max-height: 90vh;
+	width: auto;
+	height: auto;
+	border-radius: 0.95rem;
+	box-shadow: 0 24px 70px rgba(2, 6, 23, 0.6);
+	cursor: zoom-out;
+	transform: scale(0.98);
+	transition: transform 0.18s ease;
+	background: #fff;
+}
+
+.image-zoom-overlay.is-open img {
+	transform: scale(1);
+}

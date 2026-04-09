@@ -56,5 +56,63 @@ const {
 				</div>
 			</div>
 		</div>
+
+		<script is:inline>
+			(() => {
+				const ZOOM_IMG_ATTR = "data-image-zoom-bound";
+				let activeOverlay = null;
+
+				const closeOverlay = () => {
+					if (!activeOverlay) return;
+					activeOverlay.classList.remove("is-open");
+					const node = activeOverlay;
+					activeOverlay = null;
+					setTimeout(() => node.remove(), 180);
+				};
+
+				const openOverlay = (img) => {
+					closeOverlay();
+
+					const overlay = document.createElement("div");
+					overlay.className = "image-zoom-overlay";
+
+					const zoomed = document.createElement("img");
+					zoomed.src = img.currentSrc || img.src;
+					zoomed.alt = img.alt || "";
+
+					overlay.appendChild(zoomed);
+					document.body.appendChild(overlay);
+
+					overlay.addEventListener("click", (event) => {
+						if (event.target === overlay || event.target === zoomed) {
+							closeOverlay();
+						}
+					});
+
+					requestAnimationFrame(() => overlay.classList.add("is-open"));
+					activeOverlay = overlay;
+				};
+
+				const bindImageZoom = () => {
+					document.querySelectorAll(".prose img").forEach((img) => {
+						if (img.hasAttribute(ZOOM_IMG_ATTR)) return;
+						img.setAttribute(ZOOM_IMG_ATTR, "true");
+						img.addEventListener("dblclick", (event) => {
+							event.preventDefault();
+							openOverlay(img);
+						});
+					});
+				};
+
+				document.addEventListener("keydown", (event) => {
+					if (event.key === "Escape") {
+						closeOverlay();
+					}
+				});
+
+				document.addEventListener("DOMContentLoaded", bindImageZoom);
+				document.addEventListener("astro:after-swap", bindImageZoom);
+			})();
+		</script>
 	</body>
 </html>
