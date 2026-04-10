@@ -31,7 +31,7 @@ coverImage:
 如果每支股票之间相互独立，根据大数定理，标普500指数应该波动较小。然而，标普500指数的波动性却很大，这表明股票之间存在相关性，尤其是在市场压力时期，股票价格往往会一起下跌。
 :::
 
-![Apple股票与标普500指数收益对比](financial-markets-chapter1-apple-vs-s&p500-return.png)
+![Apple股票与标普500指数收益对比](./financial-markets-chapter1-apple-vs-sAp500-return.png)
 
 - 股票的$\beta$值衡量股票相对于市场的波动性。$\beta$值大于1表示股票比市场更波动，$\beta$值小于1表示股票比市场更稳定。例如图中散点图拟合直线斜率为1.45，说明Apple股票的$\beta$值为1.45，意味着Apple股票比标普500指数更波动。
 
