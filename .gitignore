@@ -18,6 +18,7 @@ Thumbs.db
 
 # Environment variables
 .env
+.env.r2
 .env.local
 .env.*.local
 
@@ -26,4 +27,7 @@ origin_refs/
 
 # Local notes
 cn.md
+
+# 原图
+image/
 
