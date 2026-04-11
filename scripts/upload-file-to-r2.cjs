@@ -7,9 +7,11 @@ const { Upload } = require("@aws-sdk/lib-storage");
 
 const MIME_BY_EXT = {
   ".txt": "text/plain; charset=utf-8",
+  ".lrc": "text/plain; charset=utf-8",
   ".md": "text/markdown; charset=utf-8",
   ".json": "application/json; charset=utf-8",
   ".xml": "application/xml; charset=utf-8",
+  ".ttml": "application/ttml+xml; charset=utf-8",
   ".csv": "text/csv; charset=utf-8",
   ".pdf": "application/pdf",
   ".zip": "application/zip",
@@ -70,6 +72,7 @@ function parseArgs(argv) {
   while (args.length) {
     const token = args.shift();
     if (!token) continue;
+    if (token === "--") continue;
 
     if (token === "--no-recursive") {
       options.recursive = false;

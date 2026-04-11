@@ -1,0 +1,141 @@
+---
+import { musicTracks } from "@/data/music";
+
+const audioList = musicTracks.map((track) => {
+	return {
+		name: track.title,
+		artist: track.artist,
+		url: track.audioUrl,
+		cover: track.coverUrl,
+		lrc: track.lyricsUrl || "",
+		lyrics: track.lyrics || "",
+	};
+});
+---
+
+<div id="music-aplayer" class="mt-6"></div>
+<script type="application/json" id="music-aplayer-data" set:html={JSON.stringify(audioList)}></script>
+
+<link rel="stylesheet" href="https://unpkg.com/aplayer@1.10.1/dist/APlayer.min.css" />
+<script src="https://unpkg.com/aplayer@1.10.1/dist/APlayer.min.js" defer></script>
+
+<script is:inline>
+	(() => {
+		const EMPTY_LRC_URL = "/music/lyrics/empty.lrc";
+		let cachedEmptyLrc = "[00:00.00] ";
+
+		const loadEmptyLrc = async () => {
+			if (cachedEmptyLrc && cachedEmptyLrc.trim().length > 0) return cachedEmptyLrc;
+			try {
+				const response = await fetch(EMPTY_LRC_URL, { credentials: "same-origin" });
+				if (response.ok) {
+					cachedEmptyLrc = await response.text();
+				}
+			} catch {
+				cachedEmptyLrc = "[00:00.00] ";
+			}
+			return cachedEmptyLrc;
+		};
+
+		const loadLyrics = async (list) => {
+			const next = [];
+			for (const item of list) {
+				const row = { ...item, lrc: "" };
+
+				if (item.lrc) {
+					try {
+						const response = await fetch(item.lrc, { mode: "cors", credentials: "omit" });
+						if (response.ok) {
+							row.lrc = await response.text();
+						} else {
+							console.warn(`[APlayer] lyric request failed: status ${response.status} (${item.lrc})`);
+						}
+					} catch (error) {
+						console.warn(`[APlayer] lyric request failed: ${item.lrc}`, error);
+					}
+				}
+
+				if (!row.lrc && item.lyrics) {
+					row.lrc = item.lyrics;
+				}
+
+				if (!row.lrc) {
+					row.lrc = await loadEmptyLrc();
+				}
+
+				next.push(row);
+			}
+			return next;
+		};
+
+		const bindPreciseSeek = (aplayer, container) => {
+			const barWrap = container.querySelector(".aplayer-bar-wrap");
+			if (!barWrap || !aplayer || !aplayer.audio) return;
+
+			const seekFromPointer = (clientX) => {
+				const duration = Number(aplayer.audio.duration || 0);
+				if (!Number.isFinite(duration) || duration <= 0) return;
+				const rect = barWrap.getBoundingClientRect();
+				if (!rect.width) return;
+				const ratio = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+				aplayer.audio.currentTime = duration * ratio;
+				if (aplayer.bar && typeof aplayer.bar.set === "function") {
+					aplayer.bar.set("played", ratio, "width");
+				}
+			};
+
+			barWrap.addEventListener(
+				"pointerdown",
+				(event) => {
+					event.preventDefault();
+					event.stopImmediatePropagation();
+					seekFromPointer(event.clientX);
+				},
+				true,
+			);
+		};
+
+		const init = () => {
+			const container = document.getElementById("music-aplayer");
+			const dataNode = document.getElementById("music-aplayer-data");
+			if (!container || !dataNode || typeof window.APlayer === "undefined") return;
+
+			if (container.dataset.aplayerInitialized === "true") return;
+			container.dataset.aplayerInitialized = "true";
+
+			let list = [];
+			try {
+				list = JSON.parse(dataNode.textContent || "[]");
+			} catch {
+				list = [];
+			}
+
+			if (!Array.isArray(list) || list.length === 0) return;
+
+			loadLyrics(list).then((audioWithLyrics) => {
+				const player = new window.APlayer({
+					container,
+					audio: audioWithLyrics,
+					lrcType: 1,
+					fixed: false,
+					mini: false,
+					autoplay: false,
+					loop: "all",
+					order: "list",
+					preload: "auto",
+					volume: 0.65,
+					mutex: true,
+					theme: "#2bbc8a",
+				});
+
+				bindPreciseSeek(player, container);
+			});
+		};
+
+		if (document.readyState === "loading") {
+			document.addEventListener("DOMContentLoaded", init, { once: true });
+		} else {
+			init();
+		}
+	})();
+</script>

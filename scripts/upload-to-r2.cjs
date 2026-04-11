@@ -6,7 +6,34 @@ const sharp = require("sharp");
 const { S3Client } = require("@aws-sdk/client-s3");
 const { Upload } = require("@aws-sdk/lib-storage");
 
-const INPUT_EXT_RE = /\.(png|jpe?g)$/i;
+const IMAGE_EXT_RE = /\.(png|jpe?g|webp)$/i;
+
+const MIME_BY_EXT = {
+  ".txt": "text/plain; charset=utf-8",
+  ".lrc": "text/plain; charset=utf-8",
+  ".md": "text/markdown; charset=utf-8",
+  ".json": "application/json; charset=utf-8",
+  ".xml": "application/xml; charset=utf-8",
+  ".ttml": "application/ttml+xml; charset=utf-8",
+  ".csv": "text/csv; charset=utf-8",
+  ".pdf": "application/pdf",
+  ".zip": "application/zip",
+  ".mp3": "audio/mpeg",
+  ".wav": "audio/wav",
+  ".ogg": "audio/ogg",
+  ".mp4": "video/mp4",
+  ".webm": "video/webm",
+  ".png": "image/png",
+  ".jpg": "image/jpeg",
+  ".jpeg": "image/jpeg",
+  ".webp": "image/webp",
+  ".gif": "image/gif",
+  ".svg": "image/svg+xml",
+  ".ico": "image/x-icon",
+  ".woff": "font/woff",
+  ".woff2": "font/woff2",
+  ".ttf": "font/ttf",
+};
 
 function readEnvFile(envPath) {
   if (!fs.existsSync(envPath)) return {};
@@ -16,17 +43,20 @@ function readEnvFile(envPath) {
   for (const rawLine of text.split(/\r?\n/)) {
     const line = rawLine.trim();
     if (!line || line.startsWith("#")) continue;
+
     const idx = line.indexOf("=");
     if (idx <= 0) continue;
 
     const key = line.slice(0, idx).trim();
     let value = line.slice(idx + 1).trim();
+
     if (
       (value.startsWith('"') && value.endsWith('"')) ||
       (value.startsWith("'") && value.endsWith("'"))
     ) {
       value = value.slice(1, -1);
     }
+
     out[key] = value;
   }
 
@@ -37,9 +67,11 @@ function parseArgs(argv) {
   const args = [...argv];
   const inputs = [];
   const options = {
+    recursive: true,
+    contentType: "",
+    cacheControl: "",
     quality: Number.NaN,
     effort: Number.NaN,
-    recursive: true,
   };
 
   while (args.length) {
@@ -47,16 +79,24 @@ function parseArgs(argv) {
     if (!token) continue;
     if (token === "--") continue;
 
+    if (token === "--no-recursive") {
+      options.recursive = false;
+      continue;
+    }
+    if (token === "--content-type") {
+      options.contentType = String(args.shift() || "").trim();
+      continue;
+    }
+    if (token === "--cache-control") {
+      options.cacheControl = String(args.shift() || "").trim();
+      continue;
+    }
     if (token === "--quality" || token === "-q") {
       options.quality = Number(args.shift());
       continue;
     }
     if (token === "--effort" || token === "-e") {
       options.effort = Number(args.shift());
-      continue;
-    }
-    if (token === "--no-recursive") {
-      options.recursive = false;
       continue;
     }
     if (token === "--help" || token === "-h") {
@@ -71,7 +111,7 @@ function parseArgs(argv) {
 }
 
 function printHelp() {
-  console.log(`\nImage (PNG/JPG/JPEG) -> WebP -> R2 uploader\n\nUsage:\n  node scripts/upload-png-to-r2.cjs <file-or-dir> [more files/dirs...] [--quality 82] [--effort 5] [--no-recursive]\n\nExamples:\n  node scripts/upload-png-to-r2.cjs public/images\n  node scripts/upload-png-to-r2.cjs public/images/a.png public/images/b.jpg --quality 80\n\nConfig (via env vars or .env.r2):\n  R2_ACCOUNT_ID\n  R2_ACCESS_KEY_ID\n  R2_SECRET_ACCESS_KEY\n  R2_BUCKET\n  R2_PUBLIC_BASE_URL   (example: https://img.example.com)\n  R2_REGION            (optional, default: auto)\n  R2_PREFIX            (optional, object key prefix)\n  WEBP_QUALITY         (optional, default: 82)\n  WEBP_EFFORT          (optional, default: 5)\n`);
+  console.log(`\nMixed file uploader -> R2\n\nBehavior:\n  - Images (.png/.jpg/.jpeg/.webp) are converted to .webp before upload\n  - Other files are uploaded as-is\n\nUsage:\n  node scripts/upload-to-r2.cjs <file-or-dir> [more files/dirs...] [--quality 82] [--effort 5] [--no-recursive] [--content-type <type>] [--cache-control <value>]\n\nExamples:\n  node scripts/upload-to-r2.cjs public\n  node scripts/upload-to-r2.cjs public/images/a.png public/music/lyrics/a.lrc\n  node scripts/upload-to-r2.cjs public --quality 78 --effort 6\n  node scripts/upload-to-r2.cjs public/files --cache-control "public, max-age=31536000, immutable"\n\nConfig (via env vars or .env.r2):\n  R2_ACCOUNT_ID\n  R2_ACCESS_KEY_ID\n  R2_SECRET_ACCESS_KEY\n  R2_BUCKET\n  R2_PUBLIC_BASE_URL\n  R2_REGION            (optional, default: auto)\n  R2_PREFIX            (optional, object key prefix)\n  WEBP_QUALITY         (optional, default: 82)\n  WEBP_EFFORT          (optional, default: 5)\n`);
 }
 
 function walkDir(dirPath, recursive) {
@@ -84,15 +124,13 @@ function walkDir(dirPath, recursive) {
       if (recursive) out.push(...walkDir(full, recursive));
       continue;
     }
-    if (entry.isFile() && INPUT_EXT_RE.test(full)) {
-      out.push(full);
-    }
+    if (entry.isFile()) out.push(full);
   }
 
   return out;
 }
 
-function collectImageFiles(rawInputs, recursive) {
+function collectFiles(rawInputs, recursive) {
   const found = new Set();
 
   for (const input of rawInputs) {
@@ -108,21 +146,21 @@ function collectImageFiles(rawInputs, recursive) {
       continue;
     }
 
-    if (stat.isFile() && INPUT_EXT_RE.test(full)) {
+    if (stat.isFile()) {
       found.add(full);
       continue;
     }
 
-    console.warn(`[skip] Not a supported image file (.png/.jpg/.jpeg): ${input}`);
+    console.warn(`[skip] Not a file: ${input}`);
   }
 
   return [...found];
 }
 
-function keyForFile(absPath, prefix) {
+function keyForFile(absPath, prefix, convertToWebp) {
   const rel = path.relative(process.cwd(), absPath).split(path.sep).join("/");
-  const webpRel = rel.replace(INPUT_EXT_RE, ".webp");
-  const raw = [prefix || "", webpRel].filter(Boolean).join("/");
+  const finalRel = convertToWebp ? rel.replace(IMAGE_EXT_RE, ".webp") : rel;
+  const raw = [prefix || "", finalRel].filter(Boolean).join("/");
   return raw.replace(/^\/+/, "").replace(/\/+/g, "/");
 }
 
@@ -133,6 +171,11 @@ function urlForKey(baseUrl, key) {
     .map((segment) => encodeURIComponent(segment))
     .join("/");
   return `${cleanBase}/${encodedKey}`;
+}
+
+function inferContentType(absPath) {
+  const ext = path.extname(absPath).toLowerCase();
+  return MIME_BY_EXT[ext] || "application/octet-stream";
 }
 
 async function main() {
@@ -189,9 +232,9 @@ async function main() {
     return;
   }
 
-  const files = collectImageFiles(inputs, options.recursive);
+  const files = collectFiles(inputs, options.recursive);
   if (!files.length) {
-    console.error("No supported image files (.png/.jpg/.jpeg) found to process.");
+    console.error("No files found to upload.");
     process.exitCode = 1;
     return;
   }
@@ -210,21 +253,37 @@ async function main() {
     },
   });
 
-  console.log(`Found ${files.length} image file(s).`);
+  console.log(`Found ${files.length} file(s).`);
   console.log(`WebP settings: quality=${quality}, effort=${effort}`);
 
   const urls = [];
 
   for (let i = 0; i < files.length; i += 1) {
     const absFile = files[i];
-    const key = keyForFile(absFile, prefix);
+    const isImage = IMAGE_EXT_RE.test(absFile);
+    const key = keyForFile(absFile, prefix, isImage);
     const relative = path.relative(root, absFile).split(path.sep).join("/");
 
     console.log(`\n[${i + 1}/${files.length}] ${relative}`);
 
-    const webpBuffer = await sharp(absFile).webp({ quality, effort }).toBuffer();
-    const totalBytes = webpBuffer.length;
-    console.log(`Compressed: ${(totalBytes / 1024).toFixed(1)} KB`);
+    let body;
+    let totalBytes;
+    let contentType;
+
+    if (isImage) {
+      const webpBuffer = await sharp(absFile).webp({ quality, effort }).toBuffer();
+      body = webpBuffer;
+      totalBytes = webpBuffer.length;
+      contentType = "image/webp";
+      console.log(`Mode: image -> webp`);
+      console.log(`Compressed: ${(totalBytes / 1024).toFixed(1)} KB`);
+    } else {
+      body = fs.createReadStream(absFile);
+      totalBytes = fs.statSync(absFile).size;
+      contentType = options.contentType || inferContentType(absFile);
+      console.log(`Mode: raw`);
+      console.log(`Content-Type: ${contentType}`);
+    }
 
     let lastPercent = -1;
     const uploader = new Upload({
@@ -232,8 +291,9 @@ async function main() {
       params: {
         Bucket: process.env.R2_BUCKET,
         Key: key,
-        Body: webpBuffer,
-        ContentType: "image/webp",
+        Body: body,
+        ContentType: contentType,
+        ...(options.cacheControl ? { CacheControl: options.cacheControl } : {}),
       },
     });
 

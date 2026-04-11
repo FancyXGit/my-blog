@@ -1,0 +1,36 @@
+---
+import PageLayout from "@/layouts/Base.astro";
+import SimpleAPlayer from "@/components/music/SimpleAPlayer.astro";
+import { musicTracks } from "@/data/music";
+
+const meta = {
+	description: "Music",
+	title: "Music",
+};
+---
+
+<PageLayout meta={meta}>
+	<h1 class="title mb-6">Music</h1>
+	<div class="prose prose-citrus max-w-none">
+		<blockquote class="not-italic">
+			<p class="text-left mb-2">"Where words fail, music speaks.</p>
+			<p class="text-right text-light m-0">— Hans Christian Andersen"</p>
+		</blockquote>
+
+		<p>
+			当前已配置 {musicTracks.length} 首歌
+		</p>
+
+		<p>
+			我最喜欢的三首歌（不分前后）：
+		</p>
+		<ul class="list-inside list-disc" role="list">
+			<li>We Don't Talk Anymore — Charlie Puth feat. Selena Gomez</li>
+			<li>You Are Not Alone — Michael Jackson</li>
+			<li>Moves Like Jagger — Maroon 5 feat. Christina Aguilera</li>
+		</ul>
+	</div>
+
+	<div class="h-8"></div>
+	<SimpleAPlayer />
+</PageLayout>
