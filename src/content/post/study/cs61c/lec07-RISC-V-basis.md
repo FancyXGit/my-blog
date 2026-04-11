@@ -7,7 +7,7 @@ seriesId: cs61c
 orderInSeries: 3
 tags: ["学习", "CS61C", "笔记","汇编语言", "RISC-V"]
 coverImage:
-    src: "./lec07-cover.png"
+    src: "https://cdn.fancyflow.top/image/post/study/cs61c/lec07-cover.webp"
     alt: "星空，流星与大地"
 ---
 
@@ -27,7 +27,7 @@ coverImage:
 
 ### 寄存器
 
-![Processor interact with memory](lec07-cpu-and-memory.png)
+![Processor interact with memory](https://cdn.fancyflow.top/image/post/study/cs61c/lec07-cpu-and-memory.webp)
 
 - **寄存器(Register)**：CPU内部的高速存储单元，用于临时存储数据和指令。寄存器数量有限，访问速度快。
 - **内存(Memory)**：用于存储程序和数据的较大容量存储设备，访问速度较慢。
@@ -38,7 +38,7 @@ coverImage:
 
 ### 大字端与小字端
 
-![大字端与小字端的举例对比](lec07-big-small-endian.png)
+![大字端与小字端的举例对比](https://cdn.fancyflow.top/image/post/study/cs61c/lec07-big-small-endian.webp)
 
 - **大字端(Big-endian)**：数据的高位字节存储在低地址，低位字节存储在高地址。
 - **小字端(Little-endian)**：数据的低位字节存储在低地址，高位字节存储在高地址。

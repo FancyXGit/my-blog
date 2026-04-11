@@ -7,13 +7,13 @@ seriesId: cs61c
 orderInSeries: 2
 tags: ["学习", "CS61C", "笔记", "浮点数"]
 coverImage:
-    src: "./lec02-cover.png"
+    src: "https://cdn.fancyflow.top/image/post/study/cs61c/lec02-cover.webp"
     alt: "森林，丁达尔效应"
 ---
 
 ## 科学计数法
 
-![scientific notation in binary](lec06-scientific-notation-in-binary.png)
+![scientific notation in binary](https://cdn.fancyflow.top/image/post/study/cs61c/lec06-scientific-notation-in-binary.webp)
 
 - mantissa : 尾数，表示有效数字部分。  
 - exponent : 指数。  
@@ -25,7 +25,7 @@ coverImage:
 
 ### 单精度浮点数
 
-![floating point representation](lec06-floating-point-representation.png)
+![floating point representation](https://cdn.fancyflow.top/image/post/study/cs61c/lec06-floating-point-representation.webp)
 
 单精度浮点数使用32位二进制表示，其中1位用于符号，8位用于指数，23位用于尾数。  
 
@@ -48,7 +48,7 @@ $$
 
 ### 溢出与下溢
 
-![overflow and underflow](lec06-overflow-and-underflow.png)
+![overflow and underflow](https://cdn.fancyflow.top/image/post/study/cs61c/lec06-overflow-and-underflow.webp)
 
 - 溢出（Overflow）：当计算结果超出浮点数表示范围时发生。例如，单精度浮点数的最大值约为$3.438 \times 10^{38}$，如果计算结果超过这个值，就会发生溢出。这是因为指数部分无法表示更大的数值了。
 - 下溢（Underflow）：当计算结果接近于0但不等于0时发生。例如，单精度浮点数的最小正数约为$1.4 \times 10^{-45}$，如果计算结果小于这个值，就会发生下溢。这是因为指数部分无法表示更小的数值了。

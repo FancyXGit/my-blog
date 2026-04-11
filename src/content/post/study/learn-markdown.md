@@ -5,7 +5,7 @@ updatedDate: "2026-04-08"
 description: "这是我学习MARKDOWN格式的笔记"
 tags: ["学习", "MARKDOWN", "笔记"]
 coverImage: 
-    src: "./learn-markdown-cover.png"
+    src: "https://cdn.fancyflow.top/image/post/study/learn-markdown-cover.webp"
     alt: "雪山"
 ---
 
@@ -161,10 +161,10 @@ int main() {
 在MARKDOWN中，图片使用 感叹号(!) 加 描述文本（方括号[]） 图片地址(圆括号()) 表示。
 
 ```md
-![Sekiro: Shadows Die Twice宣传图](./learn-markdown-sekrio.jpg)
+![Sekiro: Shadows Die Twice宣传图](https://cdn.fancyflow.top/image/post/study/learn-markdown-sekrio.webp)
 ```
 
-![Sekiro: Shadows Die Twice宣传图](./learn-markdown-sekrio.jpg)
+![Sekiro: Shadows Die Twice宣传图](https://cdn.fancyflow.top/image/post/study/learn-markdown-sekrio.webp)
 
 ## 9.分割线
 

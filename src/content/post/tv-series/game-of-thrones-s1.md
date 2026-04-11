@@ -9,7 +9,7 @@ featured: false
 tags: ["剧", "权力的游戏", "观后感"]
 ogImage: ""
 coverImage: 
-    src: "./game-of-thrones-s1-cover.png"
+    src: "https://cdn.fancyflow.top/image/post/tv-series/game-of-thrones-s1-cover.webp"
     alt: "权力的游戏 第1季"
 ---
 
@@ -149,7 +149,7 @@ coverImage:
 - 小恶魔被关押的牢房很有想象力，一面是悬崖。
 - 小恶魔似乎是无辜的。
 
-![鹰巢城](./game-of-thrones-s1-eyrie.png)
+![鹰巢城](https://cdn.fancyflow.top/image/post/tv-series/game-of-thrones-s1-eyrie.webp)
 
 ### Episode 6
 

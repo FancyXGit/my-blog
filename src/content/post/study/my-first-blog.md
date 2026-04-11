@@ -5,7 +5,7 @@ updatedDate: "2026-04-08"
 description: "这是我第一次使用Astro建立博客网站的经历和心得。"
 tags: ["学习", "网络", "实践"]
 coverImage: 
-    src: "./my-first-blog-cover.png"
+    src: "https://cdn.fancyflow.top/image/post/study/my-first-blog-cover.webp"
     alt: "海滩"
 ---
 

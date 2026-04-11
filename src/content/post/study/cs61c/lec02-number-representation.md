@@ -7,7 +7,7 @@ seriesId: cs61c
 orderInSeries: 1
 tags: ["学习", "CS61C", "笔记", "整数"]
 coverImage:
-    src: "./lec02-cover.png"
+    src: "https://cdn.fancyflow.top/image/post/study/cs61c/lec02-cover.webp"
     alt: "森林，丁达尔效应"
 ---
 

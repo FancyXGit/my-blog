@@ -7,7 +7,7 @@ seriesId: cs61c
 orderInSeries: 4
 tags: ["学习", "CS61C", "笔记", "汇编语言", "RISC-V", "ABI"]
 coverImage:
-    src: "./lec07-cover.png"
+    src: "https://cdn.fancyflow.top/image/post/study/cs61c/lec07-cover.webp"
     alt: "星空，流星与大地"
 ---
 
@@ -180,7 +180,7 @@ RISC-V提供了以下逻辑运算指令：
 
 ## 程序执行过程
 
-![程序执行流程](lec09-program-execution.png)
+![程序执行流程](https://cdn.fancyflow.top/image/post/study/cs61c/lec09-program-execution.webp)
 
 - 程序编译产生的二进制机械码存储在内存中。
 - CPU通过PC(program counter，程序计数器)指向下一条要执行的指令在内存中的地址。
