@@ -1,10 +1,10 @@
 ---
 title: "RISC-V 格式"
-publishDate: "2026-04-09"
-updatedDate: "2026-04-09"
+publishDate: "2026-04-12"
+updatedDate: "2026-04-12"
 description: "RISC-V中的指令格式"
 seriesId: cs61c
-orderInSeries: 4
+orderInSeries: 5
 tags: ["学习", "CS61C", "笔记", "汇编语言", "RISC-V", "指令格式"]
 coverImage:
     src: "https://cdn.fancyflow.top/image/post/study/cs61c/lec07-cover.webp"
