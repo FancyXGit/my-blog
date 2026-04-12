@@ -22,6 +22,7 @@ const audioList = musicTracks.map((track) => {
 <script is:inline>
 	(() => {
 		const EMPTY_LRC_URL = "/music/lyrics/empty.lrc";
+		const LYRIC_FETCH_TIMEOUT_MS = 1800;
 		let cachedEmptyLrc = "[00:00.00] ";
 
 		const loadEmptyLrc = async () => {
@@ -37,35 +38,52 @@ const audioList = musicTracks.map((track) => {
 			return cachedEmptyLrc;
 		};
 
-		const loadLyrics = async (list) => {
-			const next = [];
-			for (const item of list) {
-				const row = { ...item, lrc: "" };
+		const loadLyricText = async (url) => {
+			const controller = new AbortController();
+			const timeoutId = window.setTimeout(() => controller.abort(), LYRIC_FETCH_TIMEOUT_MS);
 
-				if (item.lrc) {
-					try {
-						const response = await fetch(item.lrc, { mode: "cors", credentials: "omit" });
-						if (response.ok) {
-							row.lrc = await response.text();
-						} else {
-							console.warn(`[APlayer] lyric request failed: status ${response.status} (${item.lrc})`);
-						}
-					} catch (error) {
-						console.warn(`[APlayer] lyric request failed: ${item.lrc}`, error);
-					}
+			try {
+				const response = await fetch(url, {
+					mode: "cors",
+					credentials: "omit",
+					signal: controller.signal,
+				});
+				if (!response.ok) {
+					console.warn(`[APlayer] lyric request failed: status ${response.status} (${url})`);
+					return "";
 				}
-
-				if (!row.lrc && item.lyrics) {
-					row.lrc = item.lyrics;
-				}
-
-				if (!row.lrc) {
-					row.lrc = await loadEmptyLrc();
-				}
-
-				next.push(row);
+				return await response.text();
+			} catch (error) {
+				console.warn(`[APlayer] lyric request failed: ${url}`, error);
+				return "";
+			} finally {
+				window.clearTimeout(timeoutId);
 			}
-			return next;
+		};
+
+		const loadLyrics = async (list) => {
+			const emptyLrc = await loadEmptyLrc();
+			const rows = await Promise.all(
+				list.map(async (item) => {
+					let lrcText = "";
+
+					if (item.lrc) {
+						lrcText = await loadLyricText(item.lrc);
+					}
+
+					if (!lrcText && item.lyrics) {
+						lrcText = item.lyrics;
+					}
+
+					if (!lrcText) {
+						lrcText = emptyLrc;
+					}
+
+					return { ...item, lrc: lrcText };
+				}),
+			);
+
+			return rows;
 		};
 
 		const bindPreciseSeek = (aplayer, container) => {
