@@ -11,6 +11,7 @@ ogImage: ""
 coverImage: 
     src: "https://cdn.fancyflow.top/image/post/tv-series/game-of-thrones-s1-cover.webp"
     alt: "权力的游戏 第1季"
+draft: true
 ---
 
 ## 人物梳理
