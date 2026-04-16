@@ -2,7 +2,7 @@
 title: "C.A.L.L."
 publishDate: "2026-04-16"
 updatedDate: "2026-04-16"
-description: ""
+description: "C语言程序从源代码到可执行文件的全过程，包括编译、汇编、链接和加载的详细步骤"
 seriesId: cs61c
 orderInSeries: 6
 tags: ["学习", "CS61C", "笔记", "编译原理"]
@@ -42,7 +42,8 @@ coverImage:
 3. 生成符号表(symbol table)与重定位表(relocation table)
 
 - 符号表：记录函数和变量的名称与地址的映射关系
-- 重定位表：记录需要链接器填充地址的指令位置和类型。例如`jal ra, printf`记录这里需要修正`printf`的地址
+- 重定位表：记录需要链接器填充地址的指令位置和类型。  
+例如`jal ra, printf`记录这里需要修正`printf`的地址
 
 ## Linker
 
