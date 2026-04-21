@@ -1,7 +1,7 @@
 ---
 title: "市场原理"
 publishDate: "2026-04-17"
-updatedDate: "2026-04-18"
+updatedDate: "2026-04-21"
 description: "市场运行的一些基本原理，包括生产可能性边界、供需关系和市场均衡等概念"
 seriesId: "principles-of-economics"
 orderInSeries: 1
