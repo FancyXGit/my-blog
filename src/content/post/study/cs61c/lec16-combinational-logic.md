@@ -3,6 +3,8 @@ title: "组合逻辑"
 publishDate: "2026-04-22"
 updatedDate: "2026-04-22"
 description: "真值表，逻辑运算，逻辑门，布尔代数；多路复用器，ALU，加法器"
+seriesId: cs61c
+orderInSeries: 8
 tags: ["学习", "CS61C", "笔记"]
 coverImage:
     src: "https://cdn.fancyflow.top/image/post/study/cs61c/lec16/cover.webp"
