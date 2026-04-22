@@ -97,7 +97,7 @@ const {
 					document.querySelectorAll(".prose img").forEach((img) => {
 						if (img.hasAttribute(ZOOM_IMG_ATTR)) return;
 						img.setAttribute(ZOOM_IMG_ATTR, "true");
-						img.addEventListener("dblclick", (event) => {
+						img.addEventListener("click", (event) => {
 							event.preventDefault();
 							openOverlay(img);
 						});
