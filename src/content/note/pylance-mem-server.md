@@ -2,6 +2,7 @@
 title: "VSCODE SSH插件挤爆服务器内存"
 publishDate: "2026-04-15T22:17:01+08:00"
 updateDate: "2026-04-15T22:17:01+08:00"
+draft: true
 ---
 
 有点无语了，今天正用remote ssh连服务器写CS61C的作业，美美地（确真）写汇编呢（不要问我为什么不在本地写，因为课程给的框架代码在windows上一堆BUG），结果VSCODE突然卡死了，气死我了。  
