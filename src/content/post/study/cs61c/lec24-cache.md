@@ -3,7 +3,7 @@ title: "缓存"
 publishDate: "2026-05-09"
 updatedDate: "2026-05-09"
 description: "关于缓存cache的知识，包括缓存作用，缓存结构"
-tags: ["学习", "CS61C", "笔记""]
+tags: ["学习", "CS61C", "笔记"]
 coverImage:
     src: "https://cdn.fancyflow.top/image/post/study/cs61c/lec24/cover.webp"
     alt: "白花，草地与天空"
