@@ -3,6 +3,8 @@ title: "虚拟内存"
 publishDate: "2026-05-18"
 updatedDate: "2026-05-18"
 description: "虚拟内存，分页表，TLB等"
+seriesId: cs61c
+orderInSeries: 12
 tags: ["学习", "CS61C", "笔记"]
 coverImage:
     src: "https://cdn.fancyflow.top/image/post/study/cs61c/lec28/cover.webp"
