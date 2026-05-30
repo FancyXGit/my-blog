@@ -1,7 +1,7 @@
 ---
 title: "记录"
 publishDate: "2026-05-27"
-updatedDate: "2026-05-29"
+updatedDate: "2026-05-30"
 description: ""
 tags: ["学习", "CSAPP", "笔记"]
 seriesId: csapp
@@ -46,4 +46,7 @@ draft: true
   - LAB: Data Lab: xor - conditional
 - 2026-05-29
   - LAB: Data Lab: finished
-  
+- 2026-05-30
+  - Lecture: 05: Machine Level Programming I Basis
+  - Textbook: Chapter 3.4 - 3.5
+  - Notes: lec05
