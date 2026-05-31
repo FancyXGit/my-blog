@@ -1,7 +1,7 @@
 ---
 title: "记录"
 publishDate: "2026-05-27"
-updatedDate: "2026-05-30"
+updatedDate: "2026-05-31"
 description: ""
 tags: ["学习", "CSAPP", "笔记"]
 seriesId: csapp
@@ -17,6 +17,7 @@ draft: true
 
 - 花费时间：5小时
 - 难度：中等
+- Total points: 36/36
 
 | Score | Rating | Errors | Function        | Operators |
 |-------|--------|--------|-----------------|-----------|
@@ -48,5 +49,9 @@ draft: true
   - LAB: Data Lab: finished
 - 2026-05-30
   - Lecture: 05: Machine Level Programming I Basis
-  - Textbook: Chapter 3.4 - 3.5
+  - Textbook: Chapter 3.4 - 3.6.5
   - Notes: lec05
+- 2026-05-31
+  - Lecture: 06: Machine Level Programming II Control
+  - Textbook: Chapter 3.6.6 - 3.8
+  - Notes: lec06
