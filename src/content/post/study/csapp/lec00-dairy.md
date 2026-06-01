@@ -53,5 +53,8 @@ draft: true
   - Notes: lec05
 - 2026-05-31
   - Lecture: 06: Machine Level Programming II Control
-  - Textbook: Chapter 3.6.6 - 3.8
+  - Textbook: Chapter 3.6.6 - 3.8.4
   - Notes: lec06
+- 2026-06-01
+  - Lecture: 07: Machine Level Programming III Procedure
+  - Notes: lec07
