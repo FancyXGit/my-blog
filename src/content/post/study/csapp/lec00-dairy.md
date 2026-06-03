@@ -16,7 +16,7 @@ draft: true
 ### Data Lab
 
 - 花费时间：5小时
-- 难度：中等
+- 难度：偏易
 - Total points: 36/36
 
 | Score | Rating | Errors | Function        | Operators |
@@ -34,6 +34,23 @@ draft: true
 | 4     | 4      | 0      | floatScale2     | 18        |
 | 4     | 4      | 0      | floatFloat2Int  | 16        |
 | 4     | 4      | 0      | floatPower2     | 9         |
+
+### Bomb Lab
+
+- 花费时间：6小时
+- 难度：中等
+- 通过：6/6
+
+```txt
+Welcome to my fiendish little bomb. You have 6 phases with
+which to blow yourself up. Have a nice day!
+Phase 1 defused. How about the next one?
+That's number 2.  Keep going!
+Halfway there!
+So you got that one.  Try this one.
+Good work!  On to the next...
+Congratulations! You've defused the bomb!
+```
 
 ## 日程
 
@@ -58,3 +75,11 @@ draft: true
 - 2026-06-01
   - Lecture: 07: Machine Level Programming III Procedure
   - Notes: lec07
+  - Textbook: Chapter 3.8.5 - 3.10
+  - LAB: Bomb Lab: Phase_1 - Phase_2
+- 2026-06-02
+  - LAB: Bomb Lab: finished
+- 2026-06-03
+  - Lecture: 08-09: Machine Level Programming IV-V Data - Advanced Topics
+  - Notes: lec08-09
+  - Textbook: Chapter 3.11 - Chapter 3.12
