@@ -105,4 +105,12 @@ PASS: Would have posted the following:
 - 2026-06-07
   - Textbook: Chapter 5
   - Lecture: 10: Program Optimization
+- 2026-06-08
+  - Textbook: Chapter 6
+  - Notes: lec10
+  - Lecture: 11: The Memory Hierarchy
+- 2026-06-09
+  - Textbook: Chapter 7.1 - 7.5
+  - Notes: lec12
+  - Lecture: 12: Cache Memory
   
