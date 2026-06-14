@@ -6,8 +6,5 @@ description: "作者对于本章的理解并不清晰，决定读完《程序员
 seriesId: csapp
 orderInSeries: 7
 tags: ["学习", "笔记", "CSAPP"]
-coverImage:
-    src: ""
-    alt: ""
 ---
 
