@@ -155,3 +155,10 @@ Trans perf 61x67          10.0        10        1997
 - 2026-06-11
   - Lecture: 13: Linking
   - Textbook: Chapter 7.6 - 7.15
+- 2026-06-13
+  - Lecture: 14: Exceptions Control Flow: Exceptions and Processes
+  - Textbook: Chapter 8.1 - 8.4
+- 2026-06-14
+  - Lecture: 15: Exceptions Control Flow: Signals and Nonlocal Jumps
+  - Textbook: Chapter 8.5 - 8.8
+  - Notes: lec14
