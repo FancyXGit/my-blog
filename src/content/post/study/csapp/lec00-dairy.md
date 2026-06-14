@@ -152,3 +152,6 @@ Trans perf 61x67          10.0        10        1997
   - LAB: Cache Lab: Part A
 - 2026-06-10
   - LAB: Cache Lab: finished
+- 2026-06-11
+  - Lecture: 13: Linking
+  - Textbook: Chapter 7.6 - 7.15

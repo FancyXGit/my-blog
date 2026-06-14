@@ -57,6 +57,7 @@ const series = defineCollection({
 		title: z.string(),
 		description: z.string(),
 		featured: z.boolean().default(false), // Пометка для популярных серий
+		status: z.enum(["OnGoing", "Completed", "Paused", "Abandoned"]).default("OnGoing"),
 	}),
 });
 // End
