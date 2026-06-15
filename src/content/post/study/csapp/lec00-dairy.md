@@ -162,3 +162,7 @@ Trans perf 61x67          10.0        10        1997
   - Lecture: 15: Exceptions Control Flow: Signals and Nonlocal Jumps
   - Textbook: Chapter 8.5 - 8.8
   - Notes: lec14
+- 2026-06-15
+  - Lecture: 16: System Level I/O
+  - Textbook: Chapter 10
+  - Notes: lec16
