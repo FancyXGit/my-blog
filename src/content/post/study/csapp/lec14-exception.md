@@ -5,7 +5,7 @@ updatedDate: "2026-06-14"
 description: "Linux系统中的异常，异常处理，用户与内核模式，进程控制，信号，信号处理等内容"
 seriesId: csapp
 orderInSeries: 8
-tags: ["学习", "笔记", "CSAPP"]
+tags: ["学习", "笔记", "CSAPP", "操作系统"]
 coverImage:
     src: "https://cdn.fancyflow.top/image/post/study/csapp/lec14/cover.webp"
     alt: "溪流，草地，雪山与小桥"

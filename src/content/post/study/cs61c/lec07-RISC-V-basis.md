@@ -5,7 +5,7 @@ updatedDate: "2026-04-09"
 description: "指令集，汇编语言，CPU组成，RISC-V的基础知识，包括add/sub/addi指令和数据传输指令lw/sw/lb/sb/lbu等。"
 seriesId: cs61c
 orderInSeries: 3
-tags: ["学习", "CS61C", "笔记","汇编语言", "RISC-V"]
+tags: ["学习", "CS61C", "笔记", "汇编语言", "RISC-V"]
 coverImage:
     src: "https://cdn.fancyflow.top/image/post/study/cs61c/lec07-cover.webp"
     alt: "星空，流星与大地"

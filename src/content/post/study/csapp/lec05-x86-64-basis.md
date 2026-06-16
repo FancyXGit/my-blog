@@ -3,7 +3,7 @@ title: "x86-64 基础"
 publishDate: "2026-05-30"
 updatedDate: "2026-05-30"
 description: "关于x86-64指令集的基础知识，包括寄存器命名，数据格式，传输指令，算数指令"
-tags: ["学习", "笔记", "CSAPP"]
+tags: ["学习", "笔记", "CSAPP", "汇编语言", "x86-64"]
 seriesId: csapp
 orderInSeries: 1
 coverImage:

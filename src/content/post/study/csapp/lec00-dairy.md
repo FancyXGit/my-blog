@@ -105,6 +105,15 @@ Trans perf 61x67          10.0        10        1997
           Total points    53.0        53
 ```
 
+### Shell Lab
+
+- 花费时间：4小时
+- 难度：较难
+- 通过：16/16
+
+> 虽说照着书上的代码依葫芦画瓢莫名其妙完成了这个LAB  
+> 但是我感觉我对信号，并发的理解并不深入，后续还需要继续学习
+
 ## 日程
 
 - 2026-05-27
@@ -166,3 +175,5 @@ Trans perf 61x67          10.0        10        1997
   - Lecture: 16: System Level I/O
   - Textbook: Chapter 10
   - Notes: lec16
+- 2026-06-16
+  - LAB: Shell Lab

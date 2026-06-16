@@ -5,7 +5,7 @@ updatedDate: "2026-04-21"
 description: "逻辑电路，时钟，寄存器，累加器，有限状态机"
 seriesId: cs61c
 orderInSeries: 7
-tags: ["学习", "CS61C", "笔记"]
+tags: ["学习", "CS61C", "笔记", "数字电路"]
 coverImage:
     src: "https://cdn.fancyflow.top/image/post/study/cs61c/lec15/cover.webp"
     alt: "海面与玫瑰花"

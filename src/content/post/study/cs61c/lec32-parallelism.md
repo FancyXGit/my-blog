@@ -5,7 +5,7 @@ updatedDate: "2026-05-25"
 description: "SIMD，多线程，openMP，锁，缓存共享，MapReduce"
 seriesId: cs61c
 orderInSeries: 14
-tags: ["学习", "CS61C", "笔记"]
+tags: ["学习", "CS61C", "笔记", "并行计算"]
 coverImage:
     src: "https://cdn.fancyflow.top/image/post/study/cs61c/lec32/cover.webp"
     alt: "蓝天，高山与草地"

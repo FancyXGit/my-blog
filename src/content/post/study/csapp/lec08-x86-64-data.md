@@ -5,7 +5,7 @@ updatedDate: "2026-06-03"
 description: "数组，结构体汇编表示与内存布局，数据对齐，缓存区溢出攻击"
 seriesId: csapp
 orderInSeries: 4
-tags: ["学习", "笔记", "CSAPP"]
+tags: ["学习", "笔记", "CSAPP", "汇编语言", "x86-64"]
 coverImage:
     src: "https://cdn.fancyflow.top/image/post/study/csapp/lec08/cover.webp"
     alt: "湖面与倒映山川"

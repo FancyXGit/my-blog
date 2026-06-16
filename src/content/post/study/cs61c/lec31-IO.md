@@ -5,7 +5,7 @@ updatedDate: "2026-05-23"
 description: "关于I/O，内存映射，poll&interrupt，DMA"
 seriesId: cs61c
 orderInSeries: 13
-tags: ["学习", "CS61C", "笔记"]
+tags: ["学习", "CS61C", "笔记", "操作系统", "IO"]
 coverImage:
     src: "https://cdn.fancyflow.top/image/post/study/cs61c/lec31/cover.webp"
     alt: "夕阳下的紫色群峦"

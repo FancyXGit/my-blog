@@ -5,7 +5,7 @@ updatedDate: "2026-06-15"
 description: "Linux上的文件I/O，包括文件构成，基础I/O，RIO与标准I/O"
 seriesId: csapp
 orderInSeries: 9
-tags: ["学习", "笔记", "CSAPP"]
+tags: ["学习", "笔记", "CSAPP", "操作系统", "IO"]
 coverImage:
     src: "https://cdn.fancyflow.top/image/post/study/csapp/lec16/cover.webp"
     alt: "悬崖与大海"

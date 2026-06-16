@@ -5,7 +5,7 @@ updatedDate: "2026-04-23"
 description: "单周期CPU的设计架构，以实现所有RISC-V指令集"
 seriesId: cs61c
 orderInSeries: 9
-tags: ["学习", "CS61C", "笔记"]
+tags: ["学习", "CS61C", "笔记", "CPU"]
 coverImage:
     src: "https://cdn.fancyflow.top/image/post/study/cs61c/lec17/cover.webp"
     alt: "沙滩、森林与海洋"

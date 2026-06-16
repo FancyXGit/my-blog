@@ -5,7 +5,7 @@ updatedDate: "2026-06-09"
 description: "缓存结构，缓存策略，存储层次，缓存优化"
 seriesId: csapp
 orderInSeries: 6
-tags: ["学习", "笔记", "CSAPP"]
+tags: ["学习", "笔记", "CSAPP", "缓存", "内存"]
 coverImage:
     src: "https://cdn.fancyflow.top/image/post/study/csapp/lec12/cover.webp"
     alt: "白花与三叶草"

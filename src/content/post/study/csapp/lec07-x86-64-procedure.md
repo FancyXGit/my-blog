@@ -5,7 +5,7 @@ updatedDate: "2026-06-01"
 description: "运行时栈，函数调用与返回，参数传递，ABI"
 seriesId: csapp
 orderInSeries: 3
-tags: ["学习", "笔记", "CSAPP"]
+tags: ["学习", "笔记", "CSAPP", "汇编语言", "x86-64"]
 coverImage:
     src: "https://cdn.fancyflow.top/image/post/study/csapp/lec07/cover.webp"
     alt: "草地，山坡与蓝天"

@@ -5,7 +5,7 @@ updatedDate: "2026-06-08"
 description: "从汇编的角度看如何优化C语言程序，包括代码移动，减少过程调用，消除内存引用，减少相关性，循环展开，重新结合变换，使用SIMD并行等"
 seriesId: csapp
 orderInSeries: 5
-tags: ["学习", "笔记", "CSAPP"]
+tags: ["学习", "笔记", "CSAPP", "并行计算"]
 coverImage:
     src: "https://cdn.fancyflow.top/image/post/study/csapp/lec10/cover.webp"
     alt: "牛"

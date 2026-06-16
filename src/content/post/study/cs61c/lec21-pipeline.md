@@ -5,7 +5,7 @@ updatedDate: "2026-04-28"
 description: "流水线CPU设计，包括如何处理三种风险"
 seriesId: cs61c
 orderInSeries: 10
-tags: ["学习", "CS61C", "笔记"]
+tags: ["学习", "CS61C", "笔记", "CPU"]
 coverImage:
     src: "https://cdn.fancyflow.top/image/post/study/cs61c/lec21/cover.webp"
     alt: "樱花与溪流"

@@ -5,7 +5,7 @@ updatedDate: "2026-05-31"
 description: "条件码，条件码访问，跳转指令，条件分支，循环结构"
 seriesId: csapp
 orderInSeries: 2
-tags: ["学习", "笔记", "CSAPP"]
+tags: ["学习", "笔记", "CSAPP", "汇编语言", "x86-64"]
 coverImage:
     src: "https://cdn.fancyflow.top/image/post/study/csapp/lec06/cover.webp"
     alt: "春日的花朵"
