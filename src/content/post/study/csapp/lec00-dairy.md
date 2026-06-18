@@ -177,3 +177,12 @@ Trans perf 61x67          10.0        10        1997
   - Notes: lec16
 - 2026-06-16
   - LAB: Shell Lab
+  - Lecture: 17: Virtual Memory Concepts
+  - Textbook: Chapter 9.1 - 9.6
+- 2026-06-17
+  - Lecture: 18 - 19: Virtual Memory Systems & Dynamic Memory Allocation Basic Concepts
+  - Textbook: Chapter 9.7 - 9.9
+- 2026-06-18
+  - Notes: lec17
+  - Lecture: 20: Dynamic Memory Allocation Advanced Concepts
+  - Textbook: Chapter 9.10 - 9.12
