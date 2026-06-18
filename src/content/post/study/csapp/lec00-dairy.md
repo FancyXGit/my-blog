@@ -128,6 +128,34 @@ Trans perf 61x67          10.0        10        1997
 > 虽说照着书上的代码依葫芦画瓢莫名其妙完成了这个LAB  
 > 但是我感觉我对信号，并发的理解并不深入，后续还需要继续学习  
 
+```txt
+> make test16
+./sdriver.pl -t trace16.txt -s ./tsh -a "-p"
+#
+# trace16.txt - Tests whether the shell can handle SIGTSTP and SIGINT
+#     signals that come from other processes instead of the terminal.
+#
+tsh> ./mystop 2
+Job [1] (3189983) stopped by signal 20
+tsh> jobs
+[1] (3189983) Stopped ./mystop 2
+tsh> ./myint 2
+Job [2] (3189986) terminated by signal 2
+
+> make rtest16
+./sdriver.pl -t trace16.txt -s ./tshref -a "-p"
+#
+# trace16.txt - Tests whether the shell can handle SIGTSTP and SIGINT
+#     signals that come from other processes instead of the terminal.
+#
+tsh> ./mystop 2
+Job [1] (3189992) stopped by signal 20
+tsh> jobs
+[1] (3189992) Stopped ./mystop 2
+tsh> ./myint 2
+Job [2] (3189995) terminated by signal 2
+```
+
 ## 日程
 
 - 2026-05-27
