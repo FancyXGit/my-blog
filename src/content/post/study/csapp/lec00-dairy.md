@@ -6,7 +6,6 @@ description: ""
 tags: ["学习", "CSAPP", "笔记"]
 seriesId: csapp
 orderInSeries: 0
-draft: true
 ---
 
 ## LAB评分
@@ -18,6 +17,9 @@ draft: true
 - 花费时间：5小时
 - 难度：偏易
 - Total points: 36/36
+
+> 这里的howManyBits函数是最难的，需要花很多心思
+> 总体而言这个LAB难度不大，算开胃菜
 
 | Score | Rating | Errors | Function        | Operators |
 |-------|--------|--------|-----------------|-----------|
@@ -41,6 +43,10 @@ draft: true
 - 难度：较难
 - 通过：6/6
 
+> 这个LAB难度较大，主要是因为需要阅读理解大量汇编
+> 需要熟悉GDB调试器的使用，同时注意主干，对于功能函数不要太在意
+> 隐藏的炸弹由于个人能力不足，没有完成
+
 ```txt
 Welcome to my fiendish little bomb. You have 6 phases with
 which to blow yourself up. Have a nice day!
@@ -58,6 +64,9 @@ Congratulations! You've defused the bomb!
 - 难度：中等
 - 通过：5/5
 
+> 这个LAB难度中等，主要要理解缓冲区攻击的原理，`call`和`ret`指令到底做了什么，以及栈的结构
+> 最后一个阶段找可用的GADGET非常折磨，我这里直接借鉴了别人找好的GADGET参考撰写答案
+
 ```txt
 Cookie: 0x59b997fa
 Type string:Touch3!: You called touch3("59b997fa")
@@ -74,6 +83,11 @@ PASS: Would have posted the following:
 - 花费时间：8小时
 - 难度：中等+
 - 分数：80/80
+
+> PART A的Cache Simulator是一个比较简单的C语言编程
+> 不由得感慨，我刚学C语言的时候特别讨厌这个语言，觉得它太麻烦了，现在我完全折服于它的简洁之美，写C简直就是享受
+> PART B的缓存优化难度很大，需要根据具体缓存仔细分析，分析清楚矩阵的每一个块落入哪个缓存之中
+> 相较于CS 61C的简单分块矩阵转置，这个难度远远胜过前者
 
 ```txt
 Part A: Testing cache simulator
