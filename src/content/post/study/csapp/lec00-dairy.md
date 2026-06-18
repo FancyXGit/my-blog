@@ -1,7 +1,7 @@
 ---
 title: "记录"
 publishDate: "2026-05-27"
-updatedDate: "2026-05-31"
+updatedDate: "2026-06-18"
 description: ""
 tags: ["学习", "CSAPP", "笔记"]
 seriesId: csapp
