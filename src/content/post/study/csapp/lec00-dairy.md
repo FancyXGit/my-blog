@@ -1,8 +1,8 @@
 ---
 title: "记录"
 publishDate: "2026-05-27"
-updatedDate: "2026-06-18"
-description: ""
+updatedDate: "2026-06-22"
+description: "学习CSAPP的记录，包括LAB的记录与总结体会，以及每日的学习流水账"
 tags: ["学习", "CSAPP", "笔记"]
 seriesId: csapp
 orderInSeries: 0
@@ -156,6 +156,41 @@ tsh> ./myint 2
 Job [2] (3189995) terminated by signal 2
 ```
 
+### Malloc Lab
+
+- 花费时间：2+4小时
+- 难度：较难
+- 分数：
+
+> 这个LAB我是分阶段实施的，第一阶段实施隐式空闲链表，第二阶段实施分离显示空闲链表  
+> ***隐式空闲链表阶段***:  
+> 我花了5小时写了一个基本的隐式空闲链表，malloc采用首次适配，free采用立刻递归合并，realloc采用简单的模式，如果空间够则直接返回原地址，否则申请新空间，用for循环复制数据，释放原空间。得分Perf index = 46 (util) + 6 (thru) = 53/100并不理想  
+> 之后我用1小时优化了realloc函数，先用memcpy替代for循环复制数据，性能得到大幅提升，Perf index = 46 (util) + 13 (thru) = 59/100  
+> 重写realloc函数，尝试利用后面的空闲块，必要时对空闲块进行分割，性能得到进一步提升，Perf index = 50 (util) + 16 (thru) = 66/100
+
+隐式空闲链表分数：
+
+```txt
+> ./mdriver -t ./traces -V
+
+Results for mm malloc:
+trace  valid  util     ops      secs  Kops
+ 0       yes   99%    5694  0.008513   669
+ 1       yes  100%    5848  0.007585   771
+ 2       yes   99%    6648  0.012653   525
+ 3       yes  100%    5380  0.009373   574
+ 4       yes  100%   14400  0.000125115663
+ 5       yes   92%    4800  0.008175   587
+ 6       yes   92%    4800  0.007601   632
+ 7       yes   55%   12000  0.095317   126
+ 8       yes   50%   24000  0.323989    74
+ 9       yes   54%   14401  0.000225 63919
+10       yes   76%   14401  0.000116123720
+Total          83%  112372  0.473673   237
+
+Perf index = 50 (util) + 16 (thru) = 66/100
+```
+
 ## 日程
 
 - 2026-05-27
@@ -228,3 +263,9 @@ Job [2] (3189995) terminated by signal 2
   - Notes: lec17
   - Lecture: 20: Dynamic Memory Allocation Advanced Concepts
   - Textbook: Chapter 9.10 - 9.12
+- 2026-06-19
+  - Notes: lec19
+- 2026-06-21
+  - LAB: Malloc Lab: Implicit Free List Malloc
+- 2026-06-22
+  - LAB: Malloc Lab: Implicit Free List Finished
