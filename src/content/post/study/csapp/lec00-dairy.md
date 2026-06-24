@@ -168,23 +168,24 @@ Job [2] (3189995) terminated by signal 2
 
 ### Malloc Lab
 
-- 花费时间：2+4小时
+- 花费时间：11小时
 - 难度：较难
-- 分数：
+- 分数：87/100
 
 :::tip
 这个LAB我是分阶段实施的，第一阶段实施隐式空闲链表，第二阶段实施分离显示空闲链表  
 ***隐式空闲链表阶段***:  
 我花了5小时写了一个基本的隐式空闲链表，malloc采用首次适配，free采用立刻递归合并，realloc采用简单的模式，如果空间够则直接返回原地址，否则申请新空间，用for循环复制数据，释放原空间。得分Perf index = 46 (util) + 6 (thru) = 53/100并不理想  
 之后我用1小时优化了realloc函数，先用memcpy替代for循环复制数据，性能得到大幅提升，Perf index = 46 (util) + 13 (thru) = 59/100  
-重写realloc函数，尝试利用后面的空闲块，必要时对空闲块进行分割，性能得到进一步提升，Perf index = 50 (util) + 16 (thru) = 66/100
+重写realloc函数，尝试利用后面的空闲块，必要时对空闲块进行分割，性能得到进一步提升，Perf index = 50 (util) + 16 (thru) = 66/100  
+***分离显式空闲链表阶段***:  
+将隐式空闲链表简单改成分离显式空闲链表，性能得大幅提升，Perf index = 47 (util) + 40 (thru) = 87/100  
+这个LAB很具有挑战性，是我目前最喜欢的LAB
 :::
 
 隐式空闲链表分数：
 
 ```txt
-> ./mdriver -t ./traces -V
-
 Results for mm malloc:
 trace  valid  util     ops      secs  Kops
  0       yes   99%    5694  0.008513   669
@@ -201,6 +202,27 @@ trace  valid  util     ops      secs  Kops
 Total          83%  112372  0.473673   237
 
 Perf index = 50 (util) + 16 (thru) = 66/100
+```
+
+分离显式空闲链表分数：
+
+```txt
+Results for mm malloc:
+trace  valid  util     ops      secs  Kops
+ 0       yes   97%    5694  0.000143 39930
+ 1       yes   95%    5848  0.000211 27689
+ 2       yes   98%    6648  0.000192 34697
+ 3       yes   99%    5380  0.000130 41353
+ 4       yes   98%   14400  0.000153 94056
+ 5       yes   89%    4800  0.000236 20339
+ 6       yes   87%    4800  0.000263 18272
+ 7       yes   54%   12000  0.000266 45198
+ 8       yes   47%   24000  0.077821   308
+ 9       yes   32%   14401  0.042749   337
+10       yes   57%   14401  0.000160 90175
+Total          78%  112372  0.122322   919
+
+Perf index = 47 (util) + 40 (thru) = 87/100
 ```
 
 ## 日程
