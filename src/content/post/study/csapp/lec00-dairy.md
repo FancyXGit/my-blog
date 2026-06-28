@@ -1,7 +1,7 @@
 ---
 title: "记录"
 publishDate: "2026-05-27"
-updatedDate: "2026-06-22"
+updatedDate: "2026-06-24"
 description: "学习CSAPP的记录，包括LAB的记录与总结体会，以及每日的学习流水账"
 tags: ["学习", "CSAPP", "笔记"]
 seriesId: csapp
@@ -305,3 +305,9 @@ Perf index = 47 (util) + 40 (thru) = 87/100
   - LAB: Malloc Lab: Implicit Free List Finished
 - 2026-06-24
   - LAB: Malloc Lab: Finished
+- 2026-06-26
+  - Lecture: 21: Network Programming Part I
+  - Textbook: Chapter 11.1 - 11.5
+- 2026-06-27
+  - Lecture: 22: Network Programming Part II
+  - Textbook: Chapter 11.6 - 11.7
