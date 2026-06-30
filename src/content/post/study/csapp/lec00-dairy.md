@@ -5,7 +5,7 @@ updatedDate: "2026-06-30"
 description: "学习CSAPP的记录，包括LAB的记录与总结体会，以及每日的学习流水账"
 tags: ["学习", "CSAPP", "笔记"]
 seriesId: csapp
-orderInSeries: 0
+orderInSeries: 14
 ---
 
 ## LAB评分

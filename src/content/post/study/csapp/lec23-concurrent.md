@@ -4,7 +4,7 @@ publishDate: "2026-06-30"
 updatedDate: "2026-06-30"
 description: "多进程，I/O多路复用，线程编程，信号量，线程安全"
 seriesId: csapp
-orderInSeries: 12
+orderInSeries: 13
 tags: ["学习", "笔记", "CSAPP", "并行计算"]
 coverImage:
     src: "https://cdn.fancyflow.top/image/post/study/csapp/lec23/cover.webp"
