@@ -56,9 +56,9 @@ select(nfds, &readfds, NULL, NULL, NULL);
 2. 备份`readfds`集合
 3. 调用`select`函数
 
-`select`函数会一只阻塞，直到集合中标记为监听的文件描述符中有I/O事件发生  
-当I/O事件发生时，内核修改`readfds`集合，仅设置发生了I/O事件的文件描述符对应的位为1，其他位为0
-`select`函数返回可读的文件描述符数量
+`select`函数会一直阻塞，直到集合中标记为监听的文件描述符中有I/O事件发生  
+当I/O事件发生时，内核修改`readfds`集合，仅设置发生了I/O事件的文件描述符对应的位为1，其他位为0  
+`select`函数返回可读的文件描述符数量  
 
 4. 进程检查`readfds`集合，使用`FD_ISSET(fd, &readfds)`判断文件描述符`fd`是否可读
 5. 处理可读的文件描述符，使用I/O函数进行读写操作。**由于此时文件必定可读，因此I/O函数不会阻塞**
@@ -69,7 +69,7 @@ select(nfds, &readfds, NULL, NULL, NULL);
 :::
 
 :::note
-I/O多路复用使得服务端不会一只陷入一个I/O操作阻塞的状态，而可以同时监听多个I/O请求
+I/O多路复用使得服务端不会一直陷入一个I/O操作阻塞的状态，而可以同时监听多个I/O请求
 :::
 
 ## 线程编程
@@ -160,7 +160,7 @@ int pthread_once(pthread_once_t *once_control, void (*init_routine)(void));
 4. S：存储，将寄存器中的值写回内存
 5. T：尾部，线程内部操作，不访问全局变量
 
-可以看到，`L-U-S`阶段理论上应该为原始的  
+可以看到，`L-U-S`阶段理论上应该为原子的  
 如果线程切换导致`L-U-S`阶段被打断，可能会出现数据错误。例如$L_1$紧接着$L_2$，线程1，2同时读到的`count`的值为0，最后都写入1，导致少加了一次  
 将程序的执行步骤化成二维图，得到进度图
 
@@ -207,7 +207,7 @@ int pthread_once(pthread_once_t *once_control, void (*init_routine)(void));
 死锁表现为多个线程互相等待对方释放资源，导致所有线程都无法继续执行  
 例如定义两个互斥锁`s`，`t`  
 线程1执行`P(s)`，然后执行`P(t)`  
-线程2执行`P(t)`，然后执行`P(s)`
+线程2执行`P(t)`，然后执行`P(s)`  
 如果线程1执行`P(s)`后，线程2执行`P(t)`，则线程1阻塞在`s`上，线程2阻塞在`t`上，两个线程都无法继续执行，形成死锁
 
 ![死锁进度图](https://cdn.fancyflow.top/image/post/study/csapp/lec23/deadlock-progress-graph.webp)
