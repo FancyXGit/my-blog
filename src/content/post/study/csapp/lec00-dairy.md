@@ -1,7 +1,7 @@
 ---
 title: "记录"
 publishDate: "2026-05-27"
-updatedDate: "2026-06-24"
+updatedDate: "2026-06-30"
 description: "学习CSAPP的记录，包括LAB的记录与总结体会，以及每日的学习流水账"
 tags: ["学习", "CSAPP", "笔记"]
 seriesId: csapp
@@ -311,3 +311,10 @@ Perf index = 47 (util) + 40 (thru) = 87/100
 - 2026-06-27
   - Lecture: 22: Network Programming Part II
   - Textbook: Chapter 11.6 - 11.7
+- 2026-06-28
+  - Lecture: 23-24: Concurrent Programming & Synchronization Basics
+  - Textbook: Chapter 12.1 - 12.5
+- 2026-06-30
+  - Lecture: 25: Synchronization Advanced
+  - Textbook: Chapter 12.6 - 12.8
+  - Notes: lec23
