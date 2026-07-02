@@ -1,7 +1,7 @@
 ---
 title: "记录"
 publishDate: "2026-05-27"
-updatedDate: "2026-06-30"
+updatedDate: "2026-07-02"
 description: "学习CSAPP的记录，包括LAB的记录与总结体会，以及每日的学习流水账"
 tags: ["学习", "CSAPP", "笔记"]
 seriesId: csapp
@@ -11,6 +11,10 @@ orderInSeries: 14
 ## LAB评分
 
 所有我的LAB答案都在[这里](https://github.com/FancyXGit/CSAPP)
+
+:::note
+我的答案由自己编写，但是有AI辅助，仅限于思路探讨，风格规范，以及BUG提示。AI不会直接给出代码
+:::
 
 ### Data Lab
 
@@ -225,6 +229,82 @@ Total          78%  112372  0.122322   919
 Perf index = 47 (util) + 40 (thru) = 87/100
 ```
 
+### Proxy Lab
+
+- 花费时间：13小时
+- 难度：难
+- 分数：70/70
+
+:::tip
+这个LAB可以说是难度最难的
+
+1. 需要理解HTTP1.0协议，理解GET请求格式
+2. 需要了解多线程编程
+3. 需要了解缓存的原理，慎重使用互斥锁读写锁等，避免死锁
+
+尤其是第3点，在仔细考虑优化数据结构的基础上，需要慎重考虑何时加锁何时去锁，仔细考虑死锁可能  
+PART C光是构思就花了2小时
+:::
+
+```txt
+*** Basic ***
+Starting tiny on 2139
+Starting proxy on 16857
+1: home.html
+   Fetching ./tiny/home.html into ./.proxy using the proxy
+   Fetching ./tiny/home.html into ./.noproxy directly from Tiny
+   Comparing the two files
+   Success: Files are identical.
+2: csapp.c
+   Fetching ./tiny/csapp.c into ./.proxy using the proxy
+   Fetching ./tiny/csapp.c into ./.noproxy directly from Tiny
+   Comparing the two files
+   Success: Files are identical.
+3: tiny.c
+   Fetching ./tiny/tiny.c into ./.proxy using the proxy
+   Fetching ./tiny/tiny.c into ./.noproxy directly from Tiny
+   Comparing the two files
+   Success: Files are identical.
+4: godzilla.jpg
+   Fetching ./tiny/godzilla.jpg into ./.proxy using the proxy
+   Fetching ./tiny/godzilla.jpg into ./.noproxy directly from Tiny
+   Comparing the two files
+   Success: Files are identical.
+5: tiny
+   Fetching ./tiny/tiny into ./.proxy using the proxy
+   Fetching ./tiny/tiny into ./.noproxy directly from Tiny
+   Comparing the two files
+   Success: Files are identical.
+Killing tiny and proxy
+basicScore: 40/40
+
+*** Concurrency ***
+Starting tiny on port 3506
+Starting proxy on port 3261
+Starting the blocking NOP server on port 21780
+Trying to fetch a file from the blocking nop-server
+Fetching ./tiny/home.html into ./.noproxy directly from Tiny
+Fetching ./tiny/home.html into ./.proxy using the proxy
+Checking whether the proxy fetch succeeded
+Success: Was able to fetch tiny/home.html from the proxy.
+Killing tiny, proxy, and nop-server
+concurrencyScore: 15/15
+
+*** Cache ***
+Starting tiny on port 32391
+Starting proxy on port 29991
+Fetching ./tiny/tiny.c into ./.proxy using the proxy
+Fetching ./tiny/home.html into ./.proxy using the proxy
+Fetching ./tiny/csapp.c into ./.proxy using the proxy
+Killing tiny
+Fetching a cached copy of ./tiny/home.html into ./.noproxy
+Success: Was able to fetch tiny/home.html from the cache.
+Killing proxy
+cacheScore: 15/15
+
+totalScore: 70/70
+```
+
 ## 日程
 
 - 2026-05-27
@@ -318,3 +398,20 @@ Perf index = 47 (util) + 40 (thru) = 87/100
   - Lecture: 25: Synchronization Advanced
   - Textbook: Chapter 12.6 - 12.8
   - Notes: lec23
+- 2026-07-01
+  - LAB: Proxy Lab: Part I
+- 2026-07-02
+  - LAB: Proxy Lab: Finished
+
+## 后记
+
+1个月学完了CSAPP，我感觉我的能力有了极大的提升  
+这门课与这本书果然名不虚传，补充了很多我在CS61C中不熟悉与不了解的东西  
+这门课的LAB难度都比较大，但是认真完成，一定可以学到很多知识  
+下一步我想暂时停止理论学习，去学习JAVAWEB，redis等开发技术，同时刷算法，准备9月份实习  
+但是理论学习是不会止步的，如果能找到实习，我会在空闲时间开始学习CS162操作系统  
+如果你看到这里，我想说，加油！与君共勉！
+
+> Art is never finished, only abandoned.  
+>
+> <div align="right">—— Leonardo da Vinci</div>
