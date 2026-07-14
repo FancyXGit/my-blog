@@ -2,6 +2,7 @@
 title: "160相交链表"
 publishDate: "2026-07-13"
 updatedDate: "2026-07-13"
+description: "相交链表题解"
 tags: ["算法", "Leetcode", "链表"]
 seriesId: leetcode
 orderInSeries: 1
