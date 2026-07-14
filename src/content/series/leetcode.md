@@ -1,6 +1,6 @@
 ---
 id: leetcode
-title: "Leetcode"
+title: "LeetCode"
 description: "LeetCode题解"
 featured: true
 status: OnGoing

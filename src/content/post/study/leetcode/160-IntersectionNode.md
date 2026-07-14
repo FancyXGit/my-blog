@@ -8,6 +8,9 @@ seriesId: leetcode
 orderInSeries: 1
 ---
 
+题目：  
+> 给你两个单链表的头节点 headA 和 headB ，请你找出并返回两个单链表相交的起始节点。如果两个链表不存在相交节点，返回 null 。
+
 ## 双指针
 
 双指针算法本质上就是$a + b = b + a$的问题  
