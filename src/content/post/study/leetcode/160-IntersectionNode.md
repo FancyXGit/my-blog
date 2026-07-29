@@ -5,7 +5,7 @@ updatedDate: "2026-07-13"
 description: "相交链表题解"
 tags: ["算法", "Leetcode", "链表"]
 seriesId: leetcode
-orderInSeries: 1
+orderInSeries: 10
 ---
 
 题目：  
