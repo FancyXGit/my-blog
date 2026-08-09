@@ -12,10 +12,17 @@ updateDate: "2026-06-09T10:50:00+08:00"
 >
 > <div align="right">—— Michael Jackson</div>
 
-## 未来计划
+### 未来计划
+
+#### 当前
 
 - [x] UCB CS61C: Great Ideas in Computer Architecture
-- [ ] CMU CSAPP: Computer Systems: A Programmer's Perspective
-- [ ] UCB CS162: Operating Systems and System Programming
-- [ ] UCB CS189: Introduction to Machine Learning
-- [ ] UCB CS168: Introduction to the Internet: Architecture and Protocols
+- [x] CMU CSAPP: Computer Systems: A Programmer's Perspective
+- [ ] MIT 6.S081: Operating System Engineering
+- [ ] CMU 15-445: Database Systems
+- [ ] Stanford CS144: Computer Network
+
+#### 待定
+
+- MIT 6.824: Distributed System
+- UCB CS189: Introduction to Machine Learning
