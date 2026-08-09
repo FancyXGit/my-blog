@@ -24,8 +24,20 @@ jobs:
   deploy:
     name: Sync and Build on Server
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      deployments: write
 
     steps:
+      - name: Create deployment
+        id: create
+        uses: chrnorm/deployment-action@v2
+        with:
+          token: ${{ github.token }}
+          environment: production
+          target_url: https://fancyflow.top
+          task: deploy-blog
+
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.2.0
         env:
@@ -97,3 +109,20 @@ jobs:
             if [ -n "$RESTART_CMD" ]; then
               sh -lc "$RESTART_CMD"
             fi
+
+      - name: Mark deployment success
+        if: success()
+        uses: chrnorm/deployment-status@v2
+        with:
+          token: ${{ github.token }}
+          environment-url: https://fancyflow.top
+          deployment-id: ${{ steps.create.outputs.deployment_id }}
+          state: success
+
+      - name: Mark deployment failure
+        if: failure()
+        uses: chrnorm/deployment-status@v2
+        with:
+          token: ${{ github.token }}
+          deployment-id: ${{ steps.create.outputs.deployment_id }}
+          state: failure
