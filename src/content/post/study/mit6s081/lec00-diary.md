@@ -44,6 +44,7 @@ https://github.com/FancyXGit/MIT-6.S081
 
 - 花费时间：6小时
 - 得分：100/100
+- 难度：较难
 - 结果：
 
 ```txt
@@ -76,6 +77,49 @@ time: OK
 Score: 100/100
 ```
 
+:::tip
+此LAB难度主要在于primes的实现  
+primes需要注意作为子进程和父进程时分别需要做的事情，同时需要注意fork之后会复制文件描述符  
+需要恰当设置好父子进程的分工，同时注意管道的流式传输  
+xargs有一定难度，主要在于字符串的处理
+:::
+
+### System Calls
+
+- 花费时间：4小时
+- 得分：35/35
+- 难度：中等
+- 结果：
+
+```txt
+== Test trace 32 grep ==
+$ make qemu-gdb
+trace 32 grep: OK (4.5s)
+== Test trace all grep ==
+$ make qemu-gdb
+trace all grep: OK (0.8s)
+== Test trace nothing ==
+$ make qemu-gdb
+trace nothing: OK (0.8s)
+== Test trace children ==
+$ make qemu-gdb
+trace children: OK (30.5s)
+== Test sysinfotest ==
+$ make qemu-gdb
+sysinfotest: OK (3.6s)
+== Test time ==
+time: OK
+Score: 35/35
+```
+
+:::tip
+此LAB理解系统调用的原理之后难度不大  
+用户空间中通过`usys.pl`自动生成函数调用的封装函数，内容就是设置寄存器之后执行`ecall`  
+执行`ecall`之后陷入内核，通过一系列处理抵达`kernal/syscall.c`中的`syscall()`函数，之后根据系统调用号调用对应的内核函数`sys_XXX()`  
+`sys_XXX()`函数中通过`argint()`等函数获取参数，之后跳转到真正的内核函数中执行  
+用户态和内核态之间的参数传递是通过`trapframe`实现的
+:::
+
 ## 日程
 
 - 2026-08-31
@@ -84,3 +128,8 @@ Score: 100/100
   - LAB: Unix Utilities: sleep - find
 - 2026-09-01
   - LAB: Unix Utilities: xargs
+- 2026-09-04
+  - LEC: 03 OS Organization and System Calls
+  - BOOK: Chapter 2 Operating Systems Organization
+  - LAB: System Calls
+  
