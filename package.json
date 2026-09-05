@@ -6,6 +6,7 @@
     "dev": "astro dev",
     "start": "astro dev",
     "build": "astro build",
+    "build:fast": "node scripts/build-fast.mjs",
     "postbuild": "pagefind --site dist",
     "preview": "astro preview",
     "r2:upload": "node scripts/upload-to-r2.cjs",

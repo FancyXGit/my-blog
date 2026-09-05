@@ -151,6 +151,7 @@ export async function GET(context: APIContext) {
 
 export async function getStaticPaths() {
   const posts = await getAllPosts();
+  if (process.env.NO_OG === "1") return [];
   return posts
     .filter(({ data }) => !data.ogImage)
     .flatMap((post) => {

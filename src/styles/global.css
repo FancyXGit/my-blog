@@ -75,6 +75,14 @@
 	font-display: swap;
 }
 
+@font-face {
+	font-family: "Fira Code";
+	src: url("../assets/fonts/FiraCode-VF.woff2") format("woff2-variations");
+	font-weight: 300 700;
+	font-style: normal;
+	font-display: swap;
+}
+
 @layer base {
 	:root,
 	:root[data-theme="light"] {
@@ -226,6 +234,12 @@
 		--code-line-highlight: var(--theme-color-150);
 		--code-line-diff-add: rgba(72, 191, 145, 0.15);
 		--code-line-diff-remove: rgba(248, 85, 82, 0.15);
+
+		/* 代码字重统一控制点：改成 300/400/500/600/700 即可整体调粗细 */
+		--code-font-weight: 500;
+
+		/* 行内 code 文字颜色（无底色，仅字体+颜色区分） */
+		--code-inline-color: var(--theme-accent-two);
 	}
 
 	html {
@@ -344,16 +358,17 @@
 
 	/* Стиль для инлайнового кода (rehype pretty code переопределяет стили в tailwind.config.css) */
 	:not(pre) > code {
-		@apply bg-[var(--code-inline-bg)] px-2 py-1 text-sm rounded-lg;
+		color: var(--code-inline-color);
 	}
+}
 
-	/* Стиль для кнопки копирования кода rehype-pretty-copy (кнопка реализована отдельно) */
-	/*
-	button.rehype-pretty-copy {
-		@apply absolute top-1 right-1 bg-transparent m-auto size-8 rounded-md p-1 backdrop-blur-none;
-		filter: brightness(var(--brightness)) saturate(0%);
-	}
-	*/
+/* Fira Code: 连字 + 统一字重 (改 --code-font-weight 即可调粗细) */
+pre,
+pre code,
+:not(pre) > code {
+	font-variant-ligatures: contextual;
+	font-feature-settings: "liga", "calt";
+	font-weight: var(--code-font-weight);
 }
 
 /* ПЕРЕПРОВЕРИТЬ !!! */
