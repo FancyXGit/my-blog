@@ -1,5 +1,4 @@
 ---
-import { Image } from "astro:assets";
 import { type CollectionEntry, getCollection } from "astro:content";
 import FormattedDate from "@/components/FormattedDate.astro";
 import { Icon } from "astro-icon/components";
@@ -96,15 +95,16 @@ const postSeries = content.data.seriesId
 
 {
 	content.data.coverImage && (
-		<div class="mb-4 mt-2 overflow-auto rounded-lg">
-			<Image
-				alt={content.data.coverImage.alt}
-				class="object-cover"
-				fetchpriority="high"
-				inferSize={true}
-				loading="lazy" // loading="eager"
-				src={content.data.coverImage.src}
-			/>
+		<div class="mb-4 mt-2 overflow-hidden rounded-lg">
+			<div class="aspect-[16/9] w-full">
+				<img
+					alt={content.data.coverImage.alt}
+					class="h-full w-full object-cover"
+					fetchpriority="high"
+					loading="eager"
+					src={content.data.coverImage.src as unknown as string}
+				/>
+			</div>
 		</div>
 	)
 }

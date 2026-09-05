@@ -99,6 +99,7 @@ export default {
         // Add any custom fonts here
         sans: ["SFProRounded", ...fontFamily.sans],
         serif: ["CascadiaCode", ...fontFamily.serif],
+        mono: ["Fira Code", ...fontFamily.mono],
       },
       transitionProperty: {
         height: "height",
@@ -131,7 +132,9 @@ export default {
             },
 
             code: {
-              "@apply px-2 py-1 text-sm rounded-lg bg-color-150": "",
+              fontSize: "inherit",
+              color: "var(--code-inline-color)",
+              fontWeight: "var(--code-font-weight)",
             },
 
             kbd: {
