@@ -29,6 +29,11 @@
   - `scripts/build-fast.mjs` 以 `NO_OG=1` 跑 `astro build`；`og-image` 路由 `getStaticPaths` 读到该变量返回 `[]`，跳过 satori 分享图
   - 实测 ~5s；`pnpm build`（正式/CI）行为不变，og 图照常生成
   - 注意：`build:fast` 不会自动跑 `postbuild`（pagefind），本地测搜索请手动 `pnpm postbuild`
+- [x] **行尾两空格换行 → 拆段（行间留空隙）**
+  - 新增 `src/plugins/remark-linebreak-paragraph.ts`，在 `astro.config.ts` remarkPlugins 注册（放最后）
+  - 效果：md 里“行尾两个空格”产生的软换行渲染为独立段落，行与行之间出现段距；自动折行与普通单换行不受影响
+  - **全局行为**：47 篇、约 478 处两空格换行会变松；想恢复原样就从 `remarkPlugins` 数组删除该项即可
+  - 构建时间几乎无影响（实测 build:fast ~5-6s）
 
 ## 待办
 

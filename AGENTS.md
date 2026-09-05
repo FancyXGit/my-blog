@@ -17,6 +17,7 @@
 
 - **Astro v5** static blog, **pnpm** package manager, deploy via GitHub Actions → cloud server → nginx (`fancyflow.top`)
 - Content collections (`post`, `note`, `series`) in `src/content/<collection>/` as `.md`/`.mdx`; content config at `src/content.config.ts` (Astro v5 loader API, `image()` schema); alias `@/*` → `src/*`; site config at `src/site.config.ts`
+- Remark plugins live in `src/plugins/` and are wired in `astro.config.ts` `markdown.remarkPlugins`: reading-time, math, directives/admonitions, and `remark-linebreak-paragraph` (renders two-trailing-space line breaks as separate paragraphs with block gaps — **global** behavior; delete it from `remarkPlugins` to restore tight soft-break lines)
 - Layouts: `Base.astro` (shared shell, exposes `sidebar` named slot), `BlogPost.astro` + `Series.astro` (reading pages), pages under `src/pages`
 - **Theme**: light/dark via `<html data-theme>`; all colors derive from HSL variables (`--hue`, `--saturation`, `--bg-brightness`, …) in `src/styles/global.css`
 - **Syntax highlighting**: separate from page theme — `rehype-pretty-code` in `astro.config.ts` (rose-pine dark / rose-pine-dawn light)
