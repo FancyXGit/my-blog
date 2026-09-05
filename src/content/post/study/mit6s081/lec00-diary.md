@@ -3,7 +3,7 @@ title: "记录"
 publishDate: "2026-09-02"
 updatedDate: "2026-09-02"
 description: "学习MIT 6.S081课程的记录"
-tags: ["学习", "MIT 6.S081", "笔记"]
+tags: ["学习", "MIT6.S081", "笔记", "操作系统"]
 seriesId: mit6s081
 orderInSeries: 99
 ---
