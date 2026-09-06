@@ -13,7 +13,7 @@ const {
 <li class="">
 	<a
 		aria-label={`Scroll to section: ${text}`}
-		class="text-light mt-1 line-clamp-2 break-words [padding-left:1ch] [text-indent:-1ch] before:text-accent-two before:content-['#'] hover:text-accent-two"
+		class="text-light mt-1 line-clamp-2 break-words [padding-left:1ch] [text-indent:-1ch] before:text-accent-two before:content-['#'] hover:text-accent-two data-[active=true]:text-accent-base data-[active=true]:before:text-accent-base data-[active=true]:hover:text-accent-base data-[active=true]:bg-accent-base/10 data-[active=true]:rounded-md"
 		href={`#${slug}`}
 		>{text}
 	</a>
