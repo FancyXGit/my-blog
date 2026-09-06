@@ -8,36 +8,6 @@ seriesId: mit6s081
 orderInSeries: 99
 ---
 
-## 学习资料
-
-### 课程
-
-2020秋季课程视频文字  
-
-https://mit-public-courses-cn-translatio.gitbook.io/mit6-s081
-
-### 参考书籍
-
-官方教材book-riscv-rev1中文翻译版  
-
-https://github.com/pleasewhy/xv6-book-2020-Chinese
-
-### 日程表与实验
-
-2021年LAB  
-
-https://pdos.csail.mit.edu/6.828/2021/schedule.html
-
-:::note
-2020年的LAB环境需使用较老版本的qemu，故采用2021年的LAB
-:::
-
-### 个人解答
-
-基于2021的LAB解答，使用了AI辅助DEBUG  
-
-https://github.com/FancyXGit/MIT-6.S081
-
 ## LAB记录
 
 ### Unix Utilities

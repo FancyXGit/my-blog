@@ -26,14 +26,6 @@ CPU位于高权限级别时可以执行特定的特权指令
 
 ## 启动
 
-:::warning
-基于GITHUB仓库mit-pdos/xv6-riscv的RISC-V分支  
-commit日期August 24, 2026 at 8:48 AM  
-commit hash 为 35b0884  
-[Commit地址](https://github.com/mit-pdos/xv6-riscv/commit/35b088427ef37611c38afdeed5a52a278cae38f9)  
-与课本book-riscv-rev1不完全一致，主要区别在于第一个进程不使用`initcode.S`，仓库中没有这个文件
-:::
-
 ### 上电
 
 使用的XV6-RISCV运行在QEMU模拟器上  
