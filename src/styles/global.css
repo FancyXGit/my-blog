@@ -210,7 +210,10 @@
 		--code-inline-color: var(--theme-accent-two);
 	}
 
-	html {
+	/* 界面英文保持轻微字距（仅英文为主的界面文字，不影响汉字段落） */
+	header nav a,
+	footer nav a,
+	header a strong {
 		letter-spacing: 0.025em;
 	}
 

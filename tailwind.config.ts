@@ -97,7 +97,7 @@ export default {
       },
       fontFamily: {
         // Add any custom fonts here
-        sans: ["SFProRounded", ...fontFamily.sans],
+        sans: ["SFProRounded", "Microsoft YaHei", "微软雅黑", ...fontFamily.sans],
         serif: ["CascadiaCode", ...fontFamily.serif],
         mono: ["Fira Code", ...fontFamily.mono],
       },
