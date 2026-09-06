@@ -59,7 +59,6 @@
 ## Deploy
 
 - `git push` → GitHub Actions SSH to cloud server → pull → `pnpm build` → nginx → `fancyflow.top`
-- `netlify.toml` is unused
 - `pnpm postbuild` auto-runs after `pnpm build` (pnpm lifecycle), **not** after `build:fast`
 
 ## R2 Images

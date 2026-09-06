@@ -31,7 +31,7 @@
 
 本地迭代建议:`pnpm dev` → `pnpm build:fast` → 发布前 `pnpm build`。
 
-> 另见根目录 `AGENTS.md`(面向 AI/协作者的仓库说明)与 `docs/visual-polish-plan.md`。
+> 另见根目录 `AGENTS.md`(面向 AI/协作者的仓库说明)。
 
 ## 目录结构
 
@@ -148,7 +148,6 @@ $$
 ## 部署
 
 - `git push` → GitHub Actions SSH 到云服务器 → `git pull` → `pnpm build` → nginx → **fancyflow.top**
-- `netlify.toml` 已弃用
 - `pnpm postbuild`(Pagefind)仅在 `pnpm build` 后由 pnpm 生命周期自动执行
 
 ## R2 上传
