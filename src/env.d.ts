@@ -3,3 +3,8 @@ declare module "@pagefind/default-ui" {
 		constructor(arg: unknown);
 	}
 }
+
+declare module "*?inline" {
+	const css: string;
+	export default css;
+}

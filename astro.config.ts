@@ -19,6 +19,7 @@ import { remarkLinebreakParagraph } from "./src/plugins/remark-linebreak-paragra
 import rehypeExternalLinks from "rehype-external-links";
 import rehypeKatex from "rehype-katex";
 import rehypeUnwrapImages from "rehype-unwrap-images";
+import { rehypeImageAttrs } from "./src/plugins/rehype-image-attrs"; /* lazy body images */
 
 import rehypePrettyCode from "rehype-pretty-code";
 import {
@@ -114,6 +115,7 @@ export default defineConfig({
         },
       ],
       rehypeUnwrapImages,
+      rehypeImageAttrs,
     ],
   },
   // https://docs.astro.build/en/guides/prefetch/
@@ -122,7 +124,7 @@ export default defineConfig({
   site: "https://fancyflow.top/",
   vite: {
     build: {
-      sourcemap: true, // Source maps generation
+      sourcemap: false,
     },
     optimizeDeps: {
       exclude: ["@resvg/resvg-js"],

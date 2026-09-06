@@ -1,7 +1,6 @@
 ---
 // Heavy inspiration taken from Astro Starlight -> https://github.com/withastro/starlight/blob/main/packages/starlight/components/Search.astro
 
-import "@pagefind/default-ui/css/ui.css";
 import { Icon } from "astro-icon/components";
 ---
 
@@ -55,6 +54,7 @@ import { Icon } from "astro-icon/components";
 		private dialog: HTMLDialogElement;
 		private dialogFrame: HTMLDivElement;
 		private openBtn: HTMLButtonElement;
+		private pagefindStarted = false;
 
 		closeModal = () => {
 			if (this.dialog.open) {
@@ -87,9 +87,27 @@ import { Icon } from "astro-icon/components";
 		openModal = (event?: MouseEvent) => {
 			this.dialog.showModal();
 			document.body.classList.add("overflow-hidden");
-			this.querySelector("input")?.focus();
 			event?.stopPropagation();
 			window.addEventListener("click", this.onWindowClick);
+			// Pagefind UI + styles are only loaded on first open
+			this.initPagefind();
+		};
+
+		initPagefind = async () => {
+			if (import.meta.env.DEV || this.pagefindStarted) return;
+			this.pagefindStarted = true;
+			try {
+				const { initPagefind } = await import("@/lib/init-pagefind");
+				await initPagefind(
+					import.meta.env.BASE_URL,
+					import.meta.env.BASE_URL.replace(/\/$/, "") + "/pagefind/",
+					"#citrus__search",
+				);
+				this.dialog.querySelector("input")?.focus();
+			} catch (error) {
+				console.error("Failed to initialize search:", error);
+				this.pagefindStarted = false;
+			}
 		};
 
 		constructor() {
@@ -107,20 +125,6 @@ import { Icon } from "astro-icon/components";
 		connectedCallback() {
 			// Listen for keyboard shortcut
 			window.addEventListener("keydown", this.onWindowKeydown);
-
-			// Only add pagefind in production
-			if (import.meta.env.DEV) return;
-			const onIdle = window.requestIdleCallback || ((cb) => setTimeout(cb, 1));
-			onIdle(async () => {
-				const { PagefindUI } = await import("@pagefind/default-ui");
-				new PagefindUI({
-					baseUrl: import.meta.env.BASE_URL,
-					bundlePath: import.meta.env.BASE_URL.replace(/\/$/, "") + "/pagefind/",
-					element: "#citrus__search",
-					showImages: false,
-					showSubResults: true,
-				});
-			});
 		}
 
 		disconnectedCallback() {
