@@ -8,7 +8,7 @@
 	src: url("../assets/fonts/SF-Pro-Rounded-Regular.latin.base.ttf") format("truetype");
 	font-weight: 400;
 	font-style: normal;
-	/* font-display: swap; */
+	font-display: swap;
 }
 
 @font-face {
@@ -16,7 +16,7 @@
 	src: url("../assets/fonts/SF-Pro-Rounded-Medium.latin.base.ttf") format("truetype");
 	font-weight: 500;
 	font-style: normal;
-	/* font-display: swap; */
+	font-display: swap;
 }
 
 @font-face {
@@ -24,7 +24,7 @@
 	src: url("../assets/fonts/SF-Pro-Rounded-Semibold.latin.base.ttf") format("truetype");
 	font-weight: 600;
 	font-style: normal;
-	/* font-display: swap; */
+	font-display: swap;
 }
 
 @font-face {
@@ -32,39 +32,7 @@
 	src: url("../assets/fonts/SF-Pro-Rounded-Bold.latin.base.ttf") format("truetype");
 	font-weight: 700;
 	font-style: normal;
-	/* font-display: swap; */
-}
-
-@font-face {
-	font-family: "SFProRounded";
-	src: url("../assets/fonts/SF-Pro-Rounded-Regular.latin.extend.ttf") format("truetype");
-	font-weight: 400;
-	font-style: normal;
-	/* font-display: swap; */
-}
-
-@font-face {
-	font-family: "SFProRounded";
-	src: url("../assets/fonts/SF-Pro-Rounded-Medium.latin.extend.ttf") format("truetype");
-	font-weight: 500;
-	font-style: normal;
-	/* font-display: swap; */
-}
-
-@font-face {
-	font-family: "SFProRounded";
-	src: url("../assets/fonts/SF-Pro-Rounded-Semibold.latin.extend.ttf") format("truetype");
-	font-weight: 600;
-	font-style: normal;
-	/* font-display: swap; */
-}
-
-@font-face {
-	font-family: "SFProRounded";
-	src: url("../assets/fonts/SF-Pro-Rounded-Bold.latin.extend.ttf") format("truetype");
-	font-weight: 700;
-	font-style: normal;
-	/* font-display: swap; */
+	font-display: swap;
 }
 
 @font-face {
@@ -242,7 +210,10 @@
 		--code-inline-color: var(--theme-accent-two);
 	}
 
-	html {
+	/* 界面英文保持轻微字距（仅英文为主的界面文字，不影响汉字段落） */
+	header nav a,
+	footer nav a,
+	header a strong {
 		letter-spacing: 0.025em;
 	}
 
