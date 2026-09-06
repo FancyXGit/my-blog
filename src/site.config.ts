@@ -1,7 +1,7 @@
 import type { SiteConfig } from "@/types";
 
 export const siteConfig: SiteConfig = {
-	// Used as both a meta property (src/components/BaseHead.astro L:31 + L:49) & the generated satori png (src/pages/og-image/[slug].png.ts)
+	// Used as a meta property (src/components/BaseHead.astro) & as text on the fixed social card (public/social-card.png, regenerated via scripts/generate-social-card.mjs)
 	author: "FancyXGit",
 	// Date.prototype.toLocaleDateString() parameters, found in src/utils/date.ts.
 	date: {

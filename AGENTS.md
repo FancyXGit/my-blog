@@ -6,7 +6,7 @@
 |------|---------|
 | Dev server | `pnpm dev` (port **45873**) |
 | Production build (+ search) | `pnpm build` — auto-runs `postbuild` (Pagefind) via pnpm lifecycle |
-| Local quick build (no og-image) | `pnpm build:fast` — ~5s, **skips Pagefind** + skips satori og cards |
+| Local quick build | `pnpm build:fast` — ~5s, **skips Pagefind** (no og card step: cards are static) |
 | Search index only | `pnpm postbuild` |
 | Preview build | `pnpm preview` |
 | Typecheck | `pnpm check` (`astro check`) |
@@ -25,7 +25,7 @@
 
 ### Fonts
 
-- Latin UI font = self-hosted **SF Pro Rounded** (`src/assets/fonts/*.latin.base/extend.ttf`, latin-only subsets, registered in `global.css`)
+- Latin UI font = self-hosted **Sunghyun Sans** (SIL OFL 1.1, `src/assets/fonts/SunghyunSans-*.latin.{woff2,ttf}`, latin-only subsets, registered in `global.css`; CJK still falls back to OS fonts)
 - CJK is **not** in those files → falls back to OS fonts (e.g. MiYaHei/PingFang); no explicit CJK stack configured yet (see plan)
 - Code font = self-hosted **Fira Code** variable font `src/assets/fonts/FiraCode-VF.woff2` (300–700), wired as `fontFamily.mono` (first entry) in `tailwind.config.ts`; ligatures enabled
 - Global `html` has `letter-spacing: 0.025em` (hurts CJK; candidate change in plan)
@@ -44,11 +44,11 @@
 - Masthead cover = plain `<img>` (bypasses `astro:assets`, so build does **not** download remote covers) inside an `aspect-[16/9]` wrapper — removes CLS and build-time CDN pulls
 - Body markdown images render as raw `<img>` → fetched at page-view time by the browser
 
-### og-image (social share card)
+### Social share card (fixed og image)
 
-- `/og-image/{id}.png/.svg` generated at **build time** per post by `src/pages/og-image/[...slug].[ext].ts` (satori + @resvg/resvg-js, uses SF Pro fonts)
-- Referenced via `og:image` meta; only visible when links are shared on social/IM
-- `NO_OG=1` env → `getStaticPaths` returns `[]` (used by `scripts/build-fast.mjs`)
+- A single fixed card `public/social-card.png` (1200×630) is used as the fallback `og:image` (BaseHead) for pages without a custom `frontmatter.ogImage`; per-post dynamic satori cards were removed
+- Regenerate the card only when the brand changes: `node scripts/generate-social-card.mjs` (uses `satori` + `@resvg/resvg-js` devDeps + `src/assets/fonts/SunghyunSans-{Regular,Bold}.latin.ttf`), then commit the new PNG
+- Only visible when links are shared on social/IM
 
 ## Styling
 
@@ -72,7 +72,5 @@
 - No `pnpm sync` — doesn't exist in Astro v5
 - `global.css` edits hot-reload under `pnpm dev`; `tailwind.config.ts` edits usually need a dev server restart
 - Repo CSS/TS files are CRLF; Biome wants LF → `biome check/format` reports whole-file diffs. Don't casually `--write` the whole repo
-- `astro check` currently has 1 **pre-existing** error: satori `VNode` → `ReactNode` in `og-image/[...slug].[ext].ts` (baseline, not caused by recent work)
 - Do **not** delete `node_modules/.astro` casually — it caches Astro content/types and downloaded remote assets
-- `@resvg/resvg-js` excluded from Vite optimizeDeps
-- Local iteration: `pnpm dev` → `pnpm build:fast` (quick preview) → `pnpm build` only for release sanity / og cards
+- Local iteration: `pnpm dev` → `pnpm build:fast` (quick preview) → `pnpm build` only for release sanity

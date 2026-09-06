@@ -26,8 +26,8 @@
   - `Masthead.astro`：`<Image inferSize>`（构建下载远程图量尺寸）→ 纯 `<img>` + `aspect-[16/9]` 容器，绕过 astro:assets
   - 实测：全量 `pnpm build` 62s → ~14s
 - [x] **`pnpm build:fast` 本地快速构建**
-  - `scripts/build-fast.mjs` 以 `NO_OG=1` 跑 `astro build`；`og-image` 路由 `getStaticPaths` 读到该变量返回 `[]`，跳过 satori 分享图
-  - 实测 ~5s；`pnpm build`（正式/CI）行为不变，og 图照常生成
+  - `scripts/build-fast.mjs` 跑 `astro build`，跳过 `postbuild`（pagefind）。动态 og 分享图链路已移除（见下文），不再有 `NO_OG` 逻辑
+  - 实测 ~5s；`pnpm build`（正式/CI）行为不变（固定 social-card，无 satori 渲染）
   - 注意：`build:fast` 不会自动跑 `postbuild`（pagefind），本地测搜索请手动 `pnpm postbuild`
 - [x] **行尾两空格换行 → 拆段（行间留空隙）**
   - 新增 `src/plugins/remark-linebreak-paragraph.ts`，在 `astro.config.ts` remarkPlugins 注册（放最后）
@@ -68,7 +68,7 @@
 
 ## 验证步骤
 
-1. `pnpm check` —— 预期只剩 1 个既有错误（`og-image` satori `VNode`→`ReactNode`，非本轮引入）
+1. `pnpm check` —— 0 error（早期 satori `VNode`→`ReactNode` 报错随动态 og 移除而消失）
 2. `pnpm build:fast` —— 快速自测，确认无报错
 3. `pnpm preview`（http://localhost:45873）肉眼比对：亮/暗两主题、1280 / 1920 宽屏、有无 series 面板两种情况
 4. 正式发布前跑一次 `pnpm build`（连带 pagefind + og 图），确认线上产物正常后 `git push`

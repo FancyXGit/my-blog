@@ -4,41 +4,33 @@
 
 
 @font-face {
-	font-family: "SFProRounded";
-	src: url("../assets/fonts/SF-Pro-Rounded-Regular.latin.base.ttf") format("truetype");
+	font-family: "SunghyunSans";
+	src: url("../assets/fonts/SunghyunSans-Regular.latin.woff2") format("woff2");
 	font-weight: 400;
 	font-style: normal;
 	font-display: swap;
 }
 
 @font-face {
-	font-family: "SFProRounded";
-	src: url("../assets/fonts/SF-Pro-Rounded-Medium.latin.base.ttf") format("truetype");
+	font-family: "SunghyunSans";
+	src: url("../assets/fonts/SunghyunSans-Medium.latin.woff2") format("woff2");
 	font-weight: 500;
 	font-style: normal;
 	font-display: swap;
 }
 
 @font-face {
-	font-family: "SFProRounded";
-	src: url("../assets/fonts/SF-Pro-Rounded-Semibold.latin.base.ttf") format("truetype");
+	font-family: "SunghyunSans";
+	src: url("../assets/fonts/SunghyunSans-SemiBold.latin.woff2") format("woff2");
 	font-weight: 600;
 	font-style: normal;
 	font-display: swap;
 }
 
 @font-face {
-	font-family: "SFProRounded";
-	src: url("../assets/fonts/SF-Pro-Rounded-Bold.latin.base.ttf") format("truetype");
+	font-family: "SunghyunSans";
+	src: url("../assets/fonts/SunghyunSans-Bold.latin.woff2") format("woff2");
 	font-weight: 700;
-	font-style: normal;
-	font-display: swap;
-}
-
-@font-face {
-	font-family: "CascadiaCode";
-	src: url("../assets/fonts/CascadiaCode.ttf") format("truetype");
-	font-weight: 400;
 	font-style: normal;
 	font-display: swap;
 }

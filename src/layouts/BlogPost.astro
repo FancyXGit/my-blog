@@ -15,12 +15,11 @@ interface Props {
 const { post } = Astro.props;
 const { ogImage, title, description, updatedDate, publishDate, seriesId } = post.data;
 
-const socialImage = ogImage ?? `/og-image/${post.id}.png`;
 const articleDate = updatedDate?.toISOString() ?? publishDate.toISOString();
 const { headings } = await render(post);
 ---
 
-<BaseLayout meta={{ articleDate, description, ogImage: socialImage, title }}>
+<BaseLayout meta={{ articleDate, description, ogImage, title }}>
 	<div class="fixed left-0 top-0 z-10 flex h-16 md:h-20 w-full bg-bgColor overflow-hidden">
 		<!-- Background 
 			TODO: This approach is not optimal and requires improvements. 
