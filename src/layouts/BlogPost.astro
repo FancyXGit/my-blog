@@ -2,6 +2,7 @@
 import { type CollectionEntry, render } from "astro:content";
 import "katex/dist/katex.min.css";
 import Masthead from "@/components/blog/Masthead.astro";
+import PostStats from "@/components/blog/PostStats.astro";
 import TOC from "@/components/blog/TOC.astro";
 import WebMentions from "@/components/blog/webmentions/index.astro";
 import BaseLayout from "./Base.astro";
@@ -76,6 +77,7 @@ const { headings } = await render(post);
 			<div class="prose prose-citrus max-w-none flex-grow prose-headings:font-semibold prose-headings:text-accent-base prose-headings:before:text-accent-two sm:prose-headings:before:content-['#'] sm:prose-th:before:content-none">
 				<slot />
 			</div>
+			<PostStats path={Astro.url.pathname} />
 			<WebMentions />
 		</article>
 		{!!headings.length && (

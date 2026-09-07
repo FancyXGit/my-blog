@@ -1,0 +1,11 @@
+name = "fancyflow-stats"
+main = "src/index.ts"
+compatibility_date = "2026-01-01"
+
+routes = [
+	{ pattern = "fancyflow.top/api/*", zone_name = "fancyflow.top" },
+]
+
+[[kv_namespaces]]
+binding = "COUNTERS"
+id = "d6692b09dd6b4035a1132de9dba7def1"

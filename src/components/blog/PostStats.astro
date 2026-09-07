@@ -1,0 +1,171 @@
+---
+import { Icon } from "astro-icon/components";
+
+interface Props {
+	path: string;
+}
+
+const { path } = Astro.props;
+
+// Empty => same-origin `/api/*` (Worker routed on fancyflow.top).
+const apiBase = (import.meta.env.STATS_API ?? "").replace(/\/$/, "");
+---
+
+<div
+	class="mt-8 flex flex-wrap items-center justify-center gap-x-2 gap-y-3 text-sm text-lighter"
+	data-post-stats
+	data-path={path}
+	data-api={apiBase}
+>
+	<span class="flex items-center gap-1.5" title="阅读次数">
+		<span class="sr-only">阅读次数</span>
+		<Icon aria-hidden="true" class="h-4 w-4 text-lightest" focusable="false" name="solar:eye-line-duotone" />
+		<span class="inline-block min-w-[3ch] text-center tabular-nums" data-stats-views>···</span>
+	</span>
+
+	<span aria-hidden="true" class="select-none text-lightest">·</span>
+
+	<button
+		class="flex cursor-pointer items-center gap-1.5 rounded-full px-1.5 py-0.5 -my-0.5 transition-colors hover:bg-accent-base/10 focus-visible:bg-accent-base/10"
+		data-stats-like
+		title="喜欢这篇文章？"
+		type="button"
+	>
+		<span class="sr-only">点赞</span>
+		<Icon aria-hidden="true" class="h-4 w-4" focusable="false" name="solar:heart-line-duotone" data-heart-off />
+		<Icon
+			aria-hidden="true"
+			class="hidden h-4 w-4 text-accent-two"
+			focusable="false"
+			name="solar:heart-bold"
+			data-heart-on
+		/>
+		<span class="inline-block min-w-[2ch] text-center tabular-nums" data-stats-likes>···</span>
+	</button>
+</div>
+
+<script>
+	function initPostStats(): void {
+		const root = document.querySelector<HTMLElement>("[data-post-stats]");
+		if (!root) {
+			return;
+		}
+		const container: HTMLElement = root;
+
+	const apiBase = container.dataset.api ?? "";
+	const path = root.dataset.path ?? window.location.pathname;
+	const viewsEl = root.querySelector<HTMLElement>("[data-stats-views]");
+	const likesEl = root.querySelector<HTMLElement>("[data-stats-likes]");
+	const likeBtn = root.querySelector<HTMLButtonElement>("[data-stats-like]");
+	const heartOn = root.querySelector<HTMLElement>("[data-heart-on]");
+	const heartOff = root.querySelector<HTMLElement>("[data-heart-off]");
+
+	const viewedKey = `pv:${path}`;
+	const likedKey = `like:${path}`;
+
+	const api = (action: "stats" | "view" | "like") => {
+		return `${apiBase}/api/${action}?p=${encodeURIComponent(path)}`;
+	};
+
+	async function request<T>(url: string, method: "GET" | "POST"): Promise<T> {
+		const response = await fetch(url, { method });
+		if (!response.ok) {
+			throw new Error(`stats request failed: ${response.status}`);
+		}
+		return (await response.json()) as T;
+	}
+
+	function safeGet(storage: Storage, key: string): string | null {
+		try {
+			return storage.getItem(key);
+		} catch {
+			return null;
+		}
+	}
+
+	function safeSet(storage: Storage, key: string, value: string): void {
+		try {
+			storage.setItem(key, value);
+		} catch {
+			// Storage unavailable (e.g. private mode); ignore.
+		}
+	}
+
+	function format(n: number): string {
+		return n.toLocaleString("zh-CN");
+	}
+
+	let views = -1;
+	let likes = -1;
+
+	function renderViews(): void {
+		if (viewsEl && views >= 0) {
+			viewsEl.textContent = format(views);
+		}
+	}
+
+	function renderLikes(): void {
+		if (likesEl && likes >= 0) {
+			likesEl.textContent = format(likes);
+		}
+	}
+
+	function setLiked(liked: boolean): void {
+		if (!likeBtn || !heartOn || !heartOff) {
+			return;
+		}
+		likeBtn.dataset.liked = String(liked);
+		heartOn.classList.toggle("hidden", !liked);
+		heartOff.classList.toggle("hidden", liked);
+		likeBtn.title = liked ? "已喜欢过这篇" : "喜欢这篇文章？";
+	}
+
+	async function loadStats(): Promise<void> {
+		try {
+			if (!safeGet(sessionStorage, viewedKey)) {
+				const data = await request<{ views: number; likes: number }>(api("view"), "POST");
+				views = data.views;
+				likes = data.likes;
+				safeSet(sessionStorage, viewedKey, "1");
+			} else {
+				const data = await request<{ views: number; likes: number }>(api("stats"), "GET");
+				views = data.views;
+				likes = data.likes;
+			}
+			renderViews();
+			renderLikes();
+			setLiked(safeGet(localStorage, likedKey) === "1");
+		} catch {
+			container.style.display = "none";
+		}
+	}
+
+	likeBtn?.addEventListener("click", () => {
+		if (safeGet(localStorage, likedKey) === "1") {
+			return;
+		}
+
+		setLiked(true);
+		const previousLikes = likes;
+		likes = previousLikes >= 0 ? previousLikes + 1 : 1;
+		renderLikes();
+
+		void (async () => {
+			try {
+				const data = await request<{ views: number; likes: number }>(api("like"), "POST");
+				likes = data.likes;
+				renderLikes();
+				safeSet(localStorage, likedKey, "1");
+			} catch {
+				likes = previousLikes;
+				renderLikes();
+				setLiked(false);
+			}
+		})();
+	});
+
+	void loadStats();
+}
+
+initPostStats();
+</script>

@@ -143,6 +143,11 @@ export default defineConfig({
         access: "public",
         optional: true,
       }),
+      STATS_API: envField.string({
+        context: "client",
+        access: "public",
+        optional: true,
+      }),
     },
   },
   server: {
