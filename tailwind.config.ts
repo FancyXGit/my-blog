@@ -34,7 +34,7 @@ export default {
           "&:hover": {
             "@apply no-underline brightness-110": {},
           },
-          "@apply inline-flex bg-accent-two text-bgColor text-xs h-4 w-4 rounded-sm items-center justify-center":
+          "@apply inline-flex bg-accent-chip text-bgColor text-xs h-4 w-4 rounded-sm items-center justify-center":
             {},
         },
       });
@@ -84,6 +84,7 @@ export default {
         "accent-base": "hsl(var(--theme-accent-base) / <alpha-value>)",
         "accent-one": "hsl(var(--theme-accent-one) / <alpha-value>)",
         "accent-two": "hsl(var(--theme-accent-two) / <alpha-value>)",
+        "accent-chip": "hsl(var(--theme-accent-chip) / <alpha-value>)",
         link: "hsl(var(--theme-link) / <alpha-value>)",
         accent: "var(--theme-accent)",
         quote: "hsl(var(--theme-quote) / <alpha-value>)",
@@ -149,7 +150,7 @@ export default {
               "&:hover": {
                 "@apply brightness-110": "",
               },
-              "@apply bg-accent-two ms-0.5 px-1 rounded-sm text-bgColor": "",
+              "@apply bg-accent-chip ms-0.5 px-1 rounded-sm text-bgColor": "",
               a: {
                 "&:hover": {
                   "@apply no-underline": "",
