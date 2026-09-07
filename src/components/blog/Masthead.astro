@@ -3,6 +3,7 @@ import { type CollectionEntry, getCollection } from "astro:content";
 import FormattedDate from "@/components/FormattedDate.astro";
 import { Icon } from "astro-icon/components";
 import Badge from '@/components/Badge.astro';
+import PostMetaStats from "@/components/blog/PostMetaStats.astro";
 import Separator from "../Separator.astro";
 
 interface Props {
@@ -89,6 +90,8 @@ const postSeries = content.data.seriesId
 			</span>
 		)
 	}
+
+	<PostMetaStats />
 </div>
 
 {content.data.draft ? <span class="text-base text-red-500 ml-2">(Draft)</span> : null}

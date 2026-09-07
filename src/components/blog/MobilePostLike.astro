@@ -1,0 +1,41 @@
+---
+import { Icon } from "astro-icon/components";
+
+// Empty => same-origin `/api/*` (Worker routed on fancyflow.top).
+const apiBase = (import.meta.env.STATS_API ?? "").replace(/\/$/, "");
+const path = Astro.url.pathname;
+---
+
+<div class="flex justify-center pt-2 md:hidden">
+	<button
+		id="like-end-mobile"
+		class="flex cursor-pointer items-center gap-2 rounded-full px-3 py-1.5 text-base text-lighter transition-colors hover:bg-accent-base/10 focus-visible:bg-accent-base/10"
+		aria-label="喜欢这篇文章"
+		aria-pressed="false"
+		title="喜欢这篇文章？"
+		data-api={apiBase}
+		data-path={path}
+		data-liked="false"
+		type="button"
+	>
+		<span class="sr-only">点赞</span>
+		<Icon aria-hidden="true" class="h-6 w-6" data-heart-off focusable="false" name="solar:heart-bold" />
+		<Icon
+			aria-hidden="true"
+			class="hidden h-4 w-4 text-accent-two"
+			data-heart-on
+			focusable="false"
+			name="solar:heart-bold"
+		/>
+		<span class="tabular-nums" data-like-count>–</span>
+	</button>
+</div>
+
+<script>
+	import { initLikeControl } from "../../scripts/post-like";
+
+	const button = document.querySelector<HTMLButtonElement>("[id='like-end-mobile']");
+	if (button) {
+		initLikeControl(button);
+	}
+</script>

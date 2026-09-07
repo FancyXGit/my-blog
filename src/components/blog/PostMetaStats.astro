@@ -1,0 +1,112 @@
+---
+import { Icon } from "astro-icon/components";
+import Separator from "@/components/Separator.astro";
+
+// Empty => same-origin `/api/*` (Worker routed on fancyflow.top).
+const apiBase = (import.meta.env.STATS_API ?? "").replace(/\/$/, "");
+const path = Astro.url.pathname;
+---
+
+<span
+	class="flex items-center"
+	data-post-meta-stats
+	data-api={apiBase}
+	data-path={path}
+>
+	<Separator type="dot" />
+	<span class="flex items-center h-[1.75rem]" title="阅读次数">
+		<Icon aria-hidden="true" class="h-4 w-4 me-1" focusable="false" name="solar:eye-line-duotone" />
+		<span class="tabular-nums text-center min-w-[2ch]" data-stats-views>–</span>
+		<span class="ms-1 text-lightest">views</span>
+	</span>
+	<Separator type="dot" />
+	<span class="flex items-center h-[1.75rem]" title="点赞数">
+		<Icon aria-hidden="true" class="h-4 w-4 me-1 text-lightest" focusable="false" name="solar:heart-bold" />
+		<span class="tabular-nums text-center min-w-[2ch]" data-stats-likes>–</span>
+		<span class="ms-1 text-lightest">likes</span>
+	</span>
+</span>
+
+<script>
+	function initPostMetaStats(): void {
+		const root = document.querySelector<HTMLElement>("[data-post-meta-stats]");
+		if (!root) {
+			return;
+		}
+		const container: HTMLElement = root;
+
+		const apiBase = container.dataset.api ?? "";
+		const path = container.dataset.path ?? window.location.pathname;
+		const viewsEl = container.querySelector<HTMLElement>("[data-stats-views]");
+		const likesEl = container.querySelector<HTMLElement>("[data-stats-likes]");
+
+		const viewedKey = `pv:${path}`;
+
+		const api = (action: "stats" | "view") => {
+			return `${apiBase}/api/${action}?p=${encodeURIComponent(path)}`;
+		};
+
+		async function request<T>(url: string, method: "GET" | "POST"): Promise<T> {
+			const response = await fetch(url, { method });
+			if (!response.ok) {
+				throw new Error(`stats request failed: ${response.status}`);
+			}
+			return (await response.json()) as T;
+		}
+
+		function safeGet(storage: Storage, key: string): string | null {
+			try {
+				return storage.getItem(key);
+			} catch {
+				return null;
+			}
+		}
+
+		function safeSet(storage: Storage, key: string, value: string): void {
+			try {
+				storage.setItem(key, value);
+			} catch {
+				// Storage unavailable (e.g. private mode); ignore.
+			}
+		}
+
+		function format(n: number): string {
+			return n.toLocaleString("zh-CN");
+		}
+
+		function render(views: number, likes: number): void {
+			if (viewsEl && views >= 0) {
+				viewsEl.textContent = format(views);
+			}
+			if (likesEl && likes >= 0) {
+				likesEl.textContent = format(likes);
+			}
+		}
+
+		async function loadStats(): Promise<void> {
+			try {
+				if (!safeGet(sessionStorage, viewedKey)) {
+					const data = await request<{ views: number; likes: number }>(api("view"), "POST");
+					safeSet(sessionStorage, viewedKey, "1");
+					render(data.views, data.likes);
+				} else {
+					const data = await request<{ views: number; likes: number }>(api("stats"), "GET");
+					render(data.views, data.likes);
+				}
+			} catch {
+				container.style.display = "none";
+			}
+		}
+
+		window.addEventListener("post:liked", (event) => {
+			const likes = (event as CustomEvent<{ likes: number }>).detail?.likes;
+			if (typeof likes === "number" && likesEl) {
+				likesEl.textContent = format(likes);
+			}
+		});
+
+		void loadStats();
+	}
+
+	initPostMetaStats();
+</script>

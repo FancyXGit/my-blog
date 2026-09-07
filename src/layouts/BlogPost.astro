@@ -2,7 +2,8 @@
 import { type CollectionEntry, render } from "astro:content";
 import "katex/dist/katex.min.css";
 import Masthead from "@/components/blog/Masthead.astro";
-import PostStats from "@/components/blog/PostStats.astro";
+import LikeButton from "@/components/blog/LikeButton.astro";
+import MobilePostLike from "@/components/blog/MobilePostLike.astro";
 import TOC from "@/components/blog/TOC.astro";
 import WebMentions from "@/components/blog/webmentions/index.astro";
 import BaseLayout from "./Base.astro";
@@ -77,7 +78,7 @@ const { headings } = await render(post);
 			<div class="prose prose-citrus max-w-none flex-grow prose-headings:font-semibold prose-headings:text-accent-base prose-headings:before:text-accent-two sm:prose-headings:before:content-['#'] sm:prose-th:before:content-none">
 				<slot />
 			</div>
-			<PostStats path={Astro.url.pathname} />
+			<MobilePostLike />
 			<WebMentions />
 		</article>
 		{!!headings.length && (
@@ -91,9 +92,10 @@ const { headings } = await render(post);
 	</div>
 
 	<div class="left-0 right-12 z-50 ml-auto w-fit md:absolute">
+		<LikeButton />
 		<button
 			id="to-top-button"
-			class="fixed bottom-14 flex h-12 w-12 text-light translate-y-28 items-center justify-center rounded-full bg-bgColor text-3xl drop-shadow-xl transition-all duration-300 hover:text-accent-two data-[show=true]:translate-y-0 data-[show=true]:opacity-100"
+			class="fixed bottom-14 hidden md:flex h-12 w-12 text-light translate-y-28 items-center justify-center rounded-full bg-bgColor text-3xl drop-shadow-xl transition-all duration-300 hover:text-accent-two data-[show=true]:translate-y-0 data-[show=true]:opacity-100"
 			aria-label="Back to Top"
 			data-show="false"
 		>	
@@ -336,21 +338,25 @@ const { headings } = await render(post);
 <!-- Scroll to top button -->
 <script>
 	const scrollBtn = document.getElementById("to-top-button") as HTMLButtonElement;
-	const targetHeader = document.querySelector("header") as HTMLElement;
+	const likeBtn = document.getElementById("like-button") as HTMLButtonElement | null;
 
-	function callback(entries: IntersectionObserverEntry[]) {
-		entries.forEach((entry) => {
-			// Show the scroll to top button when the <header> is out of view
-			scrollBtn.dataset.show = (!entry.isIntersecting).toString();
-		});
+	// Show the buttons once the page has been scrolled past the header zone.
+	const SHOW_AFTER_SCROLL = 240;
+
+	function updateScrollButtons() {
+		const show = window.scrollY > SHOW_AFTER_SCROLL;
+		scrollBtn.dataset.show = String(show);
+		if (likeBtn) {
+			likeBtn.dataset.show = String(show);
+		}
 	}
 
 	scrollBtn.addEventListener("click", () => {
 		document.documentElement.scrollTo({ behavior: "smooth", top: 0 });
 	});
 
-	const observer = new IntersectionObserver(callback);
-	observer.observe(targetHeader);
+	updateScrollButtons();
+	window.addEventListener("scroll", updateScrollButtons, { passive: true });
 </script>
 
 <!-- REQUIRES IMPROVEMENT!!! -->

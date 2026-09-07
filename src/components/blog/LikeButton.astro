@@ -1,0 +1,80 @@
+---
+import { Icon } from "astro-icon/components";
+
+// Empty => same-origin `/api/*` (Worker routed on fancyflow.top).
+const apiBase = (import.meta.env.STATS_API ?? "").replace(/\/$/, "");
+const path = Astro.url.pathname;
+---
+
+<button
+	id="like-button"
+	class="fixed bottom-28 hidden md:flex h-12 w-12 translate-y-[12rem] items-center justify-center rounded-full bg-bgColor text-3xl drop-shadow-xl transition-all duration-300 text-light opacity-0 pointer-events-none hover:text-accent-two focus-visible:text-accent-two data-[show=true]:translate-y-0 data-[show=true]:opacity-100 data-[show=true]:pointer-events-auto"
+	aria-label="喜欢这篇文章"
+	aria-pressed="false"
+	title="喜欢这篇文章？"
+	data-show="false"
+	data-liked="false"
+	data-api={apiBase}
+	data-path={path}
+	type="button"
+>
+	<span class="absolute inset-0 flex items-center justify-center rounded-full bg-special-lighter" aria-hidden="true">
+		<Icon
+			aria-hidden="true"
+			class="h-6 w-6"
+			data-heart-off
+			focusable="false"
+			name="solar:heart-bold"
+		/>
+		<Icon
+			aria-hidden="true"
+			class="hidden h-6 w-6 text-accent-two"
+			data-heart-on
+			focusable="false"
+			name="solar:heart-bold"
+		/>
+	</span>
+</button>
+
+<style is:global>
+	.like-bubble {
+		position: absolute;
+		left: 50%;
+		bottom: calc(100% + 0.5rem);
+		transform: translateX(-50%);
+		pointer-events: none;
+		white-space: nowrap;
+		border-radius: 9999px;
+		padding: 0.25rem 0.75rem;
+		font-size: 0.875rem;
+		font-weight: 500;
+		color: hsl(var(--theme-accent-base) / 1);
+		background: hsl(var(--theme-special-lighter) / 1);
+		box-shadow: 0 0.5rem 1rem rgb(0 0 0 / 0.12);
+		opacity: 0;
+		animation: like-pop 1s ease-out forwards;
+	}
+	@keyframes like-pop {
+		0% {
+			opacity: 0;
+			transform: translate(-50%, 0.5rem) scale(0.8);
+		}
+		20% {
+			opacity: 1;
+			transform: translate(-50%, 0) scale(1);
+		}
+		100% {
+			opacity: 0;
+			transform: translate(-50%, -1.25rem) scale(1);
+		}
+	}
+</style>
+
+<script>
+	import { initLikeControl } from "../../scripts/post-like";
+
+	const button = document.querySelector<HTMLButtonElement>("[id='like-button']");
+	if (button) {
+		initLikeControl(button);
+	}
+</script>
