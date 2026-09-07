@@ -16,13 +16,12 @@ const path = Astro.url.pathname;
 	<Separator type="dot" />
 	<span class="flex items-center h-[1.75rem]" title="阅读次数">
 		<Icon aria-hidden="true" class="h-4 w-4 me-1" focusable="false" name="solar:eye-line-duotone" />
-		<span class="tabular-nums text-center min-w-[2ch]" data-stats-views>–</span>
+		<span class="tabular-nums" data-stats-views>–</span>
 		<span class="ms-1 text-lightest">views</span>
 	</span>
-	<Separator type="dot" />
-	<span class="flex items-center h-[1.75rem]" title="点赞数">
+	<span class="flex items-center h-[1.75rem] ms-2" title="点赞数">
 		<Icon aria-hidden="true" class="h-4 w-4 me-1 text-lightest" focusable="false" name="solar:heart-bold" />
-		<span class="tabular-nums text-center min-w-[2ch]" data-stats-likes>–</span>
+		<span class="tabular-nums" data-stats-likes>–</span>
 		<span class="ms-1 text-lightest">likes</span>
 	</span>
 </span>
