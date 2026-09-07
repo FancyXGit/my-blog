@@ -162,4 +162,6 @@ $$
 
 ## License
 
-基于 [Astro Citrus](https://github.com/ArtemKutsan/astro-citrus)(灵感来自 [Astro Theme Cactus](https://github.com/chrismwilliams/astro-theme-cactus))改造。MIT。
+- **正文内容**(`src/content/` 下文章、笔记的文字部分)由 FancyXGit 创作,按 [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)(署名 — 非商业性使用 — 相同方式共享)授权。详见 [/license](https://fancyflow.top/license)。
+- **站点代码**基于 [Astro Citrus](https://github.com/ArtemKutsan/astro-citrus)(灵感来自 [Astro Theme Cactus](https://github.com/chrismwilliams/astro-theme-cactus))改造,按 [MIT](LICENSE) 授权(保留上游版权声明)。
+- **配图**(封面网图、教科书插图等)版权归原作者/出版社,仅作学习引用,不在上述协议范围内。

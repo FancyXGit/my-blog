@@ -9,6 +9,7 @@ export const GET = async () => {
 		title: siteConfig.title,
 		description: siteConfig.description,
 		site: import.meta.env.SITE,
+		customData: "<copyright>© FancyXGit · CC BY-NC-SA 4.0</copyright>",
 		items: notes.map((note) => ({
 			title: note.data.title,
 			pubDate: note.data.publishDate,

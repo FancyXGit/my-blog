@@ -7,9 +7,16 @@ const year = new Date().getFullYear();
 <footer
 	class="semibold mt-auto flex w-full flex-col items-center justify-center gap-y-2 pb-4 pt-8 text-center align-top text-accent sm:flex-row sm:justify-between sm:text-sm"
 >
-	<div class="me-0 font-semibold sm:me-4">
-		&copy; {siteConfig.author}
-		{year}.
+	<div class="me-0 flex flex-wrap items-baseline justify-center gap-x-2 font-semibold sm:me-4 sm:justify-start">
+		<span>
+			&copy; {siteConfig.author}
+			{year}.
+		</span>
+		<span class="font-medium text-light">
+			<a class="underline-offset-2 hover:text-accent hover:underline" href="/license/">
+				正文按 CC BY-NC-SA 4.0 许可
+			</a>
+		</span>
 	</div>
 	<nav
 		aria-label="More on this site"
