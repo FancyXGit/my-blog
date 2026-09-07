@@ -6,6 +6,7 @@ import LikeButton from "@/components/blog/LikeButton.astro";
 import MobilePostLike from "@/components/blog/MobilePostLike.astro";
 import TOC from "@/components/blog/TOC.astro";
 import WebMentions from "@/components/blog/webmentions/index.astro";
+import Giscus from "@/components/blog/Giscus.astro";
 import BaseLayout from "./Base.astro";
 import SeriesPanel from "@/components/SeriesPanel.astro";
 import { Icon } from "astro-icon/components";
@@ -80,6 +81,7 @@ const { headings } = await render(post);
 			</div>
 			<MobilePostLike />
 			<WebMentions />
+			<Giscus />
 		</article>
 		{!!headings.length && (
 			<aside 

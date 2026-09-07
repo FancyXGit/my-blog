@@ -1,0 +1,85 @@
+---
+// giscus — GitHub Discussions powered comments.
+// Config generated at https://giscus.app (repo FancyXGit/my-blog).
+// The client script is injected lazily via IntersectionObserver and the
+// theme is kept in sync with the site theme on <html data-theme>.
+---
+
+<section id="comments">
+	<div id="giscus" class="min-h-0"></div>
+</section>
+
+<script is:inline>
+	(() => {
+		const GISCUS_SRC = "https://giscus.app/client.js";
+		const config = {
+			repo: "FancyXGit/my-blog",
+			repoId: "R_kgDOR8AXAw",
+			category: "Announcements",
+			categoryId: "DIC_kwDOR8AXA84DFEzd",
+			mapping: "pathname",
+			strict: "0",
+			reactionsEnabled: "1",
+			inputPosition: "bottom",
+			lang: "zh-CN",
+		};
+		const container = document.getElementById("giscus");
+		if (!container) return;
+
+		const currentTheme = () =>
+			document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light";
+
+		const setGiscusTheme = (theme) => {
+			const frame = container.querySelector("iframe.giscus-frame");
+			if (!frame) return;
+			frame.contentWindow?.postMessage(
+				{ giscus: { setConfig: { theme } } },
+				"https://giscus.app",
+			);
+		};
+
+		const loadGiscus = () => {
+			if (container.querySelector("iframe.giscus-frame")) return;
+
+			const script = document.createElement("script");
+			script.src = GISCUS_SRC;
+			script.async = true;
+			script.crossOrigin = "anonymous";
+			script.setAttribute("data-repo", config.repo);
+			script.setAttribute("data-repo-id", config.repoId);
+			script.setAttribute("data-category", config.category);
+			script.setAttribute("data-category-id", config.categoryId);
+			script.setAttribute("data-mapping", config.mapping);
+			script.setAttribute("data-strict", config.strict);
+			script.setAttribute("data-reactions-enabled", config.reactionsEnabled);
+			script.setAttribute("data-input-position", config.inputPosition);
+			script.setAttribute("data-lang", config.lang);
+			script.setAttribute("data-theme", currentTheme());
+			script.setAttribute("data-loading", "lazy");
+			container.appendChild(script);
+		};
+
+		// Listen for the site-wide theme switch (fired in ThemeToggle.astro).
+		document.addEventListener("theme-change", (event) => {
+			setGiscusTheme(event.detail?.theme ?? currentTheme());
+		});
+
+		// Lazy load only when the comments section scrolls into view.
+		if ("IntersectionObserver" in window) {
+			const observer = new IntersectionObserver(
+				(entries) => {
+					entries.forEach((entry) => {
+						if (entry.isIntersecting) {
+							loadGiscus();
+							observer.disconnect();
+						}
+					});
+				},
+				{ rootMargin: "600px 0px" },
+			);
+			observer.observe(container);
+		} else {
+			loadGiscus();
+		}
+	})();
+</script>
