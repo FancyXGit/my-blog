@@ -1,7 +1,7 @@
 ---
 title: "记录"
 publishDate: "2026-09-02"
-updatedDate: "2026-09-02"
+updatedDate: "2026-09-07"
 description: "学习MIT 6.S081课程的记录"
 tags: ["学习", "MIT6.S081", "笔记", "操作系统"]
 seriesId: mit6s081
@@ -102,4 +102,12 @@ Score: 35/35
   - LEC: 03 OS Organization and System Calls
   - BOOK: Chapter 2 Operating Systems Organization
   - LAB: System Calls
-  
+- 2026-09-05
+  - BLOG: LEC02
+  - BOOK: Chapter 3 Page Tables: 3.1-3.3
+- 2026-09-06
+  - BOOK: Chapter 3 Page Tables: 3.4-3.10
+  - BLOG: LEC03
+- 2026-09-07
+  - LEC: 04 Page Tables
+  - LEC: 05 Calling Conventions and Stack Frames RISC-V

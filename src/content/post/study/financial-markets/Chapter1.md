@@ -3,8 +3,6 @@ title: "Chapter 1"
 publishDate: "2026-04-10"
 updatedDate: "2026-04-13"
 description: "耶鲁大学 Financial Markets 第一章学习笔记"
-seriesId: financial-markets
-orderInSeries: 1
 tags: ["学习", "经济", "Financial Markets", "金融市场"]
 coverImage:
     src: "https://cdn.fancyflow.top/image/post/study/financial-markets/financial-markets-chapter1-cover.webp"
