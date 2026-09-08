@@ -1,0 +1,73 @@
+---
+import PageLayout from "@/layouts/Base.astro";
+import Giscus from "@/components/blog/Giscus.astro";
+import FriendLinkCard from "@/components/links/FriendLinkCard.astro";
+import { friendLinks } from "@/data/links";
+
+const meta = {
+	description: "与好友的站点互相链接",
+	title: "友情链接",
+};
+
+const example = `Name: FancyXGit
+Desc: Drifting in the ocean all alone
+Link: https://fancyflow.top
+Avatar: https://github.com/FancyXGit.png`;
+---
+
+<PageLayout meta={meta}>
+	<div data-pagefind-body>
+		<h1 class="title mb-6">友情链接</h1>
+		<p>
+			这里收录了与我互相链接的伙伴站点，点击卡片即可跳转访问。目前共收录 {friendLinks.length}{" "}
+			个友链。
+		</p>
+
+		<section aria-label="友链列表" class="mt-8">
+			<ul class="grid list-none grid-cols-1 gap-4 p-0 md:grid-cols-2" role="list">
+				{
+					friendLinks.map((link) => (
+						<li>
+							<FriendLinkCard link={link} />
+						</li>
+					))
+				}
+			</ul>
+		</section>
+
+		<section aria-label="如何申请友链" class="prose prose-citrus mt-12 max-w-none">
+			<h2 id="apply">如何申请友链</h2>
+			<p>
+				如果希望与我互换友链，请在<strong>添加我为友链</strong>后，按照下面的模板填写信息，
+				然后在页面底部的评论区留言申请。
+			</p>
+
+			<h3>申请模板</h3>
+			<p>按以下格式留言即可（请将内容替换为你自己的信息）：</p>
+			<pre
+				class="overflow-x-auto rounded-lg border border-color-150 bg-color-75 p-4 font-mono text-sm leading-6"
+			><code>{example}</code></pre>
+
+			<h3>申请要求</h3>
+			<ul class="list-inside list-disc" role="list">
+				<li>申请前请先在本站添加我的友链，支持互相链接。</li>
+				<li>
+					网站内容合法合规，不接受含有违法、色情、暴力内容，以及纯商业广告、采集、镜像类站点。
+				</li>
+				<li>网站能够长期、稳定访问。。</li>
+				<li>描述需真实、贴切、简洁，不要使用夸张推广性词汇。</li>
+				<li>头像需为可访问的 https 图片直链，建议使用不小于 100 × 100 的正方形图片。</li>
+			</ul>
+
+			<p>
+				收到留言后我会尽快审核并添加。如果信息有误无法访问，可能会联系你更新，敬请理解。
+			</p>
+		</section>
+
+		<section aria-label="友链评论区" class="mt-12">
+			<h2 class="title mb-6">评论区留言申请</h2>
+			<p>在下方评论区按模板留言，即可申请添加友链。</p>
+			<Giscus />
+		</section>
+	</div>
+</PageLayout>

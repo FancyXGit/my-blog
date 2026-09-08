@@ -1,0 +1,34 @@
+---
+import type { FriendLink } from "@/data/links";
+
+interface Props {
+	link: FriendLink;
+}
+
+const { link } = Astro.props;
+---
+
+<a
+	class="group flex items-center gap-4 rounded-2xl border border-color-150 bg-color-75 p-4 transition-colors hover:border-accent-base/40 hover:bg-color-100"
+	href={link.url}
+	rel="noopener"
+	target="_blank"
+	title={link.description}
+>
+	<img
+		class="h-14 w-14 shrink-0 rounded-full object-cover bg-color-100"
+		alt={`${link.name} 的头像`}
+		loading="lazy"
+		src={link.avatar}
+		width={56}
+		height={56}
+	/>
+	<span class="min-w-0">
+		<span class="block truncate font-semibold text-accent-base group-hover:text-accent">
+			{link.name}
+		</span>
+		<span class="mt-0.5 line-clamp-2 block text-sm text-light">
+			{link.description}
+		</span>
+	</span>
+</a>

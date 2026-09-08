@@ -41,7 +41,7 @@ export const menuLinks: { path: string; title: string }[] = [
 		title: "Notes",
 	},
 	{
-		path: "/music/",
-		title: "Music",
+		path: "/links/",
+		title: "Links",
 	},
 ];
