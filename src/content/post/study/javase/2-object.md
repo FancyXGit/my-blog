@@ -3,8 +3,6 @@ title: "Object"
 publishDate: "2026-07-13"
 updatedDate: "2026-07-13"
 description: "关于Object类和方法"
-seriesId: javase
-orderInSeries: 2
 tags: ["工作", "后端", "Java"]
 coverImage:
     src: "https://cdn.fancyflow.top/image/post/study/javase/2/cover.webp"

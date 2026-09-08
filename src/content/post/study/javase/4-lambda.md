@@ -3,8 +3,6 @@ title: "Lambda"
 publishDate: "2026-07-15"
 updatedDate: "2026-07-15"
 description: "Lambda表达式，函数式接口，方法引用"
-seriesId: javase
-orderInSeries: 4
 tags: ["工作", "后端", "Java"]
 coverImage:
     src: "https://cdn.fancyflow.top/image/post/study/javase/4/cover.webp"

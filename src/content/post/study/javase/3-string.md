@@ -3,8 +3,6 @@ title: "String"
 publishDate: "2026-07-14"
 updatedDate: "2026-07-14"
 description: "String类的实现机制"
-seriesId: javase
-orderInSeries: 3
 tags: ["工作", "后端", "Java"]
 coverImage:
     src: "https://cdn.fancyflow.top/image/post/study/javase/3/cover.webp"

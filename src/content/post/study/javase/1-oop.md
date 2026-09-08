@@ -3,8 +3,6 @@ title: "面向对象"
 publishDate: "2026-07-12"
 updatedDate: "2026-07-12"
 description: "关于封装，继承，多态"
-seriesId: javase
-orderInSeries: 1
 tags: ["工作", "后端", "Java", "面向对象"]
 coverImage:
     src: "https://cdn.fancyflow.top/image/post/study/javase/1/cover.webp"
