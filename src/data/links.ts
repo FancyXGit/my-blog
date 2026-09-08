@@ -36,4 +36,10 @@ export const friendLinks: FriendLink[] = [
 		url: "https://bertsin.pages.dev",
 		avatar: "https://i.imglt.com/20260214/c37821a7cc3ad4bf4717c03dfb6ecfce.jpg",
 	},
+	{
+		name: "Last Blog",
+		description: "void of myself",
+		url: "https://blog.imlast.top",
+		avatar: "https://s2.loli.net/2024/01/08/aUYMZQjVfqLJTnr.jpg",
+	},
 ];
