@@ -1,7 +1,7 @@
 ---
 title: "记录"
 publishDate: "2026-09-02"
-updatedDate: "2026-09-07"
+updatedDate: "2026-09-14"
 description: "学习MIT 6.S081课程的记录"
 tags: ["学习", "MIT6.S081", "笔记", "操作系统"]
 seriesId: mit6s081
@@ -90,6 +90,54 @@ Score: 35/35
 用户态和内核态之间的参数传递是通过`trapframe`实现的
 :::
 
+### Page Tables
+
+- 花费时间：3小时
+- 难度：中等
+- 通过: 3/3
+- 结果：
+
+```txt
+== Test   pgtbltest: ugetpid ==
+  pgtbltest: ugetpid: OK
+== Test   pgtbltest: pgaccess ==
+  pgtbltest: pgaccess: OK
+== Test pte printout ==
+$ make qemu-gdb
+pte printout: OK (0.7s)
+```
+
+:::tip
+理解页表结构之后这个LAB便不难
+:::
+
+### Traps
+
+- 花费时间：2.5小时
+- 难度：中等
+- 通过：4/4
+- 结果：
+
+```txt
+== Test backtrace test ==
+$ make qemu-gdb
+backtrace test: OK (2.9s)
+== Test running alarmtest ==
+$ make qemu-gdb
+(4.6s)
+== Test   alarmtest: test0 ==
+  alarmtest: test0: OK
+== Test   alarmtest: test1 ==
+  alarmtest: test1: OK
+== Test   alarmtest: test2 ==
+  alarmtest: test2: OK
+```
+
+:::tip
+此LAB理解trap的处理流程之后难度不大
+需要注意在于alarm部分的a0寄存器的恢复，注意不要被对应syscall的处理函数的返回值覆盖掉了
+:::
+
 ## 日程
 
 - 2026-08-31
@@ -111,3 +159,13 @@ Score: 35/35
 - 2026-09-07
   - LEC: 04 Page Tables
   - LEC: 05 Calling Conventions and Stack Frames RISC-V
+- 2026-09-08
+  - LAB: Page tables
+- 2026-09-14
+  - BOOK: Chapter 4 Traps and system calls
+  - BLOG: LEC04
+- 2026-09-15
+  - LEC: 06 Isolation & system call entry/exit
+- 2026-09-16
+  - LEC: 08 Page faults
+  - LAB: Traps
