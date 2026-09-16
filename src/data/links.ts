@@ -19,12 +19,6 @@ export const friendLinks: FriendLink[] = [
 		avatar: "https://cdn.arthals.ink/Arthals.png",
 	},
 	{
-		name: "Wangxinyang",
-		description: "个人博客 / 学习交流 / 生活日常",
-		url: "https://wangxinyang.top",
-		avatar: "https://wangxinyang.top/avatar.png",
-	},
-	{
 		name: "Nian's Blog",
 		description: "一念起，万水千山",
 		url: "https://alannian.top",
@@ -41,5 +35,11 @@ export const friendLinks: FriendLink[] = [
 		description: "void of myself",
 		url: "https://blog.imlast.top",
 		avatar: "https://s2.loli.net/2024/01/08/aUYMZQjVfqLJTnr.jpg",
+	},
+	{
+		name: "echeverra",
+		description: "let's go, together!",
+		url: "https://echeverra.cn",
+		avatar: "https://echeverra.cn/favicon.jpg",
 	},
 ];
