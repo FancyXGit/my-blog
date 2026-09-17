@@ -169,3 +169,5 @@ $ make qemu-gdb
 - 2026-09-16
   - LEC: 08 Page faults
   - LAB: Traps
+- 2026-09-17
+  - BLOG: LEC08
