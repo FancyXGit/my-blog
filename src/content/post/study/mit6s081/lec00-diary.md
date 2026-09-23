@@ -138,6 +138,33 @@ $ make qemu-gdb
 需要注意在于alarm部分的a0寄存器的恢复，注意不要被对应syscall的处理函数的返回值覆盖掉了
 :::
 
+### Copy-on-write fork
+
+- 花费时间：3小时
+- 难度：较难
+- 通过：3/3
+- 结果：
+
+```txt
+== Test   simple ==
+  simple: OK
+== Test   three ==
+  three: OK
+== Test   file ==
+  file: OK
+```
+
+:::tip
+此LAB需要注意几点
+
+- 全局页引用数组需要上锁，注意该锁与空闲链表锁的顺序，避免死锁
+- 触发COW页错误时，创建新的页之后记得复制父进程的内容到新的页中
+
+其实LAB题干已经写的很清楚要怎么做了，照着干就行  
+
+P.S.感觉自己这里代码写的好丑陋
+:::
+
 ## 日程
 
 - 2026-08-31
@@ -171,3 +198,10 @@ $ make qemu-gdb
   - LAB: Traps
 - 2026-09-17
   - BLOG: LEC08
+- 2026-09-20
+  - BOOK: Chapter 5 Interrupts and device drivers
+- 2026-09-21
+  - LEC: 09 Interrupts
+  - BLOG: LEC09
+- 2026-09-23
+  - LAB: Copy-on-write fork
