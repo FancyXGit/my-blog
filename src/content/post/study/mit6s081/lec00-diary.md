@@ -1,7 +1,7 @@
 ---
 title: "记录"
 publishDate: "2026-09-02"
-updatedDate: "2026-09-14"
+updatedDate: "2026-10-02"
 description: "学习MIT 6.S081课程的记录"
 tags: ["学习", "MIT6.S081", "笔记", "操作系统"]
 seriesId: mit6s081
@@ -205,3 +205,8 @@ P.S.感觉自己这里代码写的好丑陋
   - BLOG: LEC09
 - 2026-09-23
   - LAB: Copy-on-write fork
+- 2026-09-25
+  - BOOK: Chapter 6 Locking
+  - LEC: 10 Multiprocessors and locking
+- 2026-10-02
+  - BLOG: LEC10
