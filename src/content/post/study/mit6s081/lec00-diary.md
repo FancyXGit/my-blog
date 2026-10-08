@@ -210,3 +210,7 @@ P.S.感觉自己这里代码写的好丑陋
   - LEC: 10 Multiprocessors and locking
 - 2026-10-02
   - BLOG: LEC10
+- 2026-10-08
+  - BOOK: Chapter 7 Scheduling: 7.1-7.4
+  - BLOG: LEC11
+  - LEC: 11 Thread switching

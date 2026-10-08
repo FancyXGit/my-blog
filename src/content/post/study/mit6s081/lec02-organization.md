@@ -95,7 +95,7 @@ void main()
     userinit();        // 第一个用户进程  ★
     __atomic_store_n(&started, 1, __ATOMIC_RELEASE);
   } else {
-    while (started == 0) ;         // 其它核等 0 号核干完
+    while (__atomic_load_n(&started, __ATOMIC_ACQUIRE) == 0) ;         // 其它核等 0 号核干完
     kvminithart(); trapinithart(); plicinithart();
   }
   scheduler();         // 进入调度器，不再返回 ★
