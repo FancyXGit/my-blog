@@ -214,3 +214,7 @@ P.S.感觉自己这里代码写的好丑陋
   - BOOK: Chapter 7 Scheduling: 7.1-7.4
   - BLOG: LEC11
   - LEC: 11 Thread switching
+- 2026-10-09
+  - BOOK: Chapter 7 Scheduling: 7.5-7.10
+  - BLOG: LEC13
+  - LEC: 13 Sleep & Wake up
