@@ -258,7 +258,7 @@ void releasesleep(struct sleeplock *lk)
 子进程退出后变成`ZOMBIE`，等父进程`wait`处理  
 全局自旋锁`wait_lock`保护父子关系  
 
-```C
+```c
 int kwait(uint64 addr)
 {
   acquire(&wait_lock);
