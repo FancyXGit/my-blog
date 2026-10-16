@@ -6,7 +6,16 @@ description: "XV6文件系统的设计"
 seriesId: mit6s081
 orderInSeries: 9
 tags: ["学习", "MIT6.S081", "笔记", "操作系统"]
+coverImage:
+    src: "https://cdn.fancyflow.top/image/post/study/mit6s081/lec14/cover.webp"
+    alt: "大树"
 ---
+
+:::tip
+文件系统可以说是XV6中最繁杂的部分，其一个层次甚至能够比上之前的一章的内容  
+我在写这篇文章的时候越写越痛苦，写了将近1周的时间  
+希望阅读时尽量关注设计理念与分层设计，不要纠结具体函数的代码
+:::
 
 ## 总体结构
 
@@ -171,7 +180,7 @@ unlink(path)
    └─ end_op()                                  [日志层]
 ```
 
-## Buffer Cache
+## 缓冲区
 
 | 分类 | 函数 | 作用 |
 | :--- | :--- | :--- |
@@ -183,7 +192,7 @@ unlink(path)
 
 所有对磁盘的读写最终都落到缓冲区层。`bread`不关心块的属性，它只从对应设备的对应块号取出内容，通过调用`bget`在缓冲区内分配。`bwrite`与`bread`类似，只不过读变成了写，只有日志层调用它，在事务结束生效之后正式写入。`brelse`释放缓冲块
 
-### bcache
+### 缓冲区结构
 
 缓冲层的核心是`bcache`，其内部有长度为`NBUF`的缓冲区数组`buf[NBUF]`
 
@@ -900,3 +909,196 @@ writei(struct inode *ip, int user_src, uint64 src, uint off, uint n)
 ```
 
 `writei`执行写文件，在超过文件末尾但是没有超过文件上限（所有的直接块与间接块对应的数据块）的情况下分配新的数据块
+
+## 目录层
+
+### 目录结构
+
+XV6的设计与Unix理念类似，目录被视为一种特殊的文件，数据排布方式与普通文件相同（直接块+间接块），但是其数据为`dirent`结构体数组，每个`dirent`表示一个目录项，包含文件名和对应的`inode`号。一个结构体大小16字节，一块能存64个目录项
+
+```c
+#define DIRSIZ 14
+
+struct dirent {
+  ushort inum;                            // 2 字节
+  char name[DIRSIZ] __attribute__((nonstring)); // 14 字节
+};
+```
+
+`inum`是目录号，回顾之前便是磁盘上`inode`区的索引号，为`0`表示该槽位空闲；`name`是文件名，长度至多14字节
+
+- 当文件名小于14字节时，`name`后面补`\0`
+- 当文件名大于等于14字节时，`name`不补`\0`，只取前14字节
+
+因此比较两个文件名是否相等时，不能使用普通的字符串比较函数，XV6包装了一个`namecmp`函数，比较两个文件名是否相等
+
+```c
+int namecmp(const char *s, const char *t) {
+  return strncmp(s, t, DIRSIZ);   // 固定只比 14 字节，不靠 \0
+}
+```
+
+每个目录通常前两项是`..`和`.`，分别表示父目录和当前目录。在创建目录时写入。根目录的`..`指向自己
+
+### dirlookup
+
+`dirlookup`在目录`dp`中查找文件名为`name`的目录项，如果找到就返回对应的`inode`  
+找到的方式是通过`iget`返回对应的`inode`项，不会持有对应的`inode.lock`，只是将`ref++`，拿锁需要靠`ilock`
+
+```c
+struct inode *
+dirlookup(struct inode *dp, char *name, uint *poff)
+{
+  uint off, inum;
+  struct dirent de;
+
+  if (dp->type != T_DIR)
+    panic("dirlookup not DIR");
+
+  for (off = 0; off < dp->size; off += sizeof(de)) {
+    if (readi(dp, 0, (uint64)&de, off, sizeof(de)) != sizeof(de))
+      panic("dirlookup read");
+    if (de.inum == 0)
+      continue;                       // 空槽，跳过
+    if (namecmp(name, de.name) == 0) {
+      if (poff)
+        *poff = off;                  // 告诉调用者：条目在第 off 字节
+      inum = de.inum;
+      return iget(dp->dev, inum);     // 返回"已引用但未锁定"的 inode
+    }
+  }
+
+  return 0;                           // 没找到
+}
+```
+
+`dirlookup`返回的`inode`没有锁定的原因在于
+
+- 调用`dirlookup`之前的`dp`已经被调用者锁住，如果传入`.`查找本身，如果`dirlookup`返回的`.`试图加锁，就是又给自己加锁，就会陷入死锁
+- 如果传入`..`可能会更复杂，例如父目录去查子目录，子目录想拿父目录，调用`dirlookup`之前各自都锁住了，那么就会死锁
+
+这只是简单的情况，还有更复杂的，为了降低复杂性，`dirlookup`不主动加锁
+
+### dirlink
+
+`dirlink`在目录`dp`中创建一个新的目录项，名字为`name`，对应的`inode`号为`inum`
+
+```c
+int
+dirlink(struct inode *dp, char *name, uint inum)
+{
+  int off;
+  struct dirent de;
+  struct inode *ip;
+
+  // 1) 先查重：名字已存在就报错
+  if ((ip = dirlookup(dp, name, 0)) != 0) {
+    iput(ip);
+    return -1;
+  }
+
+  // 2) 找一个空闲槽位
+  for (off = 0; off < dp->size; off += sizeof(de)) {
+    if (readi(dp, 0, (uint64)&de, off, sizeof(de)) != sizeof(de))
+      panic("dirlink read");
+    if (de.inum == 0)
+      break;                          // 找到空槽，off 停在它的偏移
+  }
+
+  // 3) 写进去
+  strncpy(de.name, name, DIRSIZ);
+  de.inum = inum;
+  if (writei(dp, 0, (uint64)&de, off, sizeof(de)) != sizeof(de))
+    return -1;
+
+  return 0;
+}
+```
+
+注意`off`分几种情况
+
+1. `for`循环中找到了空槽，`off`直接指向空槽的偏移，可以直接写入
+2. `for`循环中没有找到空槽，`off`会等于`dp->size`，此时直接指向文件末尾，也就是第一个空闲的数据块，`writei`会自动分配新的数据块并写入
+
+不会出现写出界（也就是超过最大文件限制）的情况，因为`writei`检查出界返回`-1`，走入`if`分支返回`-1`
+
+## 路径名层
+
+`namex`是路径名层的核心函数，其通过`path`查找对应的`inode`，如果`nameiparent == 1`，则返回最后一个元素的父目录的`inode`，否则返回最后一个元素的`inode`  
+核心在于调用`skipelem`，这个函数将路径名的第一个元素拷贝到`name`中，并返回剩余路径名的指针。`namex`循环调用`skipelem`，每次处理一个路径元素，直到走到最后一个元素  
+
+```c
+static struct inode *
+namex(char *path, int nameiparent, char *name)
+{
+  struct inode *ip, *next;
+
+  // 起点
+  if (*path == '/')
+    ip = iget(ROOTDEV, ROOTINO);      // 绝对路径：根目录 inode 1
+  else
+    ip = idup(myproc()->cwd);         // 相对路径：当前工作目录
+
+  // 一个元素一个元素地走
+  while ((path = skipelem(path, name)) != 0) {
+    ilock(ip);                        // 锁住当前目录
+    if (ip->type != T_DIR) {          // 必须是目录
+      iunlockput(ip);
+      return 0;
+    }
+    if (ip->nlink == 0) {             // 已被删除的目录
+      iunlockput(ip);
+      return 0;
+    }
+    if (nameiparent && *path == '\0') {  // 最后一个元素就停
+      iunlock(ip);
+      return ip;
+    }
+    if ((next = dirlookup(ip, name, 0)) == 0) {  // 找下一层
+      iunlockput(ip);
+      return 0;
+    }
+    iunlockput(ip);                   // 先放当前，再
+    ip = next;                        // 把 next 留到下一轮再锁
+  }
+
+  if (nameiparent) {                  // 走到头却不是最后一个元素
+    iput(ip);
+    return 0;
+  }
+  return ip;
+}
+```
+
+## 描述符层
+
+```c
+struct file {
+  enum { FD_NONE, FD_PIPE, FD_INODE, FD_DEVICE } type;
+  int ref;              // reference count  引用计数
+  char readable;
+  char writable;
+  struct pipe *pipe;    // FD_PIPE
+  struct inode *ip;     // FD_INODE and FD_DEVICE
+  uint off;             // FD_INODE   读写偏移量
+  short major;          // FD_DEVICE
+};
+```
+
+对于每一个进程而言，都有一个自己独有的`fd`文件描述符表，这个表是一个数组，存储指向`file`结构体的指针
+
+```c
+struct file *ofile[NOFILE]
+```
+
+平时调用`open`等拿到的文件描述符整数，就是这个数组的索引  
+对于系统全局有一个`ftable`，所有进程共用。真正的`file`结构体存储在这个表中
+
+```c
+struct file file[NFILE]
+```
+
+进程的文件描述符表中的指针指向全局`ftable`中的`file`结构体，使得多个描述符，甚至多个进程，可以共享同一个`file`结构体  
+每次调用`open`时实际在全局`ftable`中分配一个`file`结构体，因此就算两次`open`同一个文件，其`file`结构体中的偏移量`off`也是独立的，互不影响  
+`dup`在进程的文件描述符表中分配一个新的索引，指向同一个`file`结构体，因此共享偏移量`off`，互相影响  
+`fork`直接拷贝整个文件描述符表，父子进程指向的`file`结构体是同一个
