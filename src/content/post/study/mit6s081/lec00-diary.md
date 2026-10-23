@@ -1,7 +1,7 @@
 ---
 title: "记录"
 publishDate: "2026-09-02"
-updatedDate: "2026-10-10"
+updatedDate: "2026-10-23"
 description: "学习MIT 6.S081课程的记录"
 tags: ["学习", "MIT6.S081", "笔记", "操作系统"]
 seriesId: mit6s081
@@ -303,3 +303,13 @@ Score: 100/100
   - BLOG: LEC14
 - 2026-10-16
   - LAB: Network driver
+- 2026-10-21
+  - BOOK: Chapter 8 File System: 8.4-8.6
+  - LEC: 14 File systems
+  - LEC: 15 Crash recovery
+- 2026-10-22
+  - PAPER: Journaling the Linux ext2fs Filesystem (1998)
+  - LEC: 16 File system performance and fast crash recovery
+- 2026-10-23
+  - PAPER: Virtual Memory Primitives for User Programs (1991)
+  - LEC: 17 Virtual memory for applications
