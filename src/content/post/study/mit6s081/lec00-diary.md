@@ -1,7 +1,7 @@
 ---
 title: "记录"
 publishDate: "2026-09-02"
-updatedDate: "2026-10-23"
+updatedDate: "2026-10-30"
 description: "学习MIT 6.S081课程的记录"
 tags: ["学习", "MIT6.S081", "笔记", "操作系统"]
 seriesId: mit6s081
@@ -243,6 +243,58 @@ Score: 100/100
 4. 发送的`desc`结构体中的`cmd`字段需要设置为`RS`，这样硬件才会自动在发送完成之后置为`DD`
 5. `e1000_recv`需要处理所有`DD`为`1`的`desc`，因为可能一次中断会收到多个包。软件应该处理所有已经收到的包
 
+### lock
+
+- 花费时间：6小时
+- 难度：难
+- 通过：5/5
+- 结果：
+
+```txt
+== Test running kalloctest ==
+$ make qemu-gdb
+(155.4s)
+== Test   kalloctest: test1 ==
+  kalloctest: test1: OK
+== Test   kalloctest: test2 ==
+  kalloctest: test2: OK
+== Test kalloctest: sbrkmuch ==
+$ make qemu-gdb
+kalloctest: sbrkmuch: OK (32.8s)
+== Test running bcachetest ==
+$ make qemu-gdb
+(34.1s)
+== Test   bcachetest: test0 ==
+  bcachetest: test0: OK
+== Test   bcachetest: test1 ==
+  bcachetest: test1: OK
+```
+
+第一个为每个CPU维持一个空闲链表很简单，分了两个阶段
+
+1. 原始情况
+2. 为每个CPU维持一个空闲链表，但是初始全部挂载到CPU0上
+3. 初始时就全部平均分配
+
+| 场景 | kmem 锁 | #test-and-set | #acquire() |
+|---|---:|---:|---:|
+| 1 | `kmem` | 4,971,856 | 433,018 |
+| 2 | `kmem_0` | 0 | 169,029 |
+|  | `kmem_1` | 0 | 125,372 |
+|  | `kmem_2` | 0 | 138,662 |
+| 3 | `kmem_0` | 0 | 137,754 |
+|  | `kmem_1` | 0 | 137,778 |
+|  | `kmem_2` | 0 | 124,762 |
+
+可以看到为每个CPU维持链表之后,test-and-set即锁冲突的次数降为0，而且每个CPU获取锁的次数平均了  
+
+`b_cache`的实现比较难，这里我总结了几点，主要在于`bget()`函数
+
+1. 维持多个桶，每个桶内的空闲块数量不固定。空闲块总量固定，且可以从一个桶移动到另一个桶
+2. `bget()`函数中，首先查找桶中是否有直接命中的块，这一步加桶锁而不加全局锁。注意此时会命中`brelse`之后`refcnt == 0`但是`dev`和`blockno`都是旧值的块，会与之后的占用新分配块可能冲突
+3. 没有命中则尝试分配新的。注意获取全局锁之后还要在桶内再查找一次，因为可能有双并发请求，导致在获取全局锁之后，其他线程已经分配了该块，之后不检查就多次分配
+4. 锁的约定：必须获取全局锁再获取桶锁（可以只获取桶锁）。获取桶锁最多只能同时获取一把
+
 ## 日程
 
 - 2026-08-31
@@ -313,3 +365,10 @@ Score: 100/100
 - 2026-10-23
   - PAPER: Virtual Memory Primitives for User Programs (1991)
   - LEC: 17 Virtual memory for applications
+- 2026-10-28
+  - LAB: Parallelism/locking: PART 1
+- 2026-10-29
+  - LAB: Parallelism/locking: PART 2
+- 2026-10-30
+  - PAPER: he Performance of micro-Kernel-Based Systems (1997)
+  - LEC: OS Organization
