@@ -1,7 +1,7 @@
 ---
 title: "记录"
 publishDate: "2026-09-02"
-updatedDate: "2026-10-30"
+updatedDate: "2026-11-03"
 description: "学习MIT 6.S081课程的记录"
 tags: ["学习", "MIT6.S081", "笔记", "操作系统"]
 seriesId: mit6s081
@@ -321,6 +321,41 @@ $ make qemu-gdb
 第一个部分要拓宽文件最大大小，就是减少一个直接块，然后新增一个二级间接块，二级间接块指向256个一级间接块，每个一级间接块指向256个直接块。注意事项实验写的很清楚  
 第二个部分实施符号链接，这种新文件类型可以当作一个普通文件，文件内容是目标文件的路径名。`symlink`系统调用不检查目标路径名。只有在`open`系统调用时才真正检查。需要注意的是`namei`函数会加锁，在此之前需要放掉文件对象的`inode`锁
 
+### mmap
+
+- 难度：难
+- 花费时间：7小时
+- 通过：8/8
+- 结果：
+
+```txt
+== Test   mmaptest: mmap f == 
+  mmaptest: mmap f: OK 
+== Test   mmaptest: mmap private == 
+  mmaptest: mmap private: OK 
+== Test   mmaptest: mmap read-only == 
+  mmaptest: mmap read-only: OK 
+== Test   mmaptest: mmap read/write == 
+  mmaptest: mmap read/write: OK 
+== Test   mmaptest: mmap dirty == 
+  mmaptest: mmap dirty: OK 
+== Test   mmaptest: not-mapped unmap == 
+  mmaptest: not-mapped unmap: OK 
+== Test   mmaptest: two files == 
+  mmaptest: two files: OK 
+== Test   mmaptest: fork_test == 
+  mmaptest: fork_test: OK 
+```
+
+这个实验手册步骤写的很清楚，大致可以分为4部分
+
+1. 实现`mmap`系统调用和`vma`结构体，在`proc`结构体中维护`vma`数组，当`mmap`系统调用时取数组中的空位填入数据。注意`mmap`必须检查参数合法性，填入的数据都要页对齐，同时注意当`flags`为`MAP_SHARED`时，`prot`必须包含`PROT_WRITE`
+2. 处理页错误，具体在`usertrap`函数中判断``scause`是否为`13`或者`15`，如果是则处理页错误，包括查找`vma`结构体，分配物理页，读入文件，映射等等
+3. 处理`munmap`系统调用，主要是查找`vma`结构体，根据`flags`决定是否写回文件，根据`pte`的`dirty`位决定该页是否被修改过，然后写回，解除映射释放物理页。最后检查`vma`整段是否都被解除，如果是则释放`vma`结构体
+4. 处理`exit`和`fork`系统调用，主要是`file`，`exit`时候减，`fork`加。然后`uvmcopy`，`uvmunmap`等函数处理没有映射的页时候要跳过，和前面的COW LAB类似
+
+感觉后面写的有点仓促了，心里想的就是赶紧通过测试，没有细细地思考
+
 ## 日程
 
 - 2026-08-31
@@ -401,3 +436,11 @@ $ make qemu-gdb
   - LEC: 19 Virtual Machines
 - 2026-11-01
   - LAB: File system
+- 2026-11-02
+  - LAB: Mmap
+
+## 后记
+
+操作系统课我觉得是一门意义非常大的课，他不仅贯通了硬件和软件，同时教会了一件事：计算机没有魔法。以前觉得不可思议的事情，仔细学习之后能够明白原理，这是非常享受的事情。例如，计算机怎么开机，虚拟内存如何建立与运行，系统调用如何处理，进程如何执行切换，如何实现文件的事务等等，看上去非常神秘莫测的话题在学习代码之后都变得清晰明了，操作系统的神秘的面纱被一层一层揭开来了。从未知到已知，甚至发现原理是如此浅显（或者说抽象被拆开之后变得清晰），是非常让人开心，喜悦的事情  
+有些可惜的是，我学习这门课程的后半段时间不太够了，决定做完LAB匆匆结束，那些论文都没有详细阅读，其实很可惜，主要归咎于我的懒惰，从上面日程可以看到我休息了挺多天，这样偷懒的态度需要克服  
+总而言之，MIT 6.S081课程是非常值得学习的课程，但是其也有不足之处，主要是对于考试而言，课程的覆盖面不太广，例如其余的调度算法换页算法等没有涉及。不过我觉得这个是很合适的，与其看几种算法的描述，不如真正看一眼XV6中进程是如何切换的，我觉得后者比看教科书有意义的多。同时XV6也是一个十分简化的操作系统，不能认为OS局限于此了，真实的OS系统仍然是非常深入复杂的，学无止境  
