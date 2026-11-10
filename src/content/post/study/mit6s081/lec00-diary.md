@@ -5,7 +5,7 @@ updatedDate: "2026-11-03"
 description: "学习MIT 6.S081课程的记录"
 tags: ["学习", "MIT6.S081", "笔记", "操作系统"]
 seriesId: mit6s081
-orderInSeries: 99
+orderInSeries: 10
 ---
 
 ## LAB记录
