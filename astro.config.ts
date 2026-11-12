@@ -119,8 +119,8 @@ export default defineConfig({
   },
   // https://docs.astro.build/en/guides/prefetch/
   prefetch: true,
-  // ! Please remember to replace the following site property with your own domain
-  site: "https://fancyflow.top/",
+  // Defaults to the international domain; the mainland build sets SITE_URL=https://fancyflow.cn/.
+  site: process.env.SITE_URL ?? "https://fancyflow.top/",
   vite: {
     build: {
       sourcemap: false,

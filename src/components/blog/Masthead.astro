@@ -4,6 +4,7 @@ import FormattedDate from "@/components/FormattedDate.astro";
 import { Icon } from "astro-icon/components";
 import Badge from '@/components/Badge.astro';
 import PostMetaStats from "@/components/blog/PostMetaStats.astro";
+import { isCN } from "@/utils/site";
 import Separator from "../Separator.astro";
 
 interface Props {
@@ -91,7 +92,7 @@ const postSeries = content.data.seriesId
 		)
 	}
 
-	<PostMetaStats />
+	{!isCN && <PostMetaStats />}
 </div>
 
 {content.data.draft ? <span class="text-base text-red-500 ml-2">(Draft)</span> : null}

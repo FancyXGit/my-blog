@@ -1,5 +1,6 @@
 ---
 import { menuLinks, siteConfig } from "@/site.config";
+import { isCN } from "@/utils/site";
 
 const year = new Date().getFullYear();
 ---
@@ -17,6 +18,18 @@ const year = new Date().getFullYear();
 				正文按 CC BY-NC-SA 4.0 许可
 			</a>
 		</span>
+		{isCN && (
+			<span class="font-medium text-light">
+				<a
+					class="underline-offset-2 hover:text-accent hover:underline"
+					href="https://beian.miit.gov.cn/"
+					rel="noreferrer noopener"
+					target="_blank"
+				>
+					陕ICP备2026033247号
+				</a>
+			</span>
+		)}
 	</div>
 	<nav
 		aria-label="More on this site"

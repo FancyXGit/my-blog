@@ -10,6 +10,7 @@ import Giscus from "@/components/blog/Giscus.astro";
 import BaseLayout from "./Base.astro";
 import SeriesPanel from "@/components/SeriesPanel.astro";
 import { Icon } from "astro-icon/components";
+import { isCN } from "@/utils/site";
 
 interface Props {
 	post: CollectionEntry<"post">;
@@ -79,9 +80,9 @@ const { headings } = await render(post);
 			<div class="prose prose-citrus max-w-none flex-grow prose-headings:font-semibold prose-headings:text-accent-base prose-headings:before:text-accent-two sm:prose-headings:before:content-['#'] sm:prose-th:before:content-none">
 				<slot />
 			</div>
-			<MobilePostLike />
+			{!isCN && <MobilePostLike />}
 			<WebMentions />
-			<Giscus />
+			{!isCN && <Giscus />}
 		</article>
 		{!!headings.length && (
 			<aside 
@@ -94,7 +95,7 @@ const { headings } = await render(post);
 	</div>
 
 	<div class="left-0 right-12 z-50 ml-auto w-fit md:absolute">
-		<LikeButton />
+		{!isCN && <LikeButton />}
 		<button
 			id="to-top-button"
 			class="fixed bottom-14 hidden md:flex h-12 w-12 text-light translate-y-28 items-center justify-center rounded-full bg-bgColor text-3xl drop-shadow-xl transition-all duration-300 hover:text-accent-two data-[show=true]:translate-y-0 data-[show=true]:opacity-100"
