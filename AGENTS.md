@@ -67,7 +67,7 @@
 - `fancyflow.cn` is primary and canonical for both sites; `.top` stays crawlable but canonicalizes to `.cn`
 - Each deploy snapshots the previous web root to `/var/www/.releases/` (hardlinks, keeps 3); set repo variable `DEPLOY_TOP=false` to stop shipping the mirror
 - `pnpm postbuild` auto-runs after `pnpm build` (pnpm lifecycle), **not** after `build:fast`; `build:top` invokes `scripts/pagefind.mjs` itself
-- Server-side asset move + nginx cache/alias config: `docs/nginx/README.md`
+- CN server (`new`) was migrated on 2026-11-12: assets live in `/var/www/cdn-fancyflow.cn` and are served same-origin via nginx `alias`; live configs are `docs/nginx/fancyflow.cn.conf` + `docs/cdn-nginx.conf`, applied by `docs/server/apply-cn-nginx.sh` (runbook: `docs/nginx/README.md`)
 
 ## R2 Images
 

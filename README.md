@@ -180,7 +180,7 @@ $$
 | `pnpm r2:upload-file` | 上传指定文件 |
 
 常用参数:`--no-r2`(只传 CN)、`--no-cn`(只传 R2)、`--dry-run`(预览)。
-CN 走 SFTP,连接信息可写 `CN_ASSET_SSH_ALIAS=new` 复用 `~/.ssh/config`,目录 `CN_ASSET_ROOT=/var/www/cdn-fancyflow.cn`(迁移前仍是 `/var/www/fancyflow.cn`,顺序见 `docs/nginx/README.md`)。
+CN 走 SFTP,连接信息可写 `CN_ASSET_SSH_ALIAS=new` 复用 `~/.ssh/config`,目录 `CN_ASSET_ROOT=/var/www/cdn-fancyflow.cn`(CN 服务器已于 2026-11-12 迁移,步骤见 `docs/nginx/README.md`)。
 
 凭据在 `.env.r2`(gitignore,从 `scripts/.env.r2.example` 复制);详细说明见 `scripts/README-r2-upload.md`。
 
