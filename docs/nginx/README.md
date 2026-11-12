@@ -1,7 +1,7 @@
 # nginx: CN primary site + asset host
 
 The CN build serves assets **same-origin** (`/image/...`, `/musics/...`) to avoid a
-second DNS + TLS handshake. The files still live outside the site webroot so site
+second DNS + TLS handshake. The files live outside the site webroot so site
 deploys never touch them:
 
 ```
@@ -11,52 +11,57 @@ deploys never touch them:
   └── musics/
 ```
 
-`cdn.fancyflow.cn` keeps its own vhost (see `docs/cdn-nginx.conf`) for direct links
-and for a future real mainland CDN.
+`cdn.fancyflow.cn` keeps its own vhost (`docs/cdn-nginx.conf`) for direct links and
+a future real mainland CDN.
 
-## Current state vs. target
+## State (CN server `new`, applied 2026-11-12)
 
-While `image/` and `musics/` still sit inside `/var/www/fancyflow.cn/`, same-origin
-`/image/...` already works — no nginx change is required for the first deploy of the
-same-origin build.
+- `image/` and `musics/` were moved to `/var/www/cdn-fancyflow.cn/`; an asset tar
+  backup is in `/var/www/.releases/assets-20261112-035013.tar.gz`.
+- `docs/nginx/fancyflow.cn.conf` is the live apex + www + HTTP vhost.
+- `docs/cdn-nginx.conf` is the live asset vhost.
+- Cache headers: HTML `no-cache`, `/_astro/` 1 year immutable, `/pagefind/` and
+  assets 7 days.
+- HTTP/2 is enabled on both vhosts (nginx 1.24 → `listen ... ssl http2;`).
+- The local `.env.r2` uses `CN_ASSET_ROOT=/var/www/cdn-fancyflow.cn`.
 
-The physical move below is a one-time maintenance step. **Do it in this order**;
-adding the `alias` before the files are in place makes images 404.
+`docs/server/apply-cn-nginx.sh` is the idempotent cutover script (run it with
+`sudo` on the CN server). It backs up the configs and assets before changing
+anything.
 
-## One-time cutover
+## Fresh server cutover
+
+Do it in this order; adding the `alias` before the files are in place makes
+images 404.
 
 ```bash
-# 1. Snapshot (safety)
-sudo mkdir -p /var/www/.releases
-sudo tar -C /var/www/fancyflow.cn -czf "/var/www/.releases/assets-$(date +%F).tar.gz" image musics
+# 1. On the new server, install the configs and enable them
+sudo cp docs/nginx/fancyflow.cn.conf /etc/nginx/sites-available/fancyflow.cn
+sudo cp docs/cdn-nginx.conf        /etc/nginx/sites-available/cdn.fancyflow.cn
+sudo ln -sf /etc/nginx/sites-available/fancyflow.cn /etc/nginx/sites-enabled/fancyflow.cn
+sudo ln -sf /etc/nginx/sites-available/cdn.fancyflow.cn /etc/nginx/sites-enabled/cdn.fancyflow.cn
 
-# 2. Move the assets out of the webroot
+# 2. Move assets out of the webroot (see also docs/server/apply-cn-nginx.sh)
 sudo mkdir -p /var/www/cdn-fancyflow.cn
 sudo mv /var/www/fancyflow.cn/image /var/www/fancyflow.cn/musics /var/www/cdn-fancyflow.cn/
 
-# 3. Add the locations from fancyflow.cn.locations.conf to the fancyflow.cn
-#    server block, and change the root of cdn.fancyflow.cn to the new directory
-#    (docs/cdn-nginx.conf). Both must be in the same reload, because the old
-#    HTML still references cdn.fancyflow.cn directly.
+# 3. Validate and reload
 sudo nginx -t && sudo systemctl reload nginx
 
-# 4. Verify both origins before deploying anything
+# 4. Verify both origins
 curl -sI https://fancyflow.cn/image/<known-image>.webp | head -n 5
 curl -sI https://cdn.fancyflow.cn/image/<known-image>.webp | head -n 5
-
-# 5. Update the local .env.r2 (not committed)
-#    CN_ASSET_ROOT=/var/www/cdn-fancyflow.cn
 ```
 
 ## Cache headers
 
-- Site server block: `expires -1;` for HTML, `/_astro/` → `expires 1y;`,
-  `/pagefind/` → `expires 7d;`, assets → `expires 7d;`.
-- Prefer `expires` over `add_header Cache-Control` inside locations: a child
-  `add_header` discards all `add_header` directives inherited from the server
-  block (HSTS, security headers, …).
-- `docs/cdn-nginx.conf` uses `expires 7d` (paths can be overwritten by re-uploads)
-  plus `X-Content-Type-Options: nosniff`.
+- Prefer `add_header Cache-Control ... always` (or `expires`) consistently inside
+  a location: a child `add_header` discards all `add_header` directives inherited
+  from the server block (HSTS, security headers, …).
+- HTML: `Cache-Control: no-cache` so a deploy is visible immediately.
+- `/_astro/`: hashed filenames → `max-age=31536000, immutable`.
+- `/pagefind/` and assets: 7 days (paths can be overwritten by re-uploads).
+- `docs/cdn-nginx.conf` uses 7 days plus `X-Content-Type-Options: nosniff`.
 - R2 uploads default to `Cache-Control: public, max-age=604800`; override with
   `R2_CACHE_CONTROL`.
 
@@ -64,6 +69,6 @@ curl -sI https://cdn.fancyflow.cn/image/<known-image>.webp | head -n 5
 
 - Assets: move `image/` and `musics/` back into `/var/www/fancyflow.cn/`, remove the
   two `alias` locations, restore the old `cdn.fancyflow.cn` root, reload nginx.
+- Configs: restore the `.bak-<stamp>` files created by the cutover script.
 - Build: set `assetBases.cn = "https://cdn.fancyflow.cn"` (or build with
-  `ASSET_BASE=https://cdn.fancyflow.cn`) and redeploy. The vhost still points at the
-  same files after the cutover, so only the HTML URLs change.
+  `ASSET_BASE=https://cdn.fancyflow.cn`) and redeploy.

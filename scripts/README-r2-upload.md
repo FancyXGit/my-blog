@@ -268,4 +268,4 @@ CN_PUBLIC_BASE_URL=https://cdn.fancyflow.cn
 - 上传前用 `stat` 比对远端大小，已存在就跳过 → 可重复执行、断点续传
 - 非图片文件（mp3 / lrc 等）原样上传，仅走 SFTP
 - nginx 配置见 `docs/cdn-nginx.conf`；资源目录位于站点 webroot 之外，部署 workflow 仍保留 `image/`、`musics/` 排除项作为兜底
-- 迁移到 `/var/www/cdn-fancyflow.cn` 之前，先按 `docs/nginx/README.md` 完成目录移动和 alias 配置，再修改本机 `.env.r2`
+- CN 服务器已迁移到 `/var/www/cdn-fancyflow.cn`（2026-11-12）；新服务器按 `docs/nginx/README.md` 完成目录移动和 alias 配置后，再修改本机 `.env.r2`
