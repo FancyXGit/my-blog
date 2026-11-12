@@ -1,6 +1,6 @@
 ---
 import { WEBMENTION_PINGBACK, WEBMENTION_URL } from "astro:env/client";
-import { siteConfig } from "@/site.config";
+import { canonicalOrigin, siteConfig } from "@/site.config";
 import type { SiteMeta } from "@/types";
 import "@/styles/global.css";
 
@@ -10,7 +10,9 @@ const { articleDate, description, ogImage, title } = Astro.props;
 
 const titleSeparator = "•";
 const siteTitle = `${title} ${titleSeparator} ${siteConfig.title}`;
-const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+// Both deployments canonicalize to the primary mainland site so the overseas
+// mirror never competes with it in search results.
+const canonicalURL = new URL(Astro.url.pathname, canonicalOrigin);
 const socialImageURL = new URL(ogImage ? ogImage : "/social-card.png", Astro.url).href;
 ---
 

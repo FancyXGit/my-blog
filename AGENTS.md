@@ -5,9 +5,10 @@
 | Task | Command |
 |------|---------|
 | Dev server | `pnpm dev` (port **45873**) |
-| Production build (+ search) | `pnpm build` — auto-runs `postbuild` (Pagefind) via pnpm lifecycle |
+| Production build CN (+ search) | `pnpm build` — auto-runs `postbuild` (Pagefind) via pnpm lifecycle, outputs `dist/` |
+| Production build overseas mirror | `pnpm build:top` — outputs `dist-top/`, runs `scripts/pagefind.mjs` explicitly |
 | Local quick build | `pnpm build:fast` — ~5s, **skips Pagefind** (no og card step: cards are static) |
-| Search index only | `pnpm postbuild` |
+| Search index only | `pnpm postbuild` (honours `OUT_DIR`) |
 | Preview build | `pnpm preview` |
 | Typecheck | `pnpm check` (`astro check`) |
 | Lint | `pnpm lint` (`biome lint .`) |
@@ -15,7 +16,7 @@
 
 ## Project Overview
 
-- **Astro v5** static blog, **pnpm** package manager, deploy via GitHub Actions → cloud server → nginx (`fancyflow.top`)
+- **Astro v5** static blog, **pnpm** package manager. Two static deployments from one CI build: `fancyflow.cn` (primary, mainland) and `fancyflow.top` (overseas mirror); servers only receive artifacts, they never build
 - Content collections (`post`, `note`, `series`) in `src/content/<collection>/` as `.md`/`.mdx`; content config at `src/content.config.ts` (Astro v5 loader API, `image()` schema); alias `@/*` → `src/*`; site config at `src/site.config.ts`
 - Remark plugins live in `src/plugins/` and are wired in `astro.config.ts` `markdown.remarkPlugins`: reading-time, math, directives/admonitions, and `remark-linebreak-paragraph` (renders two-trailing-space line breaks as separate paragraphs with block gaps — **global** behavior; delete it from `remarkPlugins` to restore tight soft-break lines)
 - Layouts: `Base.astro` (shared shell, exposes `sidebar` named slot), `BlogPost.astro` + `Series.astro` (reading pages), pages under `src/pages`
@@ -40,9 +41,10 @@
 
 ### Images
 
-- Content references assets domain-free (`/image/...`, `/musics/...`); the build prefixes them with the asset origin from `src/site.config.ts#assetBases` — `.top` → `cdn.fancyflow.top` (R2), `.cn` → `cdn.fancyflow.cn` (self-hosted nginx), overridable via `ASSET_BASE`
-- `src/plugins/remark-asset-base.ts` rewrites body images; `src/utils/asset.ts#assetUrl()` handles covers, music and avatars
-- CN assets live in the deploy web root (`/var/www/fancyflow.cn/{image,musics}`) served by `cdn.fancyflow.cn` (`docs/cdn-nginx.conf`, one-shot setup: `docs/setup-cdn.sh`); the `.cn` workflow excludes them from `rsync --delete`
+- Content references assets domain-free (`/image/...`, `/musics/...`); the build prefixes them with `src/site.config.ts#assetBases` — `.top` → `cdn.fancyflow.top` (R2), `.cn` → `""` (same-origin), overridable via `ASSET_BASE`
+- `src/plugins/remark-asset-base.ts` rewrites body images; `src/utils/asset.ts#assetUrl()` handles covers, music and avatars; both no-op when the asset base is empty
+- CN assets live outside the web root (`/var/www/cdn-fancyflow.cn/{image,musics}`) and are served same-origin via nginx `alias` (see `docs/nginx/`); `cdn.fancyflow.cn` (`docs/cdn-nginx.conf`) is kept for direct links / a future real CDN. The CN rsync keeps `--exclude=/image/ --exclude=/musics/` as a safety net
+- Deploy target is explicit: `DEPLOY_TARGET=cn|top` drives `site`, asset origin and `OUT_DIR` (`dist` vs `dist-top`); `isCN` comes from `__DEPLOY_TARGET__` injected via `vite.define`, never from hostname sniffing
 - Cover images + body images are **not** stored in the repo (originals live in gitignored `image/` / `musics/`), so `pnpm build` never downloads remote images
 - Masthead cover = plain `<img>` (bypasses `astro:assets`) inside an `aspect-[16/9]` wrapper — removes CLS and build-time CDN pulls
 - Body markdown images render as raw `<img>` → fetched at page-view time by the browser
@@ -61,8 +63,11 @@
 
 ## Deploy
 
-- `git push` → GitHub Actions SSH to cloud server → pull → `pnpm build` → nginx → `fancyflow.top`
-- `pnpm postbuild` auto-runs after `pnpm build` (pnpm lifecycle), **not** after `build:fast`
+- `git push` → GitHub Actions builds **both** variants in one job → uploads artifacts → two rsync jobs receive files; servers never run Node/pnpm
+- `fancyflow.cn` is primary and canonical for both sites; `.top` stays crawlable but canonicalizes to `.cn`
+- Each deploy snapshots the previous web root to `/var/www/.releases/` (hardlinks, keeps 3); set repo variable `DEPLOY_TOP=false` to stop shipping the mirror
+- `pnpm postbuild` auto-runs after `pnpm build` (pnpm lifecycle), **not** after `build:fast`; `build:top` invokes `scripts/pagefind.mjs` itself
+- Server-side asset move + nginx cache/alias config: `docs/nginx/README.md`
 
 ## R2 Images
 

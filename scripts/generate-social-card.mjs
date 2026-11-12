@@ -30,7 +30,7 @@ const markup = html`
       tw="flex items-end justify-between w-full px-12 py-8 border-t border-[#dbdbdb] text-2xl text-[#6b6b6b]"
     >
       <span tw="text-[#545454]">Personal blog · Astro</span>
-      <span tw="text-[#8e8e8e]">fancyflow.top</span>
+      <span tw="text-[#8e8e8e]">fancyflow.cn</span>
     </div>
   </div>
 `;

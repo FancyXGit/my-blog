@@ -1,3 +1,5 @@
+declare const __DEPLOY_TARGET__: "cn" | "top";
+
 declare module "@pagefind/default-ui" {
 	declare class PagefindUI {
 		constructor(arg: unknown);

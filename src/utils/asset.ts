@@ -1,9 +1,9 @@
 import { assetBases } from "@/site.config";
-import { isCN } from "@/utils/site";
+import { deployTarget } from "@/utils/site";
 
-// Build-time asset origin: the mainland build serves assets from cdn.fancyflow.cn,
-// the international build from Cloudflare R2 (cdn.fancyflow.top).
-export const assetBase = isCN ? assetBases.cn : assetBases.top;
+// Build-time asset origin: the mainland build serves assets same-origin (nginx
+// `alias`), the international mirror from Cloudflare R2 (cdn.fancyflow.top).
+export const assetBase = assetBases[deployTarget];
 
 const ABSOLUTE_URL_RE = /^([a-z][a-z0-9+.-]*:)?\/\//i;
 

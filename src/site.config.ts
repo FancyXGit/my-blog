@@ -22,13 +22,22 @@ export const siteConfig: SiteConfig = {
 	title: "FancyXGit",
 };
 
+// Primary (mainland) site. Every build emits this as its canonical origin; the
+// `.top` deployment is an overseas mirror that stays crawlable but consolidates
+// search signals here.
+export const canonicalOrigin = "https://fancyflow.cn";
+export const mirrorOrigin = "https://fancyflow.top";
+
 // Asset origins per deployment. Content references assets with root-relative
 // paths (`/image/...`, `/musics/...`); the build prefixes them with one of these
 // origins, so the domain lives here instead of inside every markdown file.
 // A build-time `ASSET_BASE` env var overrides the derived value.
 export const assetBases = {
 	top: "https://cdn.fancyflow.top",
-	cn: "https://cdn.fancyflow.cn",
+	// Empty = same-origin (`fancyflow.cn/image/...`), which avoids the extra
+	// DNS/TLS round-trip. Set to https://cdn.fancyflow.cn once a real mainland
+	// CDN sits in front of the asset host.
+	cn: "",
 };
 
 // Used to generate links in both the Header & Footer.

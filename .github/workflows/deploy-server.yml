@@ -1,10 +1,14 @@
-name: Deploy Blog To Server
+name: Deploy Blog
 
 on:
   push:
     branches:
       - main
-      - master
+    paths-ignore:
+      - "worker/**"
+      - "docs/**"
+      - "README.md"
+      - "AGENTS.md"
   workflow_dispatch:
 
 concurrency:
@@ -12,115 +16,10 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  deploy:
-    name: Sync and Build on Server
+  build:
+    name: Build CN + Top
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      deployments: write
-
-    steps:
-      - name: Create deployment
-        id: create
-        uses: chrnorm/deployment-action@v2
-        with:
-          token: ${{ github.token }}
-          environment: production
-          target_url: https://fancyflow.top
-          task: deploy-blog
-
-      - name: Deploy via SSH
-        uses: appleboy/ssh-action@v1.2.0
-        env:
-          BRANCH_NAME: ${{ github.ref_name }}
-          SERVER_PATH: ${{ secrets.SERVER_PATH }}
-          SERVER_WEB_ROOT: ${{ secrets.SERVER_WEB_ROOT }}
-          RESTART_CMD: ${{ secrets.RESTART_CMD }}
-        with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SERVER_SSH_KEY }}
-          port: ${{ secrets.SERVER_PORT }}
-          envs: BRANCH_NAME,SERVER_PATH,SERVER_WEB_ROOT,RESTART_CMD
-          script_stop: true
-          script: |
-            set -e
-
-            if [ -z "$SERVER_PATH" ]; then
-              echo "SERVER_PATH is empty."
-              exit 1
-            fi
-
-            cd "$SERVER_PATH"
-
-            if [ ! -d .git ]; then
-              echo "No git repo found in SERVER_PATH: $SERVER_PATH"
-              exit 1
-            fi
-
-            git fetch --all --prune
-
-            if git show-ref --verify --quiet "refs/heads/$BRANCH_NAME"; then
-              git checkout "$BRANCH_NAME"
-            else
-              git checkout -b "$BRANCH_NAME" "origin/$BRANCH_NAME"
-            fi
-
-            # Force-sync with remote branch, including rollback after force-push.
-            git reset --hard "origin/$BRANCH_NAME"
-            git clean -fd
-
-            # Prevent stale content routes after deleting markdown files.
-            rm -rf .astro node_modules/.astro dist
-
-            run_pnpm() {
-              if command -v pnpm >/dev/null 2>&1; then
-                pnpm "$@"
-              elif command -v corepack >/dev/null 2>&1; then
-                corepack pnpm "$@"
-              else
-                echo "Neither pnpm nor corepack is available on server."
-                exit 1
-              fi
-            }
-
-            run_pnpm install --frozen-lockfile
-            run_pnpm build
-
-            if [ -n "$SERVER_WEB_ROOT" ]; then
-              if [ "$SERVER_WEB_ROOT" = "/" ]; then
-                echo "Refusing to deploy to root directory /."
-                exit 1
-              fi
-
-              rm -rf "$SERVER_WEB_ROOT"/*
-              cp -a dist/. "$SERVER_WEB_ROOT"/
-            fi
-
-            if [ -n "$RESTART_CMD" ]; then
-              sh -lc "$RESTART_CMD"
-            fi
-
-      - name: Mark deployment success
-        if: success()
-        uses: chrnorm/deployment-status@v2
-        with:
-          token: ${{ github.token }}
-          environment-url: https://fancyflow.top
-          deployment-id: ${{ steps.create.outputs.deployment_id }}
-          state: success
-
-      - name: Mark deployment failure
-        if: failure()
-        uses: chrnorm/deployment-status@v2
-        with:
-          token: ${{ github.token }}
-          deployment-id: ${{ steps.create.outputs.deployment_id }}
-          state: failure
-
-  deploy-cn:
-    name: Build and Deploy CN Site
-    runs-on: ubuntu-latest
+    timeout-minutes: 20
     permissions:
       contents: read
 
@@ -130,29 +29,183 @@ jobs:
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
-        with:
-          version: 9
 
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version-file: .nvmrc
           cache: pnpm
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Build (mainland variant)
-        run: pnpm build
-        env:
-          SITE_URL: https://fancyflow.cn/
+      - name: Typecheck
+        run: pnpm check
 
+      # Primary mainland site: same-origin assets, canonical origin = fancyflow.cn.
+      - name: Build (cn)
+        run: pnpm build
+
+      # Overseas mirror: R2 assets, but canonical still points to fancyflow.cn.
+      # Webmentions only exist on this variant; keep the env scoped to this step.
+      - name: Build (top)
+        run: pnpm build:top
+        env:
+          WEBMENTION_API_KEY: ${{ secrets.WEBMENTION_API_KEY }}
+          WEBMENTION_URL: ${{ secrets.WEBMENTION_URL }}
+          WEBMENTION_PINGBACK: ${{ secrets.WEBMENTION_PINGBACK }}
+
+      - name: Upload CN artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist-cn
+          path: dist
+          if-no-files-found: error
+          retention-days: 3
+
+      - name: Upload Top artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist-top
+          path: dist-top
+          if-no-files-found: error
+          retention-days: 3
+
+  deploy-cn:
+    name: Deploy CN (primary)
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment:
+      name: production-cn
+      url: https://fancyflow.cn
+    permissions:
+      contents: read
+
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: dist-cn
+          path: dist-cn
+
+      - name: Snapshot current site
+        uses: appleboy/ssh-action@v1.2.0
+        env:
+          WEB_ROOT: ${{ secrets.CN_WEB_ROOT }}
+        with:
+          host: ${{ secrets.CN_SERVER_HOST }}
+          username: ${{ secrets.CN_SERVER_USER }}
+          key: ${{ secrets.CN_SERVER_SSH_KEY }}
+          port: ${{ secrets.CN_SERVER_PORT || 22 }}
+          envs: WEB_ROOT
+          script_stop: true
+          script: |
+            set -e
+            WEB_ROOT="${WEB_ROOT%/}"
+            if [ -z "$WEB_ROOT" ] || [ "$WEB_ROOT" = "/" ]; then
+              echo "Invalid CN_WEB_ROOT: '$WEB_ROOT'"
+              exit 1
+            fi
+            if [ ! -d "$WEB_ROOT" ]; then
+              echo "Web root does not exist yet; skipping snapshot."
+              exit 0
+            fi
+            BACKUP_ROOT="$(dirname "$WEB_ROOT")/.releases"
+            if ! mkdir -p "$BACKUP_ROOT" 2>/dev/null; then
+              echo "Cannot create $BACKUP_ROOT; skipping snapshot."
+              exit 0
+            fi
+            SNAPSHOT="$BACKUP_ROOT/site-$(date -u +%Y%m%d-%H%M%S)"
+            if ! cp -al "$WEB_ROOT" "$SNAPSHOT" 2>/dev/null; then
+              echo "Hardlink snapshot failed; trying a full copy."
+              rm -rf "$SNAPSHOT"
+              if ! cp -a "$WEB_ROOT" "$SNAPSHOT" 2>/dev/null; then
+                echo "Snapshot failed; continuing without one."
+                exit 0
+              fi
+            fi
+            ls -1dt "$BACKUP_ROOT"/site-* 2>/dev/null | tail -n +4 | xargs -r rm -rf
+            echo "Snapshot: $SNAPSHOT"
+
+      # image/ and musics/ live outside the webroot after the asset cutover; the
+      # excludes are kept as a safety net for servers that have not migrated yet.
       - name: Deploy via rsync
         uses: burnett01/rsync-deployments@7.0.1
         with:
-          switches: -avz --delete --exclude=/image/ --exclude=/musics/ --exclude=/.well-known/
-          path: dist/
+          switches: -avz --delete --exclude=/.well-known/ --exclude=/image/ --exclude=/musics/
+          path: dist-cn/
           remote_path: ${{ secrets.CN_WEB_ROOT }}/
           remote_host: ${{ secrets.CN_SERVER_HOST }}
           remote_user: ${{ secrets.CN_SERVER_USER }}
           remote_key: ${{ secrets.CN_SERVER_SSH_KEY }}
+          remote_port: ${{ secrets.CN_SERVER_PORT || 22 }}
+
+  deploy-top:
+    name: Deploy Top (mirror)
+    needs: build
+    if: vars.DEPLOY_TOP != 'false'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment:
+      name: production-top
+      url: https://fancyflow.top
+    permissions:
+      contents: read
+
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: dist-top
+          path: dist-top
+
+      - name: Snapshot current site
+        uses: appleboy/ssh-action@v1.2.0
+        env:
+          WEB_ROOT: ${{ secrets.SERVER_WEB_ROOT }}
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          port: ${{ secrets.SERVER_PORT || 22 }}
+          envs: WEB_ROOT
+          script_stop: true
+          script: |
+            set -e
+            WEB_ROOT="${WEB_ROOT%/}"
+            if [ -z "$WEB_ROOT" ] || [ "$WEB_ROOT" = "/" ]; then
+              echo "Invalid SERVER_WEB_ROOT: '$WEB_ROOT'"
+              exit 1
+            fi
+            if [ ! -d "$WEB_ROOT" ]; then
+              echo "Web root does not exist yet; skipping snapshot."
+              exit 0
+            fi
+            BACKUP_ROOT="$(dirname "$WEB_ROOT")/.releases"
+            if ! mkdir -p "$BACKUP_ROOT" 2>/dev/null; then
+              echo "Cannot create $BACKUP_ROOT; skipping snapshot."
+              exit 0
+            fi
+            SNAPSHOT="$BACKUP_ROOT/site-$(date -u +%Y%m%d-%H%M%S)"
+            if ! cp -al "$WEB_ROOT" "$SNAPSHOT" 2>/dev/null; then
+              echo "Hardlink snapshot failed; trying a full copy."
+              rm -rf "$SNAPSHOT"
+              if ! cp -a "$WEB_ROOT" "$SNAPSHOT" 2>/dev/null; then
+                echo "Snapshot failed; continuing without one."
+                exit 0
+              fi
+            fi
+            ls -1dt "$BACKUP_ROOT"/site-* 2>/dev/null | tail -n +4 | xargs -r rm -rf
+            echo "Snapshot: $SNAPSHOT"
+
+      - name: Deploy via rsync
+        uses: burnett01/rsync-deployments@7.0.1
+        with:
+          switches: -avz --delete --exclude=/.well-known/
+          path: dist-top/
+          remote_path: ${{ secrets.SERVER_WEB_ROOT }}/
+          remote_host: ${{ secrets.SERVER_HOST }}
+          remote_user: ${{ secrets.SERVER_USER }}
+          remote_key: ${{ secrets.SERVER_SSH_KEY }}
+          remote_port: ${{ secrets.SERVER_PORT || 22 }}
