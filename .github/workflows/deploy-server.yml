@@ -89,30 +89,39 @@ jobs:
           name: dist-cn
           path: dist-cn
 
+      - name: Resolve deploy root
+        id: root
+        env:
+          WEB_ROOT: ${{ secrets.CN_WEB_ROOT }}
+        run: |
+          root="${WEB_ROOT%/}"
+          if [ -z "$root" ] || [ "$root" = "/" ]; then
+            echo "::error::CN_WEB_ROOT is missing or invalid"
+            exit 1
+          fi
+          echo "root=$root" >> "$GITHUB_OUTPUT"
+          echo "Deploying to $root"
+
+      # Best-effort snapshot: never block the deploy if the server lacks space or
+      # permissions. Restore with: rsync --delete <snapshot>/ <web_root>/
       - name: Snapshot current site
         uses: appleboy/ssh-action@v1.2.0
         env:
-          WEB_ROOT: ${{ secrets.CN_WEB_ROOT }}
+          WEB_ROOT: ${{ steps.root.outputs.root }}
         with:
           host: ${{ secrets.CN_SERVER_HOST }}
           username: ${{ secrets.CN_SERVER_USER }}
           key: ${{ secrets.CN_SERVER_SSH_KEY }}
           port: ${{ secrets.CN_SERVER_PORT || 22 }}
           envs: WEB_ROOT
-          script_stop: true
           script: |
-            set -e
             WEB_ROOT="${WEB_ROOT%/}"
-            if [ -z "$WEB_ROOT" ] || [ "$WEB_ROOT" = "/" ]; then
-              echo "Invalid CN_WEB_ROOT: '$WEB_ROOT'"
-              exit 1
-            fi
-            if [ ! -d "$WEB_ROOT" ]; then
-              echo "Web root does not exist yet; skipping snapshot."
+            if [ -z "$WEB_ROOT" ] || [ "$WEB_ROOT" = "/" ] || [ ! -d "$WEB_ROOT" ]; then
+              echo "Skipping snapshot ($WEB_ROOT)."
               exit 0
             fi
             BACKUP_ROOT="$(dirname "$WEB_ROOT")/.releases"
-            if ! mkdir -p "$BACKUP_ROOT" 2>/dev/null; then
+            if ! mkdir -p "$BACKUP_ROOT"; then
               echo "Cannot create $BACKUP_ROOT; skipping snapshot."
               exit 0
             fi
@@ -125,8 +134,9 @@ jobs:
                 exit 0
               fi
             fi
-            ls -1dt "$BACKUP_ROOT"/site-* 2>/dev/null | tail -n +4 | xargs -r rm -rf
+            ls -1dt "$BACKUP_ROOT"/site-* 2>/dev/null | tail -n +4 | xargs -r rm -rf || true
             echo "Snapshot: $SNAPSHOT"
+            exit 0
 
       # image/ and musics/ live outside the webroot after the asset cutover; the
       # excludes are kept as a safety net for servers that have not migrated yet.
@@ -135,7 +145,7 @@ jobs:
         with:
           switches: -avz --delete --exclude=/.well-known/ --exclude=/image/ --exclude=/musics/
           path: dist-cn/
-          remote_path: ${{ secrets.CN_WEB_ROOT }}/
+          remote_path: ${{ steps.root.outputs.root }}/
           remote_host: ${{ secrets.CN_SERVER_HOST }}
           remote_user: ${{ secrets.CN_SERVER_USER }}
           remote_key: ${{ secrets.CN_SERVER_SSH_KEY }}
@@ -160,30 +170,48 @@ jobs:
           name: dist-top
           path: dist-top
 
+      # The legacy server built in-place under SERVER_PATH, so its nginx root may
+      # be SERVER_PATH/dist. Prefer an explicit SERVER_WEB_ROOT when it exists.
+      - name: Resolve deploy root
+        id: root
+        env:
+          WEB_ROOT: ${{ secrets.SERVER_WEB_ROOT }}
+          SERVER_PATH: ${{ secrets.SERVER_PATH }}
+        run: |
+          root="${WEB_ROOT%/}"
+          if [ -z "$root" ]; then
+            path="${SERVER_PATH%/}"
+            if [ -n "$path" ]; then
+              root="$path/dist"
+            fi
+          fi
+          if [ -z "$root" ] || [ "$root" = "/" ]; then
+            echo "::error::Set SERVER_WEB_ROOT, or SERVER_PATH so SERVER_PATH/dist can be used"
+            exit 1
+          fi
+          echo "root=$root" >> "$GITHUB_OUTPUT"
+          echo "Deploying to $root"
+
+      # Best-effort snapshot: never block the deploy if the server lacks space or
+      # permissions.
       - name: Snapshot current site
         uses: appleboy/ssh-action@v1.2.0
         env:
-          WEB_ROOT: ${{ secrets.SERVER_WEB_ROOT }}
+          WEB_ROOT: ${{ steps.root.outputs.root }}
         with:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: ${{ secrets.SERVER_PORT || 22 }}
           envs: WEB_ROOT
-          script_stop: true
           script: |
-            set -e
             WEB_ROOT="${WEB_ROOT%/}"
-            if [ -z "$WEB_ROOT" ] || [ "$WEB_ROOT" = "/" ]; then
-              echo "Invalid SERVER_WEB_ROOT: '$WEB_ROOT'"
-              exit 1
-            fi
-            if [ ! -d "$WEB_ROOT" ]; then
-              echo "Web root does not exist yet; skipping snapshot."
+            if [ -z "$WEB_ROOT" ] || [ "$WEB_ROOT" = "/" ] || [ ! -d "$WEB_ROOT" ]; then
+              echo "Skipping snapshot ($WEB_ROOT)."
               exit 0
             fi
             BACKUP_ROOT="$(dirname "$WEB_ROOT")/.releases"
-            if ! mkdir -p "$BACKUP_ROOT" 2>/dev/null; then
+            if ! mkdir -p "$BACKUP_ROOT"; then
               echo "Cannot create $BACKUP_ROOT; skipping snapshot."
               exit 0
             fi
@@ -196,15 +224,16 @@ jobs:
                 exit 0
               fi
             fi
-            ls -1dt "$BACKUP_ROOT"/site-* 2>/dev/null | tail -n +4 | xargs -r rm -rf
+            ls -1dt "$BACKUP_ROOT"/site-* 2>/dev/null | tail -n +4 | xargs -r rm -rf || true
             echo "Snapshot: $SNAPSHOT"
+            exit 0
 
       - name: Deploy via rsync
         uses: burnett01/rsync-deployments@7.0.1
         with:
           switches: -avz --delete --exclude=/.well-known/
           path: dist-top/
-          remote_path: ${{ secrets.SERVER_WEB_ROOT }}/
+          remote_path: ${{ steps.root.outputs.root }}/
           remote_host: ${{ secrets.SERVER_HOST }}
           remote_user: ${{ secrets.SERVER_USER }}
           remote_key: ${{ secrets.SERVER_SSH_KEY }}

@@ -165,7 +165,8 @@ $$
 - 两个站点 canonical 都指向 `https://fancyflow.cn`,top 保持可索引但不再与主站争权重
 - 发布前自动跑 `pnpm check`;每次发布前会在服务器 `/var/www/.releases/` 留一份硬链接快照(保留最近 3 份)
 - 暂停海外镜像:仓库变量 `DEPLOY_TOP=false` 即可,不需要改 workflow
-- 需要但仓库里没有的 secrets:`CN_SERVER_HOST/USER/PORT/SSH_KEY/WEB_ROOT`、`SERVER_HOST/USER/PORT/SSH_KEY/WEB_ROOT`、`WEBMENTION_API_KEY/URL/PINGBACK`(仅 top 构建使用)
+- 需要但仓库里没有的 secrets:`CN_SERVER_HOST/USER/PORT/SSH_KEY/WEB_ROOT`、`SERVER_HOST/USER/PORT/SSH_KEY`、`WEBMENTION_API_KEY/URL/PINGBACK`(仅 top 构建使用)
+- top 的发布目录优先取 `SERVER_WEB_ROOT`;未设置时回退到旧的 `SERVER_PATH/dist`(旧 workflow 在服务器上原地构建,nginx root 通常就是它)
 - 资源目录迁移与 nginx 缓存配置见 `docs/nginx/README.md`
 - `pnpm postbuild`(Pagefind)仅在 `pnpm build` 后由 pnpm 生命周期自动执行;`build:top` 内显式调用 `scripts/pagefind.mjs`
 
