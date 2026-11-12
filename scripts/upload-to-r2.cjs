@@ -133,7 +133,7 @@ function parseArgs(argv) {
 }
 
 function printHelp() {
-  console.log(`\nMixed file uploader -> R2 and/or CN server\n\nBehavior:\n  - Images (.png/.jpg/.jpeg/.webp) are converted to .webp once, then uploaded\n  - Other files are uploaded as-is\n  - Targets: Cloudflare R2 (cdn.fancyflow.top) and/or the CN server via SFTP (cdn.fancyflow.cn)\n\nUsage:\n  node scripts/upload-to-r2.cjs <file-or-dir> [more files/dirs...] [options]\n\nOptions:\n  --no-r2                 Skip the R2 upload (CN only)\n  --no-cn                 Skip the CN upload (R2 only)\n  --cn                    Require the CN upload (fail if CN config is missing)\n  --dry-run               Connect and compare, but do not write anything\n  --quality, -q <1-100>   WebP quality (default: 82)\n  --effort, -e <0-6>      WebP effort (default: 5)\n  --no-recursive          Do not walk subdirectories\n  --content-type <type>   Override Content-Type for non-image files\n  --cache-control <value> Cache-Control for R2 objects\n\nExamples:\n  node scripts/upload-to-r2.cjs image musics              # R2 + CN
+  console.log(`\nMixed file uploader -> R2 and/or CN server\n\nBehavior:\n  - Images (.png/.jpg/.jpeg/.webp) are converted to .webp once, then uploaded\n  - Other files are uploaded as-is\n  - Targets: Cloudflare R2 (cdn.fancyflow.top) and/or the CN server via SFTP (cdn.fancyflow.cn)\n\nUsage:\n  node scripts/upload-to-r2.cjs <file-or-dir> [more files/dirs...] [options]\n\nOptions:\n  --no-r2                 Skip the R2 upload (CN only)\n  --no-cn                 Skip the CN upload (R2 only)\n  --cn                    Require the CN upload (fail if CN config is missing)\n  --dry-run               Connect and compare, but do not write anything\n  --quality, -q <1-100>   WebP quality (default: 82)\n  --effort, -e <0-6>      WebP effort (default: 5)\n  --no-recursive          Do not walk subdirectories\n  --content-type <type>   Override Content-Type for non-image files\n  --cache-control <value> Cache-Control for R2 objects (default: public, max-age=604800)\n\nExamples:\n  node scripts/upload-to-r2.cjs image musics              # R2 + CN
   node scripts/upload-to-r2.cjs image/post/xxx --no-r2    # CN only
   node scripts/upload-to-r2.cjs public --no-cn            # R2 only
   node scripts/upload-to-r2.cjs image --dry-run           # preview
@@ -146,6 +146,7 @@ R2 config (via env vars or .env.r2):
   R2_PUBLIC_BASE_URL
   R2_REGION            (optional, default: auto)
   R2_PREFIX            (optional, object key prefix)
+  R2_CACHE_CONTROL     (optional, default: public, max-age=604800)
 
 CN config (via env vars or .env.r2):
   CN_ASSET_SSH_ALIAS   (optional, e.g. "new" -> read ~/.ssh/config Host block)
@@ -153,7 +154,7 @@ CN config (via env vars or .env.r2):
   CN_ASSET_PORT        (optional, default: 22)
   CN_ASSET_USER
   CN_ASSET_KEY_PATH
-  CN_ASSET_ROOT        (remote dir, e.g. /var/www/fancyflow.cn)
+  CN_ASSET_ROOT        (remote dir, e.g. /var/www/cdn-fancyflow.cn)
   CN_PUBLIC_BASE_URL   (optional, e.g. https://cdn.fancyflow.cn)
 
 WebP config (optional):
@@ -469,6 +470,10 @@ async function main() {
 
       if (useR2) {
         let lastPercent = -1;
+        // Default long-ish cache: assets are referenced by stable paths, so keep
+        // this at a week and override with R2_CACHE_CONTROL when needed.
+        const cacheControl =
+          options.cacheControl || process.env.R2_CACHE_CONTROL || "public, max-age=604800";
         const uploader = new Upload({
           client: s3,
           params: {
@@ -476,7 +481,7 @@ async function main() {
             Key: key,
             Body: body,
             ContentType: contentType,
-            ...(options.cacheControl ? { CacheControl: options.cacheControl } : {}),
+            CacheControl: cacheControl,
           },
         });
 

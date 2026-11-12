@@ -3,18 +3,21 @@ import PageLayout from "@/layouts/Base.astro";
 import Giscus from "@/components/blog/Giscus.astro";
 import FriendLinkCard from "@/components/links/FriendLinkCard.astro";
 import { friendLinks } from "@/data/links";
+import { canonicalOrigin } from "@/site.config";
 
 const meta = {
 	description: "与好友的站点互相链接",
 	title: "友情链接",
 };
 
-const siteRoot = new URL("/", Astro.site).href;
+// Advertise the primary site even from the mirror so friend links do not spread
+// a domain that may be retired later.
+const siteRoot = new URL("/", canonicalOrigin).href;
 
 const example = `Name: FancyXGit
 Desc: Drifting in the ocean all alone
 Link: ${siteRoot}
-Avatar: ${new URL("/cat.png", Astro.site).href}`;
+Avatar: ${new URL("/cat.png", canonicalOrigin).href}`;
 ---
 
 <PageLayout meta={meta}>

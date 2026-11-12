@@ -5,7 +5,7 @@ import icon from "astro-icon";
 import robotsTxt from "astro-robots-txt";
 import webmanifest from "astro-webmanifest";
 import { defineConfig, envField } from "astro/config";
-import { assetBases, siteConfig } from "./src/site.config";
+import { assetBases, canonicalOrigin, mirrorOrigin, siteConfig } from "./src/site.config";
 
 // Remark plugins
 import remarkDirective from "remark-directive"; /* handle ::: directives as nodes */
@@ -28,11 +28,14 @@ import {
 } from "@shikijs/transformers";
 
 // https://astro.build/config
-const siteURL = process.env.SITE_URL ?? "https://fancyflow.top/";
-const isMainlandBuild = new URL(siteURL).hostname.endsWith("fancyflow.cn");
+// One explicit build target drives every deployment difference (canonical site,
+// asset origin and output dir). `cn` is the primary site, `top` the overseas mirror.
+const deployTarget: "cn" | "top" = process.env.DEPLOY_TARGET === "top" ? "top" : "cn";
+const siteURL =
+  process.env.SITE_URL ??
+  `${deployTarget === "top" ? mirrorOrigin : canonicalOrigin}/`;
 // Asset origin for this build: override with ASSET_BASE (empty string = same origin).
-const assetBase =
-  process.env.ASSET_BASE ?? (isMainlandBuild ? assetBases.cn : assetBases.top);
+const assetBase = process.env.ASSET_BASE ?? assetBases[deployTarget];
 
 export default defineConfig({
   image: {
@@ -133,9 +136,14 @@ export default defineConfig({
   },
   // https://docs.astro.build/en/guides/prefetch/
   prefetch: true,
-  // Defaults to the international domain; the mainland build sets SITE_URL=https://fancyflow.cn/.
+  // Per-target output so one CI job can build both variants (`dist`, `dist-top`).
+  outDir: process.env.OUT_DIR ?? "./dist",
+  // Set by `DEPLOY_TARGET` / `SITE_URL`; defaults to the primary mainland site.
   site: siteURL,
   vite: {
+    define: {
+      __DEPLOY_TARGET__: JSON.stringify(deployTarget),
+    },
     build: {
       sourcemap: false,
     },

@@ -259,7 +259,7 @@ pnpm r2:upload -- image --dry-run
 ```env
 CN_ASSET_SSH_ALIAS=new            # 复用 ~/.ssh/config 里的 Host 块
 # 或显式指定：CN_ASSET_HOST / CN_ASSET_PORT / CN_ASSET_USER / CN_ASSET_KEY_PATH
-CN_ASSET_ROOT=/var/www/fancyflow.cn
+CN_ASSET_ROOT=/var/www/cdn-fancyflow.cn
 CN_PUBLIC_BASE_URL=https://cdn.fancyflow.cn
 ```
 
@@ -267,4 +267,5 @@ CN_PUBLIC_BASE_URL=https://cdn.fancyflow.cn
 - 图片只压缩一次（sharp → webp），R2 和 CN 拿到的是同一份字节
 - 上传前用 `stat` 比对远端大小，已存在就跳过 → 可重复执行、断点续传
 - 非图片文件（mp3 / lrc 等）原样上传，仅走 SFTP
-- nginx 配置见 `docs/cdn-nginx.conf`；`.cn` 部署 workflow 已排除 `image/`、`musics/`，不会被 `rsync --delete` 清掉
+- nginx 配置见 `docs/cdn-nginx.conf`；资源目录位于站点 webroot 之外，部署 workflow 仍保留 `image/`、`musics/` 排除项作为兜底
+- 迁移到 `/var/www/cdn-fancyflow.cn` 之前，先按 `docs/nginx/README.md` 完成目录移动和 alias 配置，再修改本机 `.env.r2`

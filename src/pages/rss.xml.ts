@@ -1,5 +1,5 @@
 import { getAllPosts } from "@/data/post";
-import { siteConfig } from "@/site.config";
+import { canonicalOrigin, siteConfig } from "@/site.config";
 import rss from "@astrojs/rss";
 
 export const GET = async () => {
@@ -8,7 +8,7 @@ export const GET = async () => {
 	return rss({
 		title: siteConfig.title,
 		description: siteConfig.description,
-		site: import.meta.env.SITE,
+		site: canonicalOrigin,
 		customData: "<copyright>© FancyXGit · CC BY-NC-SA 4.0</copyright>",
 		items: posts.map((post) => ({
 			title: post.data.title,

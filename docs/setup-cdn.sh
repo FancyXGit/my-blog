@@ -9,6 +9,8 @@
 set -euo pipefail
 
 DOMAIN="cdn.fancyflow.cn"
+# ACME challenges live in the site webroot; the asset root is separate and is
+# configured inside cdn-nginx.conf (see docs/nginx/README.md for migration).
 WEBROOT="/var/www/fancyflow.cn"
 CONF_DIR="/etc/nginx/sites-available"
 CONF="${CONF_DIR}/${DOMAIN}"

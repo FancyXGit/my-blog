@@ -1,5 +1,4 @@
-// Build-time site region, derived from the configured `site` in astro.config.ts.
-// Build with SITE_URL=https://fancyflow.cn/ to produce the mainland (ICP) variant.
-const siteURL = import.meta.env.SITE ?? "https://fancyflow.top/";
-
-export const isCN = new URL(siteURL).hostname.endsWith("fancyflow.cn");
+// Build-time deploy target injected by astro.config.ts (`vite.define`).
+// "cn" = primary mainland site, "top" = overseas mirror.
+export const deployTarget = __DEPLOY_TARGET__;
+export const isCN = deployTarget === "cn";

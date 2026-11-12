@@ -1,6 +1,9 @@
-# FancyXGit's Blog — fancyflow.top
+# FancyXGit's Blog — fancyflow.cn
 
 个人博客源码:中文学习笔记(CS61C / CSAPP / 操作系统 / 金融等课程笔记)、日常想法与碎碎念,基于 [Astro](https://astro.build/) 构建,静态部署。
+
+- **主站**:[fancyflow.cn](https://fancyflow.cn)(国内,备案)
+- **海外镜像**:[fancyflow.top](https://fancyflow.top)(canonical 指向主站)
 
 ## 技术栈
 
@@ -21,7 +24,8 @@
 | 任务 | 命令 |
 |---|---|
 | 开发服务器 | `pnpm dev`(端口 **45873**) |
-| 生产构建(含 Pagefind 搜索索引) | `pnpm build` —— 生命周期自动跑 `postbuild` |
+| 生产构建 CN(含 Pagefind 搜索索引) | `pnpm build` —— 生命周期自动跑 `postbuild` |
+| 生产构建海外镜像 | `pnpm build:top` —— 输出到 `dist-top/` |
 | 快速本地构建(约 5s,跳过 Pagefind) | `pnpm build:fast` |
 | 只重建搜索索引 | `pnpm postbuild` |
 | 预览构建产物 | `pnpm preview` |
@@ -117,8 +121,8 @@ $$
 
 - **封面图与正文图都不存仓库**,统一放 `image/`、`musics/`(gitignore),上传后由两条链路分发:
   - `.top`:Cloudflare R2 + CDN(`cdn.fancyflow.top`)
-  - `.cn`:自有服务器 nginx(`cdn.fancyflow.cn`)
-- 文章里只写根相对路径(`/image/...`、`/musics/...`),构建时按 `SITE_URL` 拼上资源域名(`src/site.config.ts#assetBases`,可用 `ASSET_BASE` 覆盖);换域名只改这一处
+  - `.cn`:自有服务器,页面与资源**同源**(`/image/...`),物理文件在 `/var/www/cdn-fancyflow.cn/` 并通过 nginx `alias` 提供;`cdn.fancyflow.cn` 保留给将来的国内 CDN
+- 文章里只写根相对路径(`/image/...`、`/musics/...`),构建时按 `DEPLOY_TARGET` 决定资源域(`src/site.config.ts#assetBases`,可用 `ASSET_BASE` 覆盖);换域名只改这一处
 - 封面:顶部 16:9 容器 + 原生 `<img>`(`fetchpriority="high"`,构建不下载远程图)
 - 正文 markdown 图:构建时由 `rehype-image-attrs` 自动加 `loading="lazy"` + `decoding="async"`,渲染时浏览器按需拉取
 - 上传命令见 [R2 上传](#r2-上传);凭据放 `.env.r2`(已 gitignore,模板 `scripts/.env.r2.example`)
@@ -150,8 +154,20 @@ $$
 
 ## 部署
 
-- `git push` → GitHub Actions SSH 到云服务器 → `git pull` → `pnpm build` → nginx → **fancyflow.top**
-- `pnpm postbuild`(Pagefind)仅在 `pnpm build` 后由 pnpm 生命周期自动执行
+`git push` → GitHub Actions 一次构建两份产物 → 两台服务器只收文件(不再在服务器上构建):
+
+| 目标 | 构建命令 | 产物 | 发布方式 |
+|---|---|---|---|
+| `fancyflow.cn`(主站) | `pnpm build` | `dist/` | rsync 到 `CN_WEB_ROOT`,站点与资源同源 |
+| `fancyflow.top`(镜像) | `pnpm build:top` | `dist-top/` | rsync 到 `SERVER_WEB_ROOT`,资源走 R2 |
+
+- `DEPLOY_TARGET=cn|top` 是构建差异的唯一来源;`SITE_URL` / `ASSET_BASE` / `OUT_DIR` 均按它派生
+- 两个站点 canonical 都指向 `https://fancyflow.cn`,top 保持可索引但不再与主站争权重
+- 发布前自动跑 `pnpm check`;每次发布前会在服务器 `/var/www/.releases/` 留一份硬链接快照(保留最近 3 份)
+- 暂停海外镜像:仓库变量 `DEPLOY_TOP=false` 即可,不需要改 workflow
+- 需要但仓库里没有的 secrets:`CN_SERVER_HOST/USER/PORT/SSH_KEY/WEB_ROOT`、`SERVER_HOST/USER/PORT/SSH_KEY/WEB_ROOT`、`WEBMENTION_API_KEY/URL/PINGBACK`(仅 top 构建使用)
+- 资源目录迁移与 nginx 缓存配置见 `docs/nginx/README.md`
+- `pnpm postbuild`(Pagefind)仅在 `pnpm build` 后由 pnpm 生命周期自动执行;`build:top` 内显式调用 `scripts/pagefind.mjs`
 
 ## R2 上传
 
@@ -163,7 +179,7 @@ $$
 | `pnpm r2:upload-file` | 上传指定文件 |
 
 常用参数:`--no-r2`(只传 CN)、`--no-cn`(只传 R2)、`--dry-run`(预览)。
-CN 走 SFTP,连接信息可写 `CN_ASSET_SSH_ALIAS=new` 复用 `~/.ssh/config`,目录 `CN_ASSET_ROOT=/var/www/fancyflow.cn`。
+CN 走 SFTP,连接信息可写 `CN_ASSET_SSH_ALIAS=new` 复用 `~/.ssh/config`,目录 `CN_ASSET_ROOT=/var/www/cdn-fancyflow.cn`(迁移前仍是 `/var/www/fancyflow.cn`,顺序见 `docs/nginx/README.md`)。
 
 凭据在 `.env.r2`(gitignore,从 `scripts/.env.r2.example` 复制);详细说明见 `scripts/README-r2-upload.md`。
 
