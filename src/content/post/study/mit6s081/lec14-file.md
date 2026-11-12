@@ -7,7 +7,7 @@ seriesId: mit6s081
 orderInSeries: 9
 tags: ["学习", "MIT6.S081", "笔记", "操作系统"]
 coverImage:
-    src: "https://cdn.fancyflow.top/image/post/study/mit6s081/lec14/cover.webp"
+    src: "/image/post/study/mit6s081/lec14/cover.webp"
     alt: "大树"
 ---
 
@@ -30,7 +30,7 @@ coverImage:
 
 下面是磁盘的布局
 
-![XV6磁盘布局](https://cdn.fancyflow.top/image/post/study/mit6s081/lec14/disk-layout.webp)
+![XV6磁盘布局](/image/post/study/mit6s081/lec14/disk-layout.webp)
 
 | 块号 | 区域 | 块数 | 用途 |
 |------|------|------|------|
@@ -735,7 +735,7 @@ iput(struct inode *ip)
 
 `dinode.addrs`存放了文件数据的磁盘块号，前`0`-`11`是直接块地址，直接指向数据块，`12`是间接块地址，指向的间接块另外存储了额外的数据块地址，每个地址4字节，一个块至多存256个地址
 
-![磁盘上的文件布局](https://cdn.fancyflow.top/image/post/study/mit6s081/lec14/file-layout.webp)
+![磁盘上的文件布局](/image/post/study/mit6s081/lec14/file-layout.webp)
 
 `bmap`函数包装了这种表示逻辑，其返回`inode`下第`bn`个数据块的磁盘块号，如果没有就分配一个新的数据块并返回  
 由于修改了`inode.addrs`，必须持有`inode.lock`  

@@ -7,7 +7,7 @@ seriesId: csapp
 orderInSeries: 2
 tags: ["学习", "笔记", "CSAPP", "汇编语言", "x86-64"]
 coverImage:
-    src: "https://cdn.fancyflow.top/image/post/study/csapp/lec06/cover.webp"
+    src: "/image/post/study/csapp/lec06/cover.webp"
     alt: "春日的花朵"
 ---
 
@@ -32,7 +32,7 @@ CPU维护一组单个位的寄存器，称为条件码寄存器，包含以下�
   
 区别在于算数指令会修改目的寄存器的值，而比较指令**不会修改任何寄存器的值**，只设置条件码。
 
-![比较与测试指令](https://cdn.fancyflow.top/image/post/study/csapp/lec06/cmp-test-instructions.webp)
+![比较与测试指令](/image/post/study/csapp/lec06/cmp-test-instructions.webp)
 
 ## 访问条件码
 
@@ -40,7 +40,7 @@ CPU维护一组单个位的寄存器，称为条件码寄存器，包含以下�
   
 条件码寄存器不能直接访问，但可以通过设置指令将条件码的值存储到寄存器中：
 
-![设置指令](https://cdn.fancyflow.top/image/post/study/csapp/lec06/set-instructions.webp)
+![设置指令](/image/post/study/csapp/lec06/set-instructions.webp)
 
 :::tip
 `cmpq %rsi, %rdi`,`setl %al`需要把`cmpq`指令反过来看  
@@ -51,7 +51,7 @@ CPU维护一组单个位的寄存器，称为条件码寄存器，包含以下�
   
 条件跳转指令根据条件码的值决定是否跳转到指定标签：
 
-![条件跳转指令](https://cdn.fancyflow.top/image/post/study/csapp/lec06/jump-instructions.webp)
+![条件跳转指令](/image/post/study/csapp/lec06/jump-instructions.webp)
 
 :::note
 常见跳转指令的编码是PC相对的，会将目标指令的地址与紧跟在跳转指令**后面**那条指令的地址之间的差作为编码  
@@ -108,7 +108,7 @@ done:
     cmovz %rcx, %rbx     # 如果 test-expr 为 0，选择 else-result，否则选择 then-result
 ```
 
-![条件传送指令](https://cdn.fancyflow.top/image/post/study/csapp/lec06/conditional-move-instructions.webp)
+![条件传送指令](/image/post/study/csapp/lec06/conditional-move-instructions.webp)
 
 :::note
 条件传送仅适用于简单而且无副作用的分支

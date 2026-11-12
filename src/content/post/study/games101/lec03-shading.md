@@ -7,7 +7,7 @@ seriesId: games101
 orderInSeries: 3
 tags: ["学习", "笔记", "GAMES101", "图形学", "着色", "纹理"]
 coverImage:
-    src: "https://cdn.fancyflow.top/image/post/study/games101/lec03/cover.webp"
+    src: "/image/post/study/games101/lec03/cover.webp"
     alt: "水面与孤舟"
 ---
 
@@ -35,11 +35,11 @@ for 每个三角形 T:
 
 每个像素只保留最近的深度，后面的三角形可以任意顺序到达，先画的被挡住也没关系。每个三角形覆盖的样本各处理一次，总代价与所有三角形覆盖的样本数之和成正比，不需要排序，也容易并行。
 
-![渲染结果与同一帧的深度缓冲](https://cdn.fancyflow.top/image/post/study/games101/lec03/render-and-depth-buffer.webp)
+![渲染结果与同一帧的深度缓冲](/image/post/study/games101/lec03/render-and-depth-buffer.webp)
 
 深度缓冲要为每个像素额外存一个深度值，显存与帧缓冲同一量级。开了 MSAA 后，深度也按子样本存储，每个子样本各自比较。
 
-![两个三角形依次写入深度缓冲，深度更小的样本覆盖颜色](https://cdn.fancyflow.top/image/post/study/games101/lec03/z-buffer-example.webp)
+![两个三角形依次写入深度缓冲，深度更小的样本覆盖颜色](/image/post/study/games101/lec03/z-buffer-example.webp)
 
 Z-buffer 每个像素只保留一层，透明物体需要按从远到近排序后混合，或者用别的结构；它也不处理折射和多次反弹，那些要等到光线追踪。
 
@@ -47,7 +47,7 @@ Z-buffer 每个像素只保留一层，透明物体需要按从远到近排序�
 
 着色要算表面上某一点朝观察者发出的颜色。真实的光传输包含多次反弹，这里只做局部光照：每个点独立计算，不考虑阴影、互反射和折射。Blinn-Phong 是一个经验模型，把进入眼睛的光拆成环境光、漫反射和镜面反射三部分。
 
-![同一场景中的镜面高光、漫反射和环境光](https://cdn.fancyflow.top/image/post/study/games101/lec03/three-light-components.webp)
+![同一场景中的镜面高光、漫反射和环境光](/image/post/study/games101/lec03/three-light-components.webp)
 
 ### 向量与符号
 
@@ -77,11 +77,11 @@ $$
 \cos\theta=\mathbf n\cdot\mathbf l
 $$
 
-![Lambert 余弦定律：斜射时同样的光摊到更大面积](https://cdn.fancyflow.top/image/post/study/games101/lec03/lambert-cosine-law.webp)
+![Lambert 余弦定律：斜射时同样的光摊到更大面积](/image/post/study/games101/lec03/lambert-cosine-law.webp)
 
 再乘上距离衰减。点光源向外发散，半径 $r$ 的球面上总能量不变，球面积是 $4\pi r^2$，单位面积强度按 $1/r^2$ 下降。
 
-![点光源的强度按距离平方反比衰减](https://cdn.fancyflow.top/image/post/study/games101/lec03/inverse-square-law.webp)
+![点光源的强度按距离平方反比衰减](/image/post/study/games101/lec03/inverse-square-law.webp)
 
 $$
 L_d=k_d\frac{I}{r^2}\max(0,\mathbf n\cdot\mathbf l)
@@ -89,17 +89,17 @@ $$
 
 $\max(0,\cdot)$ 把背向光源的半个球面截成 0。$k_d$ 是漫反射系数，通常直接当作表面颜色；漫反射项与观察方向 $\mathbf v$ 无关，转到哪个角度看，亮度都一样。
 
-![漫反射只需要法线、光源方向和距离](https://cdn.fancyflow.top/image/post/study/games101/lec03/diffuse-vectors.webp)
+![漫反射只需要法线、光源方向和距离](/image/post/study/games101/lec03/diffuse-vectors.webp)
 
 ### 镜面反射
 
 镜面反射只在观察方向接近反射方向时出现。理想镜面把 $\mathbf l$ 关于 $\mathbf n$ 对称成 $\mathbf R$，$\mathbf v$ 与 $\mathbf R$ 的夹角越小越亮。
 
-![理想镜面反射方向与观察方向的夹角决定高光](https://cdn.fancyflow.top/image/post/study/games101/lec03/specular-reflection-lobe.webp)
+![理想镜面反射方向与观察方向的夹角决定高光](/image/post/study/games101/lec03/specular-reflection-lobe.webp)
 
 直接用 $\mathbf R$ 需要先算反射向量。Blinn-Phong 改看半程向量 $\mathbf h$ 与法线 $\mathbf n$ 的夹角：$\mathbf v$ 越接近 $\mathbf R$，$\mathbf h$ 越接近 $\mathbf n$。
 
-![半程向量与法线的夹角代替反射方向与观察方向的夹角](https://cdn.fancyflow.top/image/post/study/games101/lec03/half-vector.webp)
+![半程向量与法线的夹角代替反射方向与观察方向的夹角](/image/post/study/games101/lec03/half-vector.webp)
 
 $$
 L_s=k_s\frac{I}{r^2}\max(0,\mathbf n\cdot\mathbf h)^p
@@ -107,7 +107,7 @@ $$
 
 $p$ 是 shininess。$\max(0,\mathbf n\cdot\mathbf h)$ 落在 $[0,1]$，取 $p$ 次方后小于 1 的值被压小，$p$ 越大高光范围越窄、越锐。
 
-![镜面系数与 shininess 对高光的影响](https://cdn.fancyflow.top/image/post/study/games101/lec03/specular-parameter-sweep.webp)
+![镜面系数与 shininess 对高光的影响](/image/post/study/games101/lec03/specular-parameter-sweep.webp)
 
 ### 三项叠加
 
@@ -117,7 +117,7 @@ $$
 
 逐通道计算，三个系数可以分别是 RGB 颜色，$L$ 就是最终颜色。
 
-![环境光、漫反射、镜面反射叠加得到 Blinn-Phong 结果](https://cdn.fancyflow.top/image/post/study/games101/lec03/blinn-phong-sum.webp)
+![环境光、漫反射、镜面反射叠加得到 Blinn-Phong 结果](/image/post/study/games101/lec03/blinn-phong-sum.webp)
 
 Blinn-Phong 是经验模型，不满足能量守恒，$k_a+k_d+k_s$ 可以超过 1，也不产生阴影和互反射。它的价值在于便宜、参数直观，适合作为实时渲染的起点。
 
@@ -129,7 +129,7 @@ Blinn-Phong 是经验模型，不满足能量守恒，$k_a+k_d+k_s$ 可以超过
 - 顶点着色（Gouraud）：每个顶点算法线和颜色，三角形内部插值颜色。
 - 像素着色（Phong）：每个顶点算法线，内部插值法线，再逐像素算光照。
 
-![面着色、顶点着色、像素着色在相同网格密度下的差别](https://cdn.fancyflow.top/image/post/study/games101/lec03/shading-frequencies.webp)
+![面着色、顶点着色、像素着色在相同网格密度下的差别](/image/post/study/games101/lec03/shading-frequencies.webp)
 
 顶点法线通常由相邻面的法线加权平均得到，权重可以用面积或夹角；球、圆柱这类解析曲面可以直接由位置减球心得到法线。频率和反射模型是两件事：Blinn-Phong 是“每个点怎么算”，频率是“算多少个点”。
 
@@ -137,7 +137,7 @@ Blinn-Phong 是经验模型，不满足能量守恒，$k_a+k_d+k_s$ 可以超过
 
 ## 渲染管线
 
-![渲染管线的五个阶段与各阶段之间的数据](https://cdn.fancyflow.top/image/post/study/games101/lec03/graphics-pipeline.webp)
+![渲染管线的五个阶段与各阶段之间的数据](/image/post/study/games101/lec03/graphics-pipeline.webp)
 
 管线把上面的步骤串成固定顺序：
 
@@ -157,7 +157,7 @@ Blinn-Phong 是经验模型，不满足能量守恒，$k_a+k_d+k_s$ 可以超过
 
 这个对应关系叫参数化。常用做法是给每个顶点一组二维坐标 $(u,v)$，两个方向都归一化到 $[0,1]$，称为 UV；三角形内部每个像素的 UV 由重心坐标插值得到。
 
-![左侧是渲染结果，右侧是同一模型展开到纹理空间的三角形](https://cdn.fancyflow.top/image/post/study/games101/lec03/uv-mapping.webp)
+![左侧是渲染结果，右侧是同一模型展开到纹理空间的三角形](/image/post/study/games101/lec03/uv-mapping.webp)
 
 纹理里的像素叫 texel。纹理宽 $W$、高 $H$ 时，索引 $(i,j)$ 的 texel 覆盖 $[i/W,(i+1)/W]\times[j/H,(j+1)/H]$，中心在 $((i+0.5)/W,(j+0.5)/H)$。
 
@@ -198,7 +198,7 @@ $Z_t$ 正好是插值出来的 $w$。透视投影的 $w$ 与视空间深度成�
 
 一个屏幕像素在纹理空间覆盖的面积可大可小。纹理比像素密时，一个像素覆盖多个 texel，叫缩小；纹理比像素疏时，一个 texel 铺到多个像素上，叫放大。
 
-![像素在纹理空间的覆盖面积：小于一个 texel 为放大，大于一个 texel 为缩小](https://cdn.fancyflow.top/image/post/study/games101/lec03/upsampling-downsampling.webp)
+![像素在纹理空间的覆盖面积：小于一个 texel 为放大，大于一个 texel 为缩小](/image/post/study/games101/lec03/upsampling-downsampling.webp)
 
 最近邻是最直接的采样：把 UV 落到 texel 网格上，取所在格子的那个 texel。
 
@@ -208,7 +208,7 @@ $$
 
 $j$ 里的 $1-v$ 来自图像行从上到下、UV 从下到上。放大时，一个 texel 被复制成一块方块，边缘是硬的；缩小时，一个像素只取一个 texel，周围的信息被丢掉。
 
-![采样点周围的四个 texel；最近邻只取一个，双线性四个都参与](https://cdn.fancyflow.top/image/post/study/games101/lec03/nearest-neighbor.webp)
+![采样点周围的四个 texel；最近邻只取一个，双线性四个都参与](/image/post/study/games101/lec03/nearest-neighbor.webp)
 
 ### 双线性插值
 
@@ -237,7 +237,7 @@ $$
 
 $u_0$ 是下边两个 texel 的混合，$u_1$ 是上边两个的混合，最后按 $t$ 在两者之间过渡。
 
-![双线性插值先在水平方向插值，再在竖直方向插值](https://cdn.fancyflow.top/image/post/study/games101/lec03/bilinear-interpolation.webp)
+![双线性插值先在水平方向插值，再在竖直方向插值](/image/post/study/games101/lec03/bilinear-interpolation.webp)
 
 展开后是四个 texel 的加权和：
 
@@ -252,7 +252,7 @@ $$
 
 与最近邻相比，双线性只多三次插值和三次纹理读取，放大后边缘平滑，代价是高频被压低，纹理看起来软一点。
 
-![最近邻、双线性、双三次在放大时的对比](https://cdn.fancyflow.top/image/post/study/games101/lec03/nearest-bilinear-bicubic.webp)
+![最近邻、双线性、双三次在放大时的对比](/image/post/study/games101/lec03/nearest-bilinear-bicubic.webp)
 
 双三次插值用周围 $4\times4$ 个 texel，权重是三次函数，边缘更锐，代价是 16 次采样。实时渲染里双线性是默认，双三次多用于离线渲染或高质量放大。
 
@@ -262,7 +262,7 @@ $$
 
 放大时双线性已经够用，缩小时问题不在插值，而在采样率。一个像素覆盖 $k\times k$ 个 texel 时，点采样只取其中一个，剩下 $k^2-1$ 个被丢掉；纹理越清晰，高频越多，丢掉的信息越明显。结果和上一讲的走样一样：摩尔纹、闪烁，运动时还会抖动。
 
-![远处地面的网格出现摩尔纹，近处边缘出现锯齿](https://cdn.fancyflow.top/image/post/study/games101/lec03/minification-aliasing.webp)
+![远处地面的网格出现摩尔纹，近处边缘出现锯齿](/image/post/study/games101/lec03/minification-aliasing.webp)
 
 从信号的角度看，屏幕像素是采样点，纹理是连续信号。像素间距固定，采样率就固定；纹理细节超过 Nyquist 频率后，高频折叠进低频。解决思路仍然是先低通再采样：把像素覆盖区域内的 texel 平均成一个值，再参与着色，双线性只看了四个 texel，覆盖不了大面积的缩小。
 
@@ -272,7 +272,7 @@ $$
 
 Mipmap 预先算好一系列低通版本，查询时按覆盖面积选一层。第 0 层是原图，第 $k$ 层边长是原图的 $1/2^k$，每层由上一层 $2\times2$ 平均得到。
 
-![从 128×128 到 1×1 的 mipmap 金字塔](https://cdn.fancyflow.top/image/post/study/games101/lec03/mipmap-pyramid.webp)
+![从 128×128 到 1×1 的 mipmap 金字塔](/image/post/study/games101/lec03/mipmap-pyramid.webp)
 
 构建一次，查询时直接取；总显存是原图的 $1+\frac14+\frac1{16}+\cdots=\frac43$ 倍。
 
@@ -291,7 +291,7 @@ $$
 L=\max(L_x,L_y)
 $$
 
-![屏幕空间的一个像素映射到纹理空间是一个小四边形](https://cdn.fancyflow.top/image/post/study/games101/lec03/texture-footprint-derivatives.webp)
+![屏幕空间的一个像素映射到纹理空间是一个小四边形](/image/post/study/games101/lec03/texture-footprint-derivatives.webp)
 
 $L$ 是一个像素在纹理空间覆盖的最大边长，单位是 texel。层号取 $D=\log_2 L$，第 $D$ 层的 texel 边长正好是 $2^D$ 个原 texel，覆盖面积与像素匹配；例如 $L=4$ 时 $D=2$，用第 2 层，那一层一个 texel 对应原图的 $4\times4$ 个 texel。
 
@@ -309,7 +309,7 @@ $$
 
 一共两次双线性加一次线性插值。
 
-![使用 mipmap 后，远处的地面网格不再出现摩尔纹](https://cdn.fancyflow.top/image/post/study/games101/lec03/mipmap-result.webp)
+![使用 mipmap 后，远处的地面网格不再出现摩尔纹](/image/post/study/games101/lec03/mipmap-result.webp)
 
 代价是显存多 $1/3$、每次采样多一次双线性，构建时多一遍降采样；换来的是缩小时基本消除摩尔纹和闪烁。
 
@@ -317,10 +317,10 @@ $$
 
 Mipmap 假设一个像素在纹理空间的 footprint 是正方形，用最大边长 $L$ 选层就够。斜视时 footprint 是长条：沿一个方向拉得很长，另一个方向几乎没压缩，取最大边长会选到分辨率过低的层，短边方向被过度模糊。
 
-![斜视时，屏幕像素在纹理空间的 footprint 被拉成长条](https://cdn.fancyflow.top/image/post/study/games101/lec03/mipmap-overblur.webp)
+![斜视时，屏幕像素在纹理空间的 footprint 被拉成长条](/image/post/study/games101/lec03/mipmap-overblur.webp)
 
 地面向远处延伸时最明显，近处清晰，远处糊成一片。各向异性过滤沿长轴做多次采样，或者存矩形的 mipmap 层（RiPMAP），让两个方向用不同的压缩率，4x、8x、16x 表示沿长轴的采样次数；代价是采样数和显存上升。
 
-![RiPMAP 用矩形层覆盖长条形的 footprint](https://cdn.fancyflow.top/image/post/study/games101/lec03/anisotropic-filtering.webp)
+![RiPMAP 用矩形层覆盖长条形的 footprint](/image/post/study/games101/lec03/anisotropic-filtering.webp)
 
 还有 summed-area table 可以查询任意矩形区域，但显存和精度代价更大，实时渲染里不如各向异性过滤常用。Mipmap 解决的是缩小时的频率匹配，各向异性过滤补上方向上的差异，两者都发生在片元处理的纹理采样里。

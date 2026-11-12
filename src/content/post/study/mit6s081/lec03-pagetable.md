@@ -7,7 +7,7 @@ tags: ["学习", "MIT6.S081", "笔记", "操作系统", "内存"]
 seriesId: mit6s081
 orderInSeries: 2
 coverImage:
-    src: "https://cdn.fancyflow.top/image/post/study/mit6s081/lec03/cover.webp"
+    src: "/image/post/study/mit6s081/lec03/cover.webp"
     alt: "书屋与沙滩"
 ---
 
@@ -42,7 +42,7 @@ QEMU启动时硬编码128MB物理内存分配给XV6，也就是0x80000000 ~ 0x88
 将虚拟和物理内存恒等映射是避免自举问题。页表是内存里的普通数据，而编辑 PTE 的 store 指令本身也要被 MMU 翻译。想改页表，页表页必须已经能被访问——这构成递归
 :::
 
-![内核虚拟内存映射](https://cdn.fancyflow.top/image/post/study/mit6s081/lec03/kernel-memmap.webp)
+![内核虚拟内存映射](/image/post/study/mit6s081/lec03/kernel-memmap.webp)
 
 ### 页表结构
 
@@ -57,7 +57,7 @@ xv6 运行在 Sv39 RISC-V 上。64位虚拟内存空间中，只有底部39位�
 这意味着每一个页表一共有 $ 2^9 = 512 $ 个页表项，每个页表项占8字节，页表大小为 $ 512 * 8 = 4096 $ 字节，也就是一页  
 页表中的一项被称为PTE（Page Table Entry），包括物理页号和标志位
 
-![PTE结构](https://cdn.fancyflow.top/image/post/study/mit6s081/lec03/pte.webp)
+![PTE结构](/image/post/study/mit6s081/lec03/pte.webp)
 
 PTE内容随页表等级而不同，可以分为两种
 

@@ -7,7 +7,7 @@ seriesId: csapp
 orderInSeries: 9
 tags: ["学习", "笔记", "CSAPP", "操作系统", "IO"]
 coverImage:
-    src: "https://cdn.fancyflow.top/image/post/study/csapp/lec16/cover.webp"
+    src: "/image/post/study/csapp/lec16/cover.webp"
     alt: "悬崖与大海"
 ---
 
@@ -133,17 +133,17 @@ Linux使用三张表来管理文件系统中的文件，分别是描述符表，
 
 当一个进程打开一个文件时，内核会在描述符表中为该进程分配一个新的文件描述符，并在文件表中创建一个新的文件表项，记录该文件的访问模式和位置等信息，同时在v-node表中查找该文件的元数据，如果没有找到则创建一个新的v-node表项来记录该文件的元数据
 
-![Linux文件结构](https://cdn.fancyflow.top/image/post/study/csapp/lec16/linux-file-structure.webp)
+![Linux文件结构](/image/post/study/csapp/lec16/linux-file-structure.webp)
 
-![指向同一文件](https://cdn.fancyflow.top/image/post/study/csapp/lec16/same-file.webp)
+![指向同一文件](/image/post/study/csapp/lec16/same-file.webp)
 
 当`fork`系统调用创建一个新的子进程时，父进程的描述符表会被复制到子进程中，父子进程共享同一个文件表项和v-node表项
 
-![父子进程共享文件](https://cdn.fancyflow.top/image/post/study/csapp/lec16/fork-file.webp)
+![父子进程共享文件](/image/post/study/csapp/lec16/fork-file.webp)
 
 当使用`<`或者`>`等重定向符号时，系统通过调用`dup2`系统调用来复制文件描述符，将标准输入或者标准输出重定向到指定的文件描述符上
 
-![重定向](https://cdn.fancyflow.top/image/post/study/csapp/lec16/redirect.webp)
+![重定向](/image/post/study/csapp/lec16/redirect.webp)
 
 ## 标准I/O
 

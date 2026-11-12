@@ -7,7 +7,7 @@ seriesId: cs61c
 orderInSeries: 9
 tags: ["学习", "CS61C", "笔记", "CPU"]
 coverImage:
-    src: "https://cdn.fancyflow.top/image/post/study/cs61c/lec17/cover.webp"
+    src: "/image/post/study/cs61c/lec17/cover.webp"
     alt: "沙滩、森林与海洋"
 ---
 
@@ -26,13 +26,13 @@ coverImage:
 
 在单周期CPU中，这五个阶段在一个时钟周期内完成，每条指令的执行时间为一个时钟周期。
 
-![CPU执行指令的五个阶段](https://cdn.fancyflow.top/image/post/study/cs61c/lec17/data-path.webp)
+![CPU执行指令的五个阶段](/image/post/study/cs61c/lec17/data-path.webp)
 
 ### 寄存器文件
 
 在RISC-V架构中，寄存器文件(Register File)包含32个寄存器(`x0`到`x31`)，每个寄存器宽度为32位。
 
-![寄存器文件](https://cdn.fancyflow.top/image/post/study/cs61c/lec17/register-file.webp)
+![寄存器文件](/image/post/study/cs61c/lec17/register-file.webp)
 
 - 输入RA、RB的值（即寄存器的地址），可以从busA、busB读到对应寄存器的值
 - 将Write Enable置为1，在RW设置写入寄存器的地址，在busW设置要写入的数据，就可以将数据写入对应寄存器中
@@ -47,17 +47,17 @@ coverImage:
 设计中将内存分为指令内存和数据内存两部分，虽然它们在物理上是同一块内存  
 内存的模型表示与寄存器组类似
 
-![内存模型](https://cdn.fancyflow.top/image/post/study/cs61c/lec17/memory.webp)
+![内存模型](/image/post/study/cs61c/lec17/memory.webp)
 
 ## ADD
 
 先从最简单的ADD指令设计一个CPU，该CPU只能执行ADD指令。
 
-![ADD指令格式](https://cdn.fancyflow.top/image/post/study/cs61c/lec17/add-format.webp)
+![ADD指令格式](/image/post/study/cs61c/lec17/add-format.webp)
 
-![ADD指令的数据通路](https://cdn.fancyflow.top/image/post/study/cs61c/lec17/add-data-path.webp)
+![ADD指令的数据通路](/image/post/study/cs61c/lec17/add-data-path.webp)
 
-![ADD数据通路时间线](https://cdn.fancyflow.top/image/post/study/cs61c/lec17/add-timeline.webp)
+![ADD数据通路时间线](/image/post/study/cs61c/lec17/add-timeline.webp)
 
 下面是数据通路执行ADD指令的步骤：
 
@@ -73,7 +73,7 @@ coverImage:
 
 将ADD指令的数据通路扩展到R指令，只需要在ALU中增加一个控制信号来区分不同的R指令即可。
 
-![R指令的数据通路](https://cdn.fancyflow.top/image/post/study/cs61c/lec17/r-format-data-path.webp)
+![R指令的数据通路](/image/post/study/cs61c/lec17/r-format-data-path.webp)
 
 ## I格式
 
@@ -82,7 +82,7 @@ coverImage:
 为了适配I格式指令，首先需要一个立即数生成器(Immediate Generator)，将指令中的立即数部分提取出来并进行符号扩展。  
 同时，在ALU中增加一个多路选择器(MUX)来选择ALU的第二个操作数是来自寄存器文件还是立即数生成器。
 
-![I格式的数据通路](https://cdn.fancyflow.top/image/post/study/cs61c/lec17/i-format-data-path.webp)
+![I格式的数据通路](/image/post/study/cs61c/lec17/i-format-data-path.webp)
 
 执行立即数指令的步骤如下：
 
@@ -98,7 +98,7 @@ coverImage:
 
 加载指令与立即数指令的数据通路类似，区别在于ALU的结果需要通过数据内存(DMEM)进行访问，最终的结果写回寄存器文件。
 
-![加载指令的数据通路](https://cdn.fancyflow.top/image/post/study/cs61c/lec17/load-data-path.webp)
+![加载指令的数据通路](/image/post/study/cs61c/lec17/load-data-path.webp)
 
 执行加载指令的步骤如下：
 
@@ -112,18 +112,18 @@ coverImage:
 
 存储指令只需要添加一条从寄存器输入到内存的引线即可
 
-![S格式的数据通路](https://cdn.fancyflow.top/image/post/study/cs61c/lec17/s-format-data-path.webp)
+![S格式的数据通路](/image/post/study/cs61c/lec17/s-format-data-path.webp)
 
 ## B格式
 
 分支指令需要在ALU中增加一个比较器来比较两个寄存器的值，并根据比较结果决定是否更新PC计数器。  
 同时由于需要计算PC加上立即数，需要PC到ALU的一条引线。
 
-![B格式的数据通路](https://cdn.fancyflow.top/image/post/study/cs61c/lec17/b-format-data-path.webp)
+![B格式的数据通路](/image/post/study/cs61c/lec17/b-format-data-path.webp)
 
 对Branch Comp的说明:
 
-![Branch Comp](https://cdn.fancyflow.top/image/post/study/cs61c/lec17/branch-comp.webp)
+![Branch Comp](/image/post/study/cs61c/lec17/branch-comp.webp)
 
 - 输入$A=B$时，BrEq输出1
 - 输入$A \lt B$时，BrLT输出1
@@ -135,14 +135,14 @@ JALR指令`JALR rd, rs1, imm`的功能是将PC加4的值写入寄存器`rd`，�
 PC更新的部分与B格式指令类似，都是通过ALU计算出新的PC值。  
 需要新增一条从PC到寄存器组的引线来将PC加4的值写入寄存器`rd`。
 
-![JALR的数据通路](https://cdn.fancyflow.top/image/post/study/cs61c/lec17/jalr-data-path.webp)
+![JALR的数据通路](/image/post/study/cs61c/lec17/jalr-data-path.webp)
 
 ## J格式
 
 J格式只有JAL指令，`JAL rd, imm`的功能是将PC加4的值写入寄存器`rd`，并将PC更新为当前PC加上立即数`imm`。
 J格式可以完全复用之前的数据通路，无需增加新的引线。
 
-![J格式的数据通路](https://cdn.fancyflow.top/image/post/study/cs61c/lec17/j-format-data-path.webp)
+![J格式的数据通路](/image/post/study/cs61c/lec17/j-format-data-path.webp)
 
 ## U格式
 
@@ -150,7 +150,7 @@ U格式只是匹配立即数的，只需要改变立即数生成器的输入和�
 
 ## 总结
 
-![单周期CPU的数据通路](https://cdn.fancyflow.top/image/post/study/cs61c/lec17/full-data-path.webp)
+![单周期CPU的数据通路](/image/post/study/cs61c/lec17/full-data-path.webp)
 
 ## 控制电路
 

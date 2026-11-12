@@ -7,13 +7,13 @@ seriesId: cs61c
 orderInSeries: 6
 tags: ["学习", "CS61C", "笔记", "编译原理"]
 coverImage:
-    src: "https://cdn.fancyflow.top/image/post/study/cs61c/lec13/cover.webp"
+    src: "/image/post/study/cs61c/lec13/cover.webp"
     alt: "黄昏下湖面映照的火烧云"
 ---
 
 ## 程序执行过程
 
-![程序执行过程](https://cdn.fancyflow.top/image/post/study/cs61c/lec13/procedure.webp)
+![程序执行过程](/image/post/study/cs61c/lec13/procedure.webp)
 
 1. **编译**：将C语言转为汇编语言，多个`.c`文件被编译成对应的`.s`文件。
 2. **汇编**：将汇编语言转为机器语言，每个`.s`文件被汇编成对应的`.o`文件。

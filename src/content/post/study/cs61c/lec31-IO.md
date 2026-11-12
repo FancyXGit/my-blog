@@ -7,7 +7,7 @@ seriesId: cs61c
 orderInSeries: 13
 tags: ["学习", "CS61C", "笔记", "操作系统", "IO"]
 coverImage:
-    src: "https://cdn.fancyflow.top/image/post/study/cs61c/lec31/cover.webp"
+    src: "/image/post/study/cs61c/lec31/cover.webp"
     alt: "夕阳下的紫色群峦"
 ---
 
@@ -17,7 +17,7 @@ coverImage:
   
 当CPU访问这些特定的内存地址时，实际上是在与I/O设备进行通信。
 
-![内存映射示例](https://cdn.fancyflow.top/image/post/study/cs61c/lec31/memory_mapped_io.webp)
+![内存映射示例](/image/post/study/cs61c/lec31/memory_mapped_io.webp)
 
 ## 轮询
 
@@ -53,7 +53,7 @@ CPU通过轮询(polling)的方式不断检查控制寄存器的状态，以确�
 
 直接内存访问(Direct Memory Access, DMA)是一种允许I/O设备直接与内存进行数据传输的技术，而不需要CPU的干预。
 
-![DMA示例](https://cdn.fancyflow.top/image/post/study/cs61c/lec31/dma.webp)
+![DMA示例](/image/post/study/cs61c/lec31/dma.webp)
 
 **输入数据**:
 

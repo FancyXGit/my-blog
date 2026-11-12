@@ -7,7 +7,7 @@ seriesId: mit6s081
 orderInSeries: 7
 tags: ["学习", "MIT6.S081", "笔记", "操作系统", "并行"]
 coverImage:
-    src: "https://cdn.fancyflow.top/image/post/study/mit6s081/lec11/cover.webp"
+    src: "/image/post/study/mit6s081/lec11/cover.webp"
     alt: "四叶草与鹅卵石"
 ---
 

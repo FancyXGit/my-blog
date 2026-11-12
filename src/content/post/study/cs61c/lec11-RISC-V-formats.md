@@ -7,7 +7,7 @@ seriesId: cs61c
 orderInSeries: 5
 tags: ["学习", "CS61C", "笔记", "汇编语言", "RISC-V", "指令格式"]
 coverImage:
-    src: "https://cdn.fancyflow.top/image/post/study/cs61c/lec07-cover.webp"
+    src: "/image/post/study/cs61c/lec07-cover.webp"
     alt: "星空，流星与大地"
 ---
 
@@ -26,7 +26,7 @@ RISC-V 的6种指令格式：
 
 **指令布局**:
 
-![R指令布局](https://cdn.fancyflow.top/image/post/study/cs61c/lec11-r-format.webp)
+![R指令布局](/image/post/study/cs61c/lec11-r-format.webp)
 
 **字段说明**:
 
@@ -43,7 +43,7 @@ RISC-V 的6种指令格式：
 add x18, x19, x20
 ```
 
-![add指令示例](https://cdn.fancyflow.top/image/post/study/cs61c/lec11-r-format-add.webp)
+![add指令示例](/image/post/study/cs61c/lec11-r-format-add.webp)
 
 **所有R-format指令**:
 
@@ -70,7 +70,7 @@ add x18, x19, x20
 
 **指令布局**:
 
-![I指令布局](https://cdn.fancyflow.top/image/post/study/cs61c/lec11-i-format-imm.webp)
+![I指令布局](/image/post/study/cs61c/lec11-i-format-imm.webp)
 
 **字段说明**:
 
@@ -87,7 +87,7 @@ add x18, x19, x20
 addi x15, x1, -50
 ```
 
-![addi指令示例](https://cdn.fancyflow.top/image/post/study/cs61c/lec11-i-format-addi.webp)
+![addi指令示例](/image/post/study/cs61c/lec11-i-format-addi.webp)
 
 **所有I-format立即数指令**:
 
@@ -179,7 +179,7 @@ addi x15, x1, -50
 
 **指令布局**:
 
-![I指令布局](https://cdn.fancyflow.top/image/post/study/cs61c/lec11-i-format-load.webp)
+![I指令布局](/image/post/study/cs61c/lec11-i-format-load.webp)
 
 **字段说明**:
 
@@ -200,7 +200,7 @@ addi x15, x1, -50
 lw x14, 8(x2)
 ```
 
-![lw指令示例](https://cdn.fancyflow.top/image/post/study/cs61c/lec11-i-format-lw.webp)
+![lw指令示例](/image/post/study/cs61c/lec11-i-format-lw.webp)
 
 **所有I-format加载指令**:
 
@@ -221,7 +221,7 @@ lw x14, 8(x2)
 
 **指令布局**:
 
-![S指令布局](https://cdn.fancyflow.top/image/post/study/cs61c/lec11-s-format.webp)
+![S指令布局](/image/post/study/cs61c/lec11-s-format.webp)
 
 **字段说明**:
 
@@ -241,7 +241,7 @@ S-format指令中的立即数被拆分成两部分：`imm[11:5]`和`imm[4:0]`，
 sw x14, 8(x2)
 ```
 
-![sw指令示例](https://cdn.fancyflow.top/image/post/study/cs61c/lec11-s-format-sw.webp)
+![sw指令示例](/image/post/study/cs61c/lec11-s-format-sw.webp)
 
 **所有S-format存储指令**:
 
@@ -271,7 +271,7 @@ Label是跳转的指令地址，可以通过与当前指令的地址的差值来
 
 **指令布局**:
 
-![B指令布局](https://cdn.fancyflow.top/image/post/study/cs61c/lec11-b-format.webp)
+![B指令布局](/image/post/study/cs61c/lec11-b-format.webp)
 
 **字段说明**:
 
@@ -307,12 +307,12 @@ End:
 上面的例子中, beq指令偏移量为`4 * 4 = 16`
 :::
 
-![beq指令示例](https://cdn.fancyflow.top/image/post/study/cs61c/lec11-b-format-beq.webp)
+![beq指令示例](/image/post/study/cs61c/lec11-b-format-beq.webp)
 
 **立即数扩展**:
 下面的图片演示了I/S/B-format指令中立即数的扩展方式
 
-![立即数扩展示例](https://cdn.fancyflow.top/image/post/study/cs61c/lec-11-imm-expand.webp)
+![立即数扩展示例](/image/post/study/cs61c/lec-11-imm-expand.webp)
 
 **所有B-format分支指令**:
 
@@ -365,12 +365,12 @@ jalr rd, imm12(rd)
 
 ### 指令结构
 
-![U指令布局](https://cdn.fancyflow.top/image/post/study/cs61c/lec-11-u-format.webp)
+![U指令布局](/image/post/study/cs61c/lec-11-u-format.webp)
 
 ## J-format
 
-![J指令布局](https://cdn.fancyflow.top/image/post/study/cs61c/lec11-j-format.webp)
+![J指令布局](/image/post/study/cs61c/lec11-j-format.webp)
 
 ## 总结
 
-![RISC-V指令格式总结](https://cdn.fancyflow.top/image/post/study/cs61c/lec-11-formats.webp)
+![RISC-V指令格式总结](/image/post/study/cs61c/lec-11-formats.webp)

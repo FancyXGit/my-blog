@@ -7,7 +7,7 @@ seriesId: csapp
 orderInSeries: 3
 tags: ["学习", "笔记", "CSAPP", "汇编语言", "x86-64"]
 coverImage:
-    src: "https://cdn.fancyflow.top/image/post/study/csapp/lec07/cover.webp"
+    src: "/image/post/study/csapp/lec07/cover.webp"
     alt: "草地，山坡与蓝天"
 ---
 
@@ -17,7 +17,7 @@ coverImage:
   
 在x86-64架构中，栈通常向下增长，即从高地址向低地址扩展。
 
-![栈的结构](https://cdn.fancyflow.top/image/post/study/csapp/lec07/stack-structure.webp)
+![栈的结构](/image/post/study/csapp/lec07/stack-structure.webp)
 
 :::note
 栈指针`%rsp`指向当前栈顶的位置，即最后一个被压入栈的元素

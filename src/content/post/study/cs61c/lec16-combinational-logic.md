@@ -7,7 +7,7 @@ seriesId: cs61c
 orderInSeries: 8
 tags: ["学习", "CS61C", "笔记", "数字电路"]
 coverImage:
-    src: "https://cdn.fancyflow.top/image/post/study/cs61c/lec16/cover.webp"
+    src: "/image/post/study/cs61c/lec16/cover.webp"
     alt: "黑色的海滩与海水"
 ---
 
@@ -15,8 +15,8 @@ coverImage:
 
 主要的逻辑门包括与门(AND)、或门(OR)、非门(NOT)、异或门(XOR)、与非门(NAND)、或非门(NOR)等。
 
-![and-or-not](https://cdn.fancyflow.top/image/post/study/cs61c/lec16/and-or-not.webp)
-![xor-nand-nor](https://cdn.fancyflow.top/image/post/study/cs61c/lec16/xor-nand-nor.webp)
+![and-or-not](/image/post/study/cs61c/lec16/and-or-not.webp)
+![xor-nand-nor](/image/post/study/cs61c/lec16/xor-nand-nor.webp)
 
 :::tip
 线路中的小圆圈表示取反，即NOT操作。  
@@ -27,20 +27,20 @@ coverImage:
 ## 布尔代数
 
 布尔代数的基本运算法则如下：
-![布尔代数](https://cdn.fancyflow.top/image/post/study/cs61c/lec16/boolean-algebra.webp)
+![布尔代数](/image/post/study/cs61c/lec16/boolean-algebra.webp)
 
 ## 多路复用器
 
 多路复用器（Multiplexer）可以根据选择信号从多个输入中选择一个输出。
 
-![多路复用器](https://cdn.fancyflow.top/image/post/study/cs61c/lec16/multiplexer.webp)
+![多路复用器](/image/post/study/cs61c/lec16/multiplexer.webp)
 
 ## ALU
 
 算术逻辑单元（Arithmetic Logic Unit）是计算机中的一个重要组件，负责执行算术和逻辑运算。
 
-![ALU](https://cdn.fancyflow.top/image/post/study/cs61c/lec16/alu.webp)
-![ALU内部结构](https://cdn.fancyflow.top/image/post/study/cs61c/lec16/alu-internal.webp)
+![ALU](/image/post/study/cs61c/lec16/alu.webp)
+![ALU内部结构](/image/post/study/cs61c/lec16/alu-internal.webp)
 
 :::tip
 当接收到信号，ALU里面的加法器，与门和或门**同时工作**，由多路复用器根据控制信号选择输出结果。
@@ -59,7 +59,7 @@ $$
 c_{i+1} = MAJ(a_i, b_i, c_i) = a_i b_i + a_i c_i + b_i c_i
 $$
 
-![加法真值表](https://cdn.fancyflow.top/image/post/study/cs61c/lec16/adder-truth-table.webp)
+![加法真值表](/image/post/study/cs61c/lec16/adder-truth-table.webp)
 
 :::tip
 异或运算`XOR`可以看作为一位的加法。  
@@ -71,11 +71,11 @@ $$
 
 一位加法器的电路如下：
 
-![一位加法器](https://cdn.fancyflow.top/image/post/study/cs61c/lec16/one-bit-adder.webp)
+![一位加法器](/image/post/study/cs61c/lec16/one-bit-adder.webp)
 
 将上一位的进位输入到下一位的加法器中，就可以构建多位加法器：
 
-![多位加法器](https://cdn.fancyflow.top/image/post/study/cs61c/lec16/multi-bit-adder.webp)
+![多位加法器](/image/post/study/cs61c/lec16/multi-bit-adder.webp)
 
 ### 溢出
 
@@ -113,7 +113,7 @@ $$
 
 减法器可以通过加法器来实现。减去一个数等价于加上它的补码。
 
-![减法器](https://cdn.fancyflow.top/image/post/study/cs61c/lec16/subtractor.webp)
+![减法器](/image/post/study/cs61c/lec16/subtractor.webp)
 
 :::note
 当`SUB`信号为1时执行减法，此时所有输入的`b_i`都被取反。原本应该为`0`的初始进位$c_0$被置为1，这样就相当于加上了`b`的补码。

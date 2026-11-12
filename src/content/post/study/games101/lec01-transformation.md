@@ -7,7 +7,7 @@ seriesId: games101
 orderInSeries: 1
 tags: ["学习", "笔记", "GAMES101", "图形学", "变换"]
 coverImage:
-    src: "https://cdn.fancyflow.top/image/post/study/games101/lec01/cover.webp"
+    src: "/image/post/study/games101/lec01/cover.webp"
     alt: "蓝天，草地与大树"
 ---
 
@@ -93,7 +93,7 @@ $$
 
 视图变换把世界坐标中的点变换到相机坐标，使相机位于原点、看向 $-Z$、上方向为 $+Y$。相机由位置 $e$、看向方向 $g$、上方向 $t$ 确定。
 
-![相机的位置、朝向与上方向](https://cdn.fancyflow.top/image/post/study/games101/lec01/camera-model.webp)
+![相机的位置、朝向与上方向](/image/post/study/games101/lec01/camera-model.webp)
 
 直接写世界坐标到相机坐标的矩阵并不方便，平移和三个轴的旋转混在一起，矩阵元素不容易直接看出。相机坐标到世界坐标的矩阵可以直接由相机的位置和三个轴写出；先写这个方向的矩阵，再求逆，就得到视图变换。
 
@@ -163,11 +163,11 @@ $$
 
 投影变换把相机空间中的可视区域映射到归一化设备坐标（NDC），NDC 的范围是 $[-1,1]^3$。正交投影的视锥体是长方体，平行线投影后仍然平行，物体的大小不随距离改变；透视投影的视锥体是棱锥台，平行线在投影后可能相交，远处的物体看起来更小。棱锥台是棱锥被平行于底面的平面截去顶部后剩下的部分。
 
-![透视投影与正交投影的视锥体](https://cdn.fancyflow.top/image/post/study/games101/lec01/perspective-vs-ortho.webp)
+![透视投影与正交投影的视锥体](/image/post/study/games101/lec01/perspective-vs-ortho.webp)
 
 相机看向 $-Z$，近平面位于 $z=-n$，远平面位于 $z=-f$，其中 $n,f>0$ 且 $f>n$。长方体的左右、下上边界分别为 $l,r,b,t$，因此 $x\in[l,r]$，$y\in[b,t]$，$z\in[-f,-n]$。
 
-![正交变换：先平移，再缩放](https://cdn.fancyflow.top/image/post/study/games101/lec01/ortho-transform.webp)
+![正交变换：先平移，再缩放](/image/post/study/games101/lec01/ortho-transform.webp)
 
 正交投影分两步：先把长方体中心平移到原点，再沿三个轴缩放到 $[-1,1]$。中心为
 
@@ -203,7 +203,7 @@ $$
 
 透视投影的视锥体是一个棱锥台。近平面位于 $z=-n$，远平面位于 $z=-f$，近平面是 $x,y\in[-n,n]$ 的正方形，对应 $90^\circ$ 的视场角。视场角是相机在垂直方向上能看到的张角；视锥体内的点沿穿过相机的射线投影到近平面，近平面上的点保持不动，远平面上的点被缩放到近平面的大小。
 
-![透视投影把视锥体压成长方体](https://cdn.fancyflow.top/image/post/study/games101/lec01/perspective-transform.webp)
+![透视投影把视锥体压成长方体](/image/post/study/games101/lec01/perspective-transform.webp)
 
 目标是把视锥体映射到 $[-1,1]^3$，近平面映射到 $z=-1$，远平面映射到 $z=+1$。整个过程分成两步：先把视锥体挤压成长方体，近平面和远平面的 $z$ 坐标保持不变；再用正交矩阵把长方体映射到 $[-1,1]^3$。
 
@@ -218,7 +218,7 @@ y_p&=\frac{n}{-z}y
 \end{aligned}
 $$
 
-![相似三角形给出近平面上的投影坐标](https://cdn.fancyflow.top/image/post/study/games101/lec01/perspective-divide-z.webp)
+![相似三角形给出近平面上的投影坐标](/image/post/study/games101/lec01/perspective-divide-z.webp)
 
 图中 $z$ 标为正距离；本文的相机坐标中 $z<0$，所以分母写成 $-z$。挤压把点映射到 $(x_p,y_p,z_{sq})$：横向坐标乘以 $n/(-z)$，纵向坐标同理；$z_{sq}$ 只要求近平面和远平面上的 $z$ 坐标保持不变。
 

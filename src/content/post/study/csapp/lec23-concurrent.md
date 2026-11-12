@@ -7,7 +7,7 @@ seriesId: csapp
 orderInSeries: 13
 tags: ["学习", "笔记", "CSAPP", "并行计算"]
 coverImage:
-    src: "https://cdn.fancyflow.top/image/post/study/csapp/lec23/cover.webp"
+    src: "/image/post/study/csapp/lec23/cover.webp"
     alt: "雏菊"
 ---
 
@@ -21,9 +21,9 @@ coverImage:
 4. 子进程处理完请求后，关闭`connfd`，退出
 5. 父进程监听到子进程退出信号，信号处理函数调用`waitpid()`回收子进程资源
 
-![多进程服务器-1](https://cdn.fancyflow.top/image/post/study/csapp/lec23/multi-process-server-1.webp)
+![多进程服务器-1](/image/post/study/csapp/lec23/multi-process-server-1.webp)
 
-![多进程服务器-2](https://cdn.fancyflow.top/image/post/study/csapp/lec23/multi-process-server-2.webp)
+![多进程服务器-2](/image/post/study/csapp/lec23/multi-process-server-2.webp)
 
 ## I/O多路复用
 
@@ -164,11 +164,11 @@ int pthread_once(pthread_once_t *once_control, void (*init_routine)(void));
 如果线程切换导致`L-U-S`阶段被打断，可能会出现数据错误。例如$L_1$紧接着$L_2$，线程1，2同时读到的`count`的值为0，最后都写入1，导致少加了一次  
 将程序的执行步骤化成二维图，得到进度图
 
-![进度图](https://cdn.fancyflow.top/image/post/study/csapp/lec23/progress-graph.webp)
+![进度图](/image/post/study/csapp/lec23/progress-graph.webp)
 
 当一个线程开始执行$L$，就不应该执行任何其他线程的操作，直到结束完毕$S$，由此画出不安全区
 
-![不安全区](https://cdn.fancyflow.top/image/post/study/csapp/lec23/unsafe-area.webp)
+![不安全区](/image/post/study/csapp/lec23/unsafe-area.webp)
 
 `L-U-S`被称为临界区，各线程临界区的交集就是不安全区，程序的执行路径不得进入不安全区
 
@@ -188,7 +188,7 @@ int pthread_once(pthread_once_t *once_control, void (*init_routine)(void));
 
 如此保证了同一时刻只有一个线程进入临界区，避免了数据错误的发生
 
-![信号量实现互斥](https://cdn.fancyflow.top/image/post/study/csapp/lec23/semaphore-mutex.webp)
+![信号量实现互斥](/image/post/study/csapp/lec23/semaphore-mutex.webp)
 
 ## 线程问题
 
@@ -210,9 +210,9 @@ int pthread_once(pthread_once_t *once_control, void (*init_routine)(void));
 线程2执行`P(t)`，然后执行`P(s)`  
 如果线程1执行`P(s)`后，线程2执行`P(t)`，则线程1阻塞在`s`上，线程2阻塞在`t`上，两个线程都无法继续执行，形成死锁
 
-![死锁进度图](https://cdn.fancyflow.top/image/post/study/csapp/lec23/deadlock-progress-graph.webp)
+![死锁进度图](/image/post/study/csapp/lec23/deadlock-progress-graph.webp)
 
 由进度图可以看出，进入死锁区域之后，上面与右边都是禁止区，无法继续执行  
 解决死锁的一个方法是合理设置锁的顺序，例如线程1和线程2都先执行`P(s)`，然后再执行`P(t)`，释放以相反的顺序，则不会出现死锁
 
-![死锁解决进度图](https://cdn.fancyflow.top/image/post/study/csapp/lec23/deadlock-solution-progress-graph.webp)
+![死锁解决进度图](/image/post/study/csapp/lec23/deadlock-solution-progress-graph.webp)

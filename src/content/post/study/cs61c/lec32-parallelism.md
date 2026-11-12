@@ -7,7 +7,7 @@ seriesId: cs61c
 orderInSeries: 14
 tags: ["学习", "CS61C", "笔记", "并行计算"]
 coverImage:
-    src: "https://cdn.fancyflow.top/image/post/study/cs61c/lec32/cover.webp"
+    src: "/image/post/study/cs61c/lec32/cover.webp"
     alt: "蓝天，高山与草地"
 ---
 
@@ -43,7 +43,7 @@ SSE指令集是一种较早的SIMD指令集，后来又有了AVX(Advanced Vector
   
 CPU通过时间片轮转的方式在不同的线程之间切换，使得多个线程看起来像是同时执行的。
 
-![时间片轮转](https://cdn.fancyflow.top/image/post/study/cs61c/lec32/time_sharing.webp)
+![时间片轮转](/image/post/study/cs61c/lec32/time_sharing.webp)
 
 - 硬件线程: 现代CPU通常支持多个硬件线程，例如超线程技术允许每个物理核心同时处理两个线程。
 - 软件线程: 进程可以创建多个软件线程，这些线程由操作系统调度器管理，分配CPU时间片。
@@ -75,7 +75,7 @@ int main()
 }
 ```
 
-![多线程分叉](https://cdn.fancyflow.top/image/post/study/cs61c/lec32/multithreading_fork.webp)
+![多线程分叉](/image/post/study/cs61c/lec32/multithreading_fork.webp)
 
 ### 锁
 

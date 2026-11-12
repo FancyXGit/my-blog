@@ -96,7 +96,7 @@ publishDate: 2026-05-20T00:00:00+08:00
 tags: ["cs61c", "risc-v"]
 seriesId: cs61c
 coverImage:
-  src: https://cdn.fancyflow.top/image/post/study/cs61c/lec17/cover.webp
+  src: /image/post/study/cs61c/lec17/cover.webp
   alt: 封面
 ---
 
@@ -115,7 +115,10 @@ $$
 
 ## 图片
 
-- **封面图与正文图都不存仓库**,统一放 **Cloudflare R2 + CDN**(`cdn.fancyflow.top`)
+- **封面图与正文图都不存仓库**,统一放 `image/`、`musics/`(gitignore),上传后由两条链路分发:
+  - `.top`:Cloudflare R2 + CDN(`cdn.fancyflow.top`)
+  - `.cn`:自有服务器 nginx(`cdn.fancyflow.cn`)
+- 文章里只写根相对路径(`/image/...`、`/musics/...`),构建时按 `SITE_URL` 拼上资源域名(`src/site.config.ts#assetBases`,可用 `ASSET_BASE` 覆盖);换域名只改这一处
 - 封面:顶部 16:9 容器 + 原生 `<img>`(`fetchpriority="high"`,构建不下载远程图)
 - 正文 markdown 图:构建时由 `rehype-image-attrs` 自动加 `loading="lazy"` + `decoding="async"`,渲染时浏览器按需拉取
 - 上传命令见 [R2 上传](#r2-上传);凭据放 `.env.r2`(已 gitignore,模板 `scripts/.env.r2.example`)
@@ -154,9 +157,13 @@ $$
 
 | 命令 | 用途 |
 |---|---|
-| `pnpm r2:upload` | 上传图片到 R2(同步到 `cdn.fancyflow.top`) |
+| `pnpm r2:upload` | 压缩后同时上传 R2 + CN 服务器 |
+| `pnpm upload:cn` | 只上传 CN 服务器(等价 `r2:upload --no-r2`) |
 | `pnpm r2:upload-png` | 仅 PNG |
 | `pnpm r2:upload-file` | 上传指定文件 |
+
+常用参数:`--no-r2`(只传 CN)、`--no-cn`(只传 R2)、`--dry-run`(预览)。
+CN 走 SFTP,连接信息可写 `CN_ASSET_SSH_ALIAS=new` 复用 `~/.ssh/config`,目录 `CN_ASSET_ROOT=/var/www/fancyflow.cn`。
 
 凭据在 `.env.r2`(gitignore,从 `scripts/.env.r2.example` 复制);详细说明见 `scripts/README-r2-upload.md`。
 

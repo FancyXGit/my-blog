@@ -1,13 +1,14 @@
 ---
 import { musicTracks } from "@/data/music";
+import { assetUrl } from "@/utils/asset";
 
 const audioList = musicTracks.map((track) => {
 	return {
 		name: track.title,
 		artist: track.artist,
-		url: track.audioUrl,
-		cover: track.coverUrl,
-		lrc: track.lyricsUrl || "",
+		url: assetUrl(track.audioUrl),
+		cover: assetUrl(track.coverUrl),
+		lrc: track.lyricsUrl ? assetUrl(track.lyricsUrl) : "",
 		lyrics: track.lyrics || "",
 	};
 });

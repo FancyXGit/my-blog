@@ -7,7 +7,7 @@ seriesId: mit6s081
 orderInSeries: 6
 tags: ["学习", "MIT6.S081", "笔记", "操作系统", "并发"]
 coverImage:
-    src: "https://cdn.fancyflow.top/image/post/study/mit6s081/lec10/cover.webp"
+    src: "/image/post/study/mit6s081/lec10/cover.webp"
     alt: "山川与湖泊"
 ---
 

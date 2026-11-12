@@ -5,7 +5,7 @@ updatedDate: "2026-07-12"
 description: "关于封装，继承，多态"
 tags: ["工作", "后端", "Java", "面向对象"]
 coverImage:
-    src: "https://cdn.fancyflow.top/image/post/study/javase/1/cover.webp"
+    src: "/image/post/study/javase/1/cover.webp"
     alt: "公路，山峰，湖泊，天空"
 ---
 

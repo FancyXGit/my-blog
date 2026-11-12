@@ -7,7 +7,7 @@ seriesId: cs61c
 orderInSeries: 10
 tags: ["学习", "CS61C", "笔记", "CPU"]
 coverImage:
-    src: "https://cdn.fancyflow.top/image/post/study/cs61c/lec21/cover.webp"
+    src: "/image/post/study/cs61c/lec21/cover.webp"
     alt: "樱花与溪流"
 ---
 
@@ -17,13 +17,13 @@ coverImage:
 
 流水线将指令执行分为多个阶段，每个阶段处理指令的一部分。这样可以在同一时间内处理多条指令，提高CPU的吞吐量。
 
-![流水线示意图](https://cdn.fancyflow.top/image/post/study/cs61c/lec21/pipeline.webp)
+![流水线示意图](/image/post/study/cs61c/lec21/pipeline.webp)
 
 ### 数据通路
 
 要将单周期CPU改为流水线CPU，需要做以下修改：
 
-![数据通路修改](https://cdn.fancyflow.top/image/post/study/cs61c/lec21/datapath.webp)
+![数据通路修改](/image/post/study/cs61c/lec21/datapath.webp)
 
 - 在每个阶段之间添加寄存器，以存储中间结果。
 - 修改控制信号，使其适应流水线结构。
@@ -51,7 +51,7 @@ RISC-V指令集设计时就考虑到避免结构风险
 
 当两条指令同时写和读的时候，可以通过合理设计寄存器文件来避免数据风险。
 
-![数据风险示例](https://cdn.fancyflow.top/image/post/study/cs61c/lec21/datahazard-rw.webp)
+![数据风险示例](/image/post/study/cs61c/lec21/datahazard-rw.webp)
 
 寄存器文件被设计为，在前半个周期写入数据，在后半个周期读取数据。这样可以确保写入操作完成后，读取操作才能获取到正确的数据。  
 
@@ -63,15 +63,15 @@ RISC-V指令集设计时就考虑到避免结构风险
 RISC-V中`nops`指令可以用来插入空泡，也就是`addi x0, x0, 0`，它不会改变任何寄存器的值。
 :::
 
-![转发示例](https://cdn.fancyflow.top/image/post/study/cs61c/lec21/forwarding.webp)
+![转发示例](/image/post/study/cs61c/lec21/forwarding.webp)
 
-![转发电路](https://cdn.fancyflow.top/image/post/study/cs61c/lec21/forwarding-circuit.webp)
+![转发电路](/image/post/study/cs61c/lec21/forwarding-circuit.webp)
 
 **加载**:
 
 当指令需要使用前一条指令加载的数据时，数据风险就会发生。这时候转发无法解决问题，因为在数据从内存读出来时，ALU的阶段已经结束。
 
-![加载数据风险示例](https://cdn.fancyflow.top/image/post/study/cs61c/lec21/datahazard-load.webp)
+![加载数据风险示例](/image/post/study/cs61c/lec21/datahazard-load.webp)
 
 解决方法：
 

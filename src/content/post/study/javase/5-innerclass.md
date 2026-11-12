@@ -5,7 +5,7 @@ updatedDate: "2026-07-16"
 description: "内部类原理"
 tags: ["工作", "后端", "Java"]
 coverImage:
-    src: "https://cdn.fancyflow.top/image/post/study/javase/5/cover.webp"
+    src: "/image/post/study/javase/5/cover.webp"
     alt: "雪山与湖泊"
 ---
 

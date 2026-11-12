@@ -22,6 +22,15 @@ export const siteConfig: SiteConfig = {
 	title: "FancyXGit",
 };
 
+// Asset origins per deployment. Content references assets with root-relative
+// paths (`/image/...`, `/musics/...`); the build prefixes them with one of these
+// origins, so the domain lives here instead of inside every markdown file.
+// A build-time `ASSET_BASE` env var overrides the derived value.
+export const assetBases = {
+	top: "https://cdn.fancyflow.top",
+	cn: "https://cdn.fancyflow.cn",
+};
+
 // Used to generate links in both the Header & Footer.
 export const menuLinks: { path: string; title: string }[] = [
 	{

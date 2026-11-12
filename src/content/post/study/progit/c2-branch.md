@@ -39,25 +39,25 @@ git merge feature
 
 - feature分支在main之后
 
-![merge时feature分支在main之后](https://cdn.fancyflow.top/image/post/study/progit/2/merge-after.webp)
+![merge时feature分支在main之后](/image/post/study/progit/2/merge-after.webp)
 
 此时merge直接将main指针修改为和feature指向的commit一致，执行merge后如下图
 
-![执行merge后](https://cdn.fancyflow.top/image/post/study/progit/2/merge-after-result.webp)
+![执行merge后](/image/post/study/progit/2/merge-after-result.webp)
 
 - feature分支在main之前
 
-![merge时feature分支在main之前](https://cdn.fancyflow.top/image/post/study/progit/2/merge-before.webp)
+![merge时feature分支在main之前](/image/post/study/progit/2/merge-before.webp)
 
 执行merge之后什么也没变，因为main分支已经包含了feature分支的所有提交
 
 - feature分支和main分支各自有新的提交
 
-![merge时feature分支和main分支各自有新的提交](https://cdn.fancyflow.top/image/post/study/progit/2/merge-both.webp)
+![merge时feature分支和main分支各自有新的提交](/image/post/study/progit/2/merge-both.webp)
 
 此时git会创建一个新的commit，作为main分支和feature分支的共同父节点，然后将main指针指向这个新的commit
 
-![执行merge后](https://cdn.fancyflow.top/image/post/study/progit/2/merge-both-result.webp)
+![执行merge后](/image/post/study/progit/2/merge-both-result.webp)
 
 如果此时执行`git checkout feature`，然后执行`git merge main`，则对应feature分支在main之前的情况，执行merge之后什么也没变
 
@@ -83,12 +83,12 @@ please contact us at support@github.com
 
 rebase是将一个分支的提交应用到另一个分支的最前端，形成一条新的提交历史链。
 
-![rebase之前](https://cdn.fancyflow.top/image/post/study/progit/2/rebase-before.webp)
+![rebase之前](/image/post/study/progit/2/rebase-before.webp)
 
 执行rebase之后，可以看到git将C3复制了一个新的C3'，其父节点是main指向的commit，然后feature分支指向了新的C3'  
 整个历史记录变成了一条直线，避免了merge产生的分叉
 
-![rebase之后](https://cdn.fancyflow.top/image/post/study/progit/2/rebase-after.webp)
+![rebase之后](/image/post/study/progit/2/rebase-after.webp)
 
 C3之后会被GC回收掉
 

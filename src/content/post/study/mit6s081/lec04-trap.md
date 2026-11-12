@@ -7,7 +7,7 @@ seriesId: mit6s081
 orderInSeries: 3
 tags: ["学习", "MIT6.S081", "笔记", "操作系统", "系统调用"]
 coverImage:
-    src: "https://cdn.fancyflow.top/image/post/study/mit6s081/lec04/cover.webp"
+    src: "/image/post/study/mit6s081/lec04/cover.webp"
     alt: "大树，草地与天空"
 ---
 

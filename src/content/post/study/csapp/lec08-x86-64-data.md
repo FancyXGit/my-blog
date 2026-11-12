@@ -7,7 +7,7 @@ seriesId: csapp
 orderInSeries: 4
 tags: ["学习", "笔记", "CSAPP", "汇编语言", "x86-64"]
 coverImage:
-    src: "https://cdn.fancyflow.top/image/post/study/csapp/lec08/cover.webp"
+    src: "/image/post/study/csapp/lec08/cover.webp"
     alt: "湖面与倒映山川"
 ---
 
@@ -120,7 +120,7 @@ char *gets(char *buf) {
 
 例如创建了24字节的栈区，然后调用`gets(%rsp)`，如果输入的字节数超过23，那么上一个栈顶的返回地址就会被覆盖，`ret`指令执行时会跳转到未知的地址
 
-![栈溢出示例](https://cdn.fancyflow.top/image/post/study/csapp/lec08/stack-overflow.webp)
+![栈溢出示例](/image/post/study/csapp/lec08/stack-overflow.webp)
 
 攻击者可以利用这个漏洞覆盖返回地址，例如输入24字节的垃圾数据，之后输入攻击代码的地址，最后输入攻击代码，这样当函数返回时就会跳转到攻击代码执行
 

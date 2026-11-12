@@ -7,7 +7,7 @@ seriesId: cs61c
 orderInSeries: 12
 tags: ["学习", "CS61C", "笔记", "内存", "操作系统"]
 coverImage:
-    src: "https://cdn.fancyflow.top/image/post/study/cs61c/lec28/cover.webp"
+    src: "/image/post/study/cs61c/lec28/cover.webp"
     alt: "夕阳，山脉与草地"
 ---
 
@@ -28,13 +28,13 @@ coverImage:
   
 虚拟地址被分为两部分：页号(Page Number)和页内偏移(Page Offset)。  
 
-![虚拟地址结构](https://cdn.fancyflow.top/image/post/study/cs61c/lec28/virtual_address_structure.webp)
+![虚拟地址结构](/image/post/study/cs61c/lec28/virtual_address_structure.webp)
 
 物理内存对应的页框(Frame)也被划分为相同大小的块。  
   
 操作系统维护一个页表(Page Table)，用于记录虚拟页与物理页框之间的映射关系。  
 
-![虚拟地址映射](https://cdn.fancyflow.top/image/post/study/cs61c/lec28/virtual_address_mapping.webp)
+![虚拟地址映射](/image/post/study/cs61c/lec28/virtual_address_mapping.webp)
 
 ## 多级页表
 
@@ -49,7 +49,7 @@ coverImage:
 
 多级页表将页表分为多个层次，每层页表只存储部分虚拟地址空间的映射关系。
 
-![多级页表下的虚拟地址映射](https://cdn.fancyflow.top/image/post/study/cs61c/lec28/multilevel_page_table_mapping.webp)
+![多级页表下的虚拟地址映射](/image/post/study/cs61c/lec28/multilevel_page_table_mapping.webp)
 
 以图中两级列表为例，虚拟地址被分为三部分：一级页表索引(p1)、二级页表索引(p2)和页内偏移(offset)。  
 
@@ -63,7 +63,7 @@ coverImage:
 :::
 
 下图是最后一级页表一行的结构，包含了物理页框地址和一些标志位，例如有效位(valid bit)，读写权限位(read/write bit)等。
-![页表结构](https://cdn.fancyflow.top/image/post/study/cs61c/lec28/page_table_structure.webp)
+![页表结构](/image/post/study/cs61c/lec28/page_table_structure.webp)
 
 ## TLB
 
@@ -73,4 +73,4 @@ TLB通常是全相联的，即任何虚拟页都可以映射到TLB中的任何�
 
 当CPU需要访问一个虚拟地址时，首先会检查TLB，如果TLB中有对应的映射关系(称为TLB命中)，则直接使用该映射关系进行地址转换；如果TLB中没有对应的映射关系(称为TLB未命中)，则需要访问页表来获取映射关系，并将其加载到TLB中。
 
-![TLB作用](https://cdn.fancyflow.top/image/post/study/cs61c/lec28/tlb.webp)
+![TLB作用](/image/post/study/cs61c/lec28/tlb.webp)

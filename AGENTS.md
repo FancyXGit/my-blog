@@ -40,8 +40,11 @@
 
 ### Images
 
-- Cover images + body images are remote on `cdn.fancyflow.top` (Cloudflare R2), **not** stored locally
-- Masthead cover = plain `<img>` (bypasses `astro:assets`, so build does **not** download remote covers) inside an `aspect-[16/9]` wrapper — removes CLS and build-time CDN pulls
+- Content references assets domain-free (`/image/...`, `/musics/...`); the build prefixes them with the asset origin from `src/site.config.ts#assetBases` — `.top` → `cdn.fancyflow.top` (R2), `.cn` → `cdn.fancyflow.cn` (self-hosted nginx), overridable via `ASSET_BASE`
+- `src/plugins/remark-asset-base.ts` rewrites body images; `src/utils/asset.ts#assetUrl()` handles covers, music and avatars
+- CN assets live in the deploy web root (`/var/www/fancyflow.cn/{image,musics}`) served by `cdn.fancyflow.cn` (`docs/cdn-nginx.conf`, one-shot setup: `docs/setup-cdn.sh`); the `.cn` workflow excludes them from `rsync --delete`
+- Cover images + body images are **not** stored in the repo (originals live in gitignored `image/` / `musics/`), so `pnpm build` never downloads remote images
+- Masthead cover = plain `<img>` (bypasses `astro:assets`) inside an `aspect-[16/9]` wrapper — removes CLS and build-time CDN pulls
 - Body markdown images render as raw `<img>` → fetched at page-view time by the browser
 
 ### Social share card (fixed og image)

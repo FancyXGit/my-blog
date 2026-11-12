@@ -7,7 +7,7 @@ seriesId: games101
 orderInSeries: 2
 tags: ["学习", "笔记", "GAMES101", "图形学", "光栅化", "抗锯齿"]
 coverImage:
-    src: "https://cdn.fancyflow.top/image/post/study/games101/lec02/cover.webp"
+    src: "/image/post/study/games101/lec02/cover.webp"
     alt: "四季与古树"
 ---
 
@@ -17,7 +17,7 @@ coverImage:
 
 屏幕宽 $w$、高 $h$，像素 $(i,j)$ 覆盖 $[i,i+1]\times[j,j+1]$，中心位于 $(i+0.5,j+0.5)$，索引范围是 $i=0,\dots,w-1$，$j=0,\dots,h-1$。屏幕范围是 $[0,w]\times[0,h]$，原点在左下角，这是 GAMES101 的约定；图像文件通常把原点放在左上角，读图时 $y$ 需要翻转一次。
 
-![屏幕像素阵列与像素中心坐标](https://cdn.fancyflow.top/image/post/study/games101/lec02/pixel-coordinates.webp)
+![屏幕像素阵列与像素中心坐标](/image/post/study/games101/lec02/pixel-coordinates.webp)
 
 从 NDC 到屏幕的映射称为视口变换，它是一次缩放加一次平移：
 
@@ -49,9 +49,9 @@ $$
 
 每个像素只测一个中心点，结果是二值的：在三角形内就填充，不在就留空。
 
-![三角形覆盖的像素中心采样点](https://cdn.fancyflow.top/image/post/study/games101/lec02/triangle-sampling.webp)
+![三角形覆盖的像素中心采样点](/image/post/study/games101/lec02/triangle-sampling.webp)
 
-![按采样结果填充后的三角形像素](https://cdn.fancyflow.top/image/post/study/games101/lec02/rasterized-triangle.webp)
+![按采样结果填充后的三角形像素](/image/post/study/games101/lec02/rasterized-triangle.webp)
 
 图中有些采样点正好落在三角形边上，这也是需要边界规则的原因。二值化的结果在边缘处形成台阶；把这一步看成对连续三角形的点采样，就能理解台阶来自采样过程，三角形本身是光滑的。
 
@@ -71,7 +71,7 @@ $$
 
 读图时可以记一个对应关系：竖条纹沿 $x$ 方向变化快，亮点落在横轴上；横条纹沿 $y$ 方向变化快，亮点落在纵轴上。
 
-![灰度人像及其二维频谱，中心为低频](https://cdn.fancyflow.top/image/post/study/games101/lec02/image-spectrum.webp)
+![灰度人像及其二维频谱，中心为低频](/image/post/study/games101/lec02/image-spectrum.webp)
 
 穿过中心的十字线来自图像的有限边界。图像只在矩形区域内非零，相当于理想图像乘了一个矩形窗：左右两条竖直边界让亮度在 $x$ 方向突然截断，频谱沿横轴铺开；上下两条水平边界让亮度在 $y$ 方向突然截断，频谱沿纵轴铺开。矩形窗的频谱沿两个主轴衰减最慢，所以十字最亮；照片四周的边框加强了这种突变。中心亮说明图像以低频为主，外围的亮点对应细节、边缘和噪声。
 
@@ -79,9 +79,9 @@ $$
 
 滤波是在频域乘一个掩膜，保留哪些频率，就保留哪些图像内容。低通保留中心、去掉外围，结果是模糊，平滑会抹掉细节和噪声，极端情况下只剩直流分量，整张图变成平均颜色；高通去掉中心、保留外围，结果是边缘和轮廓，平坦区域没有高频，变成黑色。
 
-![低通滤波后的模糊图像与只保留低频的频谱](https://cdn.fancyflow.top/image/post/study/games101/lec02/low-pass-filter.webp)
+![低通滤波后的模糊图像与只保留低频的频谱](/image/post/study/games101/lec02/low-pass-filter.webp)
 
-![高通滤波后的边缘图像与去掉低频的频谱](https://cdn.fancyflow.top/image/post/study/games101/lec02/high-pass-filter.webp)
+![高通滤波后的边缘图像与去掉低频的频谱](/image/post/study/games101/lec02/high-pass-filter.webp)
 
 低通图的右边只剩一个白点，表示保留了很窄的低频；高通图的右边有一个黑盘，表示低频被挖掉。这两张图把“频率”与图像内容对应起来：低频是缓慢的明暗变化，高频是锐利的边和纹理。
 
@@ -98,7 +98,7 @@ $$
 
 滤波用第一行：图像与核卷积，等于频谱乘上核的频谱；均值核的频谱集中在低频，相乘后外围高频被压低。采样用第二行：图像乘梳状函数，等于频谱与梳状函数卷积，结果是频谱复制。均值核不是理想低通，它的频谱有旁瓣，但主瓣在低频，足以起到模糊作用。
 
-![空域 3×3 均值卷积与频域相乘的对应关系](https://cdn.fancyflow.top/image/post/study/games101/lec02/convolution-as-average.webp)
+![空域 3×3 均值卷积与频域相乘的对应关系](/image/post/study/games101/lec02/convolution-as-average.webp)
 
 图的上排是空域卷积，图像与 $1/9$ 的均值核作用后变模糊；下排是频域相乘，图像频谱乘上核的频谱，外围高频被压低。
 
@@ -106,7 +106,7 @@ $$
 
 采样是在离散网格点上取值，等价于把连续图像乘上一个梳状函数，梳齿间隔等于像素间距。由卷积定理，空域相乘对应频域卷积；梳状函数的频谱还是梳状函数，间隔为 $f_s=1/d$，其中 $d$ 是像素间距，采样后的频谱就是原频谱以 $f_s$ 为周期复制。
 
-![一维信号采样后频谱以采样频率为周期复制](https://cdn.fancyflow.top/image/post/study/games101/lec02/sampling-in-frequency.webp)
+![一维信号采样后频谱以采样频率为周期复制](/image/post/study/games101/lec02/sampling-in-frequency.webp)
 
 图 (a) 到 (f) 展示了这条链：连续信号、带限频谱、梳状函数、梳状频谱、采样信号、复制后的频谱。如果 $f_s\ge 2f_{\max}$，复制之间不重叠，用一个低通取回中心那一份就能重建原信号，这个条件称为 Nyquist 条件；如果 $f_s<2f_{\max}$，复制重叠，重叠区的高频混进低频，无法再分开。
 
@@ -116,15 +116,15 @@ $$
 
 频谱重叠是走样的直接原因。图的上排是密集采样，复制之间分离；下排是稀疏采样，复制重叠，圈出的部分就是混叠。
 
-![密集采样与稀疏采样的频谱，稀疏采样发生混叠](https://cdn.fancyflow.top/image/post/study/games101/lec02/aliasing-spectrum.webp)
+![密集采样与稀疏采样的频谱，稀疏采样发生混叠](/image/post/study/games101/lec02/aliasing-spectrum.webp)
 
 空域里也能看到同样的现象：高频正弦和低频正弦在同样的采样点上给出相同样本，只看样本，无法判断原来是谁。
 
-![高频正弦与低频正弦在同样的采样点上得到相同样本](https://cdn.fancyflow.top/image/post/study/games101/lec02/frequency-ambiguity.webp)
+![高频正弦与低频正弦在同样的采样点上得到相同样本](/image/post/study/games101/lec02/frequency-ambiguity.webp)
 
 渲染中的边缘亮度变化很突然，包含大量高频。像素中心点采样只取一个值，边缘就变成台阶；远处的棋盘格和细纹理会产生摩尔纹。
 
-![摩尔纹与三角形边缘的锯齿](https://cdn.fancyflow.top/image/post/study/games101/lec02/aliasing-artifacts.webp)
+![摩尔纹与三角形边缘的锯齿](/image/post/study/games101/lec02/aliasing-artifacts.webp)
 
 左边是细密条纹被像素网格采样后产生的摩尔纹，右边是三角形边缘的锯齿，两种现象来自同一个原因。时间上也有走样：车轮倒转、视频里的条纹，采样率不够时高频运动被看成低频运动。走样发生在采样那一刻，信息已经混在一起，后处理无法把它分开。
 
@@ -132,11 +132,11 @@ $$
 
 最直接的想法是采样之后再模糊，但顺序错了。采样已经把高频折叠进低频，模糊只能把混叠结果抹匀。
 
-![先采样后滤波留下摩尔纹，先滤波后采样得到平滑结果](https://cdn.fancyflow.top/image/post/study/games101/lec02/filter-then-sample.webp)
+![先采样后滤波留下摩尔纹，先滤波后采样得到平滑结果](/image/post/study/games101/lec02/filter-then-sample.webp)
 
 正确做法是在采样前低通，把最高频率压到 $f_s/2$ 以下，再做稀疏采样；变窄的频谱不会再与相邻复制重叠。
 
-![先低通缩小频谱再稀疏采样，避免混叠](https://cdn.fancyflow.top/image/post/study/games101/lec02/prefilter-before-sampling.webp)
+![先低通缩小频谱再稀疏采样，避免混叠](/image/post/study/games101/lec02/prefilter-before-sampling.webp)
 
 落到像素上，正确值是三角形覆盖该像素的面积比例乘以颜色；中心点是否在三角形内只是一个二值近似。像素面积平均就是用一个盒式滤波器做预滤波。盒式滤波不是理想低通，但它是像素的物理模型；提高分辨率能减轻锯齿，因为 $f_s$ 变大，Nyquist 频率变高，能保留更多高频，分辨率不可能无限提高，所以仍然需要抗锯齿。面积积分难算，MSAA 用多个子样本估计它。
 
@@ -148,9 +148,9 @@ $$
 
 把每个像素分成 $2\times2$ 个子样本，每个子样本做一次内外测试，覆盖率等于落在三角形内的子样本数除以 4。
 
-![每个像素内 2×2 个子采样点与三角形覆盖情况](https://cdn.fancyflow.top/image/post/study/games101/lec02/msaa-2x2.webp)
+![每个像素内 2×2 个子采样点与三角形覆盖情况](/image/post/study/games101/lec02/msaa-2x2.webp)
 
-![每个像素按覆盖比例得到 25% 到 100% 的颜色](https://cdn.fancyflow.top/image/post/study/games101/lec02/msaa-coverage.webp)
+![每个像素按覆盖比例得到 25% 到 100% 的颜色](/image/post/study/games101/lec02/msaa-coverage.webp)
 
 颜色按覆盖率混合：设覆盖率为 $c$，颜色等于 $c$ 乘三角形颜色加上 $(1-c)$ 乘背景颜色，边缘像素不再是二值，台阶被压成渐变。这是对面积积分的离散近似：子样本越多，覆盖率越细，边缘越平滑。
 

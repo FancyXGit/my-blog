@@ -7,7 +7,7 @@ seriesId: csapp
 orderInSeries: 8
 tags: ["学习", "笔记", "CSAPP", "操作系统"]
 coverImage:
-    src: "https://cdn.fancyflow.top/image/post/study/csapp/lec14/cover.webp"
+    src: "/image/post/study/csapp/lec14/cover.webp"
     alt: "溪流，草地，雪山与小桥"
 ---
 
@@ -17,7 +17,7 @@ coverImage:
 
 异常就是控制流的突变
 
-![异常处理](https://cdn.fancyflow.top/image/post/study/csapp/lec14/exception-handling.webp)
+![异常处理](/image/post/study/csapp/lec14/exception-handling.webp)
 
 当系统检测到程序发生异常时，处理器通过异常表跳转到处理特定异常的异常处理程序之中  
 异常处理程序运行在内核模式下，具有访问系统资源的权限  
@@ -33,13 +33,13 @@ coverImage:
 - 故障(fault): 由程序执行引起的异常，但可以通过修复后继续执行，例如缺页异常等
 - 终止(abort): 由程序执行引起的异常，无法修复，必须终止程序，例如一些硬件错误等
 
-![异常类型](https://cdn.fancyflow.top/image/post/study/csapp/lec14/exception-types.webp)
+![异常类型](/image/post/study/csapp/lec14/exception-types.webp)
 
 ***Linux系统调用***:
 
 系统调用是用户程序与内核进行交互的接口，用户程序通过系统调用请求内核提供服务，例如文件操作，进程控制，网络通信等
 
-![Linux系统调用](https://cdn.fancyflow.top/image/post/study/csapp/lec14/linux-system-call.webp)
+![Linux系统调用](/image/post/study/csapp/lec14/linux-system-call.webp)
 
 x86-64架构中，系统调用通过`syscall`指令实现，系统调用号通过寄存器传递。例如`rax`寄存器中存储系统调用号，`rdi`，`rsi`，`rdx`等参数寄存器中存储系统调用参数  
 例如调用系统函数`write(1, "Hello, World!\n", 14)`，其中系统调用号为1，参数分别为文件描述符1，字符串地址和字符串长度，对应的汇编如下
@@ -62,7 +62,7 @@ syscall               # 触发系统调用
 
 下图展示了CPU在用户模式和内核模式之间切换的过程：当进程A要求读文件，CPU从用户模式切换到内核模式处理异常，结果是将A进程挂起执行B进程，等待内核完成文件读取后再切换回用户模式继续执行A进程
 
-![进程上下文](https://cdn.fancyflow.top/image/post/study/csapp/lec14/process-context.webp)
+![进程上下文](/image/post/study/csapp/lec14/process-context.webp)
 
 ## 进程控制
 
@@ -99,7 +99,7 @@ pid_t pid = fork();
 
 对于父进程来说，`fork()`返回子进程的pid；对于子进程来说，`fork()`返回0；如果创建进程失败，`fork()`返回-1
 
-![fork示例](https://cdn.fancyflow.top/image/post/study/csapp/lec14/fork-example.webp)
+![fork示例](/image/post/study/csapp/lec14/fork-example.webp)
 
 ***回收子进程***:
 
@@ -143,7 +143,7 @@ int execve(const char *filename, char *const argv[], char *const envp[]);
 
 下图描述了程序启动时候的栈帧模型
 
-![程序启动栈帧](https://cdn.fancyflow.top/image/post/study/csapp/lec14/program-start-stack-frame.webp)
+![程序启动栈帧](/image/post/study/csapp/lec14/program-start-stack-frame.webp)
 
 :::tip
 `shell`程序通过调用`fork`创建一个子进程，然后在子进程中调用`execve`加载并运行用户输入的命令
@@ -157,7 +157,7 @@ int execve(const char *filename, char *const argv[], char *const envp[]);
 信号提供了一种方法通知用户进程发生了这些异常  
 例如，当用户按下`Ctrl-C`时，内核会向当前运行的进程发送一个`SIGINT`信号，通知进程发生了中断异常。一个进程试图除以0，内核会向该进程发送一个`SIGFPE`信号，通知进程发生了算术异常。如果进程试图访问非法内存，内核会向该进程发送一个`SIGSEGV`信号，通知进程发生了段错误异常  
 
-![Linux信号](https://cdn.fancyflow.top/image/post/study/csapp/lec14/linux-signals.webp)
+![Linux信号](/image/post/study/csapp/lec14/linux-signals.webp)
 
 信号传递由两个阶段
 
@@ -185,7 +185,7 @@ int execve(const char *filename, char *const argv[], char *const envp[]);
 
 下图展示了`shell`程序中的前台作业和后台作业
 
-![前台与后台进程组](https://cdn.fancyflow.top/image/post/study/csapp/lec14/foreground-background-process-groups.webp)
+![前台与后台进程组](/image/post/study/csapp/lec14/foreground-background-process-groups.webp)
 
 - 程序调用`kill`函数与`alarm`函数发送信号
 

@@ -233,3 +233,38 @@ pnpm run r2:upload -- public/files --cache-control "public, max-age=31536000, im
 - `--content-type <type>`: 非图片文件统一指定 Content-Type
 - `--cache-control <value>`: 设置对象的 Cache-Control
 - `--help, -h`: 打印帮助
+
+---
+
+# CN 服务器（cdn.fancyflow.cn）同步
+
+同一个脚本可以把压缩后的产物同时推到国内服务器，全程不经过 Cloudflare。
+
+```bash
+# R2 + CN 双传
+pnpm r2:upload -- image musics
+# 只传 CN（R2 已是最新时）
+pnpm upload:cn -- image musics
+# 只传 R2
+pnpm r2:upload -- image musics --no-cn
+# 预览（连接并比对大小，不写文件）
+pnpm r2:upload -- image --dry-run
+```
+
+`image/`、`musics/` 是仓库根目录下被 gitignore 的原图目录，对象 key 与线上 URL 一一对应：
+`image/post/xxx.webp` → `https://cdn.fancyflow.cn/image/post/xxx.webp`。
+
+`.env.r2` 追加：
+
+```env
+CN_ASSET_SSH_ALIAS=new            # 复用 ~/.ssh/config 里的 Host 块
+# 或显式指定：CN_ASSET_HOST / CN_ASSET_PORT / CN_ASSET_USER / CN_ASSET_KEY_PATH
+CN_ASSET_ROOT=/var/www/fancyflow.cn
+CN_PUBLIC_BASE_URL=https://cdn.fancyflow.cn
+```
+
+行为说明：
+- 图片只压缩一次（sharp → webp），R2 和 CN 拿到的是同一份字节
+- 上传前用 `stat` 比对远端大小，已存在就跳过 → 可重复执行、断点续传
+- 非图片文件（mp3 / lrc 等）原样上传，仅走 SFTP
+- nginx 配置见 `docs/cdn-nginx.conf`；`.cn` 部署 workflow 已排除 `image/`、`musics/`，不会被 `rsync --delete` 清掉

@@ -10,6 +10,7 @@
     "postbuild": "pagefind --site dist",
     "preview": "astro preview",
     "r2:upload": "node scripts/upload-to-r2.cjs",
+    "upload:cn": "node scripts/upload-to-r2.cjs --no-r2",
     "r2:upload-png": "node scripts/upload-png-to-r2.cjs",
     "r2:upload-file": "node scripts/upload-file-to-r2.cjs",
     "lint": "biome lint .",
@@ -65,6 +66,7 @@
     "prettier-plugin-astro": "0.14.1",
     "prettier-plugin-tailwindcss": "^0.6.9",
     "reading-time": "^1.5.0",
+    "ssh2-sftp-client": "^12.1.1",
     "tailwindcss": "^3.4.17",
     "typescript": "^5.7.2"
   },

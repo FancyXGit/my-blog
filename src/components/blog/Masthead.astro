@@ -4,6 +4,7 @@ import FormattedDate from "@/components/FormattedDate.astro";
 import { Icon } from "astro-icon/components";
 import Badge from '@/components/Badge.astro';
 import PostMetaStats from "@/components/blog/PostMetaStats.astro";
+import { assetUrl } from "@/utils/asset";
 import { isCN } from "@/utils/site";
 import Separator from "../Separator.astro";
 
@@ -106,7 +107,7 @@ const postSeries = content.data.seriesId
 					class="h-full w-full object-cover"
 					fetchpriority="high"
 					loading="eager"
-					src={content.data.coverImage.src as unknown as string}
+					src={assetUrl(content.data.coverImage.src)}
 				/>
 			</div>
 		</div>

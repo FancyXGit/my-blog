@@ -5,7 +5,7 @@ updatedDate: "2026-04-14"
 description: "耶鲁大学 Financial Markets 第二章学习笔记"
 tags: ["学习", "经济", "Financial Markets", "金融市场"]
 coverImage:
-    src: "https://cdn.fancyflow.top/image/post/study/financial-markets/chapter2-cover.webp"
+    src: "/image/post/study/financial-markets/chapter2-cover.webp"
     alt: "莫奈的油画:草地与天空"
 ---
 
@@ -34,7 +34,7 @@ coverImage:
 
 ### 价值函数
 
-![价值函数](https://cdn.fancyflow.top/image/post/study/financial-markets/chapter2-value-function.webp)
+![价值函数](/image/post/study/financial-markets/chapter2-value-function.webp)
 
 - 价值函数横坐标表示收益或损失（也就是相对目前资产的变化值），纵坐标表示主观价值（也就是人们对这个变化的感受）。
 - 价值函数在收益区间是凹的($f''(x) < 0$)，在损失区间是凸的($f''(x) > 0$)。这表示相同的资产变化，损失的主观价值更大。
@@ -43,7 +43,7 @@ coverImage:
 
 ### 决策权重
 
-![决策权重](https://cdn.fancyflow.top/image/post/study/financial-markets/chapter2-decision-weight.webp)
+![决策权重](/image/post/study/financial-markets/chapter2-decision-weight.webp)
 
 - 图中虚线表示实际概率，实线表示人们对不同概率的主观权重。  
 - 人们倾向于高估小概率事件的发生（比如中彩票），而低估大概率事件的发生（比如车祸）。因此，决策权重函数在小概率区间高于实际概率，在大概率区间低于实际概率。

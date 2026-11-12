@@ -10,7 +10,7 @@ export const friendLinks: FriendLink[] = [
 		name: "FancyXGit",
 		description: "Drifting in the ocean all alone",
 		url: "https://fancyflow.top",
-		avatar: "https://cdn.fancyflow.top/cat.png",
+		avatar: "/cat.png",
 	},
 	{
 		name: "Arthals' ink",

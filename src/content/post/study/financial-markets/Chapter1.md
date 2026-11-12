@@ -5,7 +5,7 @@ updatedDate: "2026-04-13"
 description: "耶鲁大学 Financial Markets 第一章学习笔记"
 tags: ["学习", "经济", "Financial Markets", "金融市场"]
 coverImage:
-    src: "https://cdn.fancyflow.top/image/post/study/financial-markets/financial-markets-chapter1-cover.webp"
+    src: "/image/post/study/financial-markets/financial-markets-chapter1-cover.webp"
     alt: "枫叶映照下的山水"
 ---
 
@@ -28,7 +28,7 @@ coverImage:
 :::tip
 如果每支股票之间相互独立，根据大数定理，标普500指数应该波动较小。然而，标普500指数的波动性却很大，这表明股票之间存在相关性，尤其是在市场压力时期，股票价格往往会一起下跌。
 :::
-![Apple股票与标普500指数收益对比](https://cdn.fancyflow.top/image/post/study/financial-markets/financial-markets-chapter1-apple-vs-sAp500-return.webp)
+![Apple股票与标普500指数收益对比](/image/post/study/financial-markets/financial-markets-chapter1-apple-vs-sAp500-return.webp)
 
 - 股票的$\beta$值衡量股票相对于市场的波动性。$\beta$值大于1表示股票比市场更波动，$\beta$值小于1表示股票比市场更稳定。例如图中散点图拟合直线斜率为1.45，说明Apple股票的$\beta$值为1.45，意味着Apple股票比标普500指数更波动。
 
@@ -143,7 +143,7 @@ $$
 
 可以画出投资组合的预期回报率与方差的关系图，展示不同权重$w$下的投资组合表现。
 
-![投资组合预期回报率与方差关系图](https://cdn.fancyflow.top/image/post/study/financial-markets/chapter1-efficient-portfolio.webp)
+![投资组合预期回报率与方差关系图](/image/post/study/financial-markets/chapter1-efficient-portfolio.webp)
 
 可以观察到曲线是一条抛物线。方差为相同的10%时，50%股票50%债券的预期回报率高于100%债券的预期回报率。因此红框内的投资组合承担相同的方差回报率却更低，因此不被考虑。
 

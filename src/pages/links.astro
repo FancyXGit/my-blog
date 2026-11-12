@@ -9,10 +9,12 @@ const meta = {
 	title: "友情链接",
 };
 
+const siteRoot = new URL("/", Astro.site).href;
+
 const example = `Name: FancyXGit
 Desc: Drifting in the ocean all alone
-Link: https://fancyflow.top
-Avatar: https://cdn.fancyflow.top/cat.png`;
+Link: ${siteRoot}
+Avatar: ${new URL("/cat.png", Astro.site).href}`;
 ---
 
 <PageLayout meta={meta}>

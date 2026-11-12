@@ -7,19 +7,19 @@ seriesId: csapp
 orderInSeries: 6
 tags: ["学习", "笔记", "CSAPP", "缓存", "内存"]
 coverImage:
-    src: "https://cdn.fancyflow.top/image/post/study/csapp/lec12/cover.webp"
+    src: "/image/post/study/csapp/lec12/cover.webp"
     alt: "白花与三叶草"
 ---
 
 ## 存储层次结构
 
-![存储层次结构](https://cdn.fancyflow.top/image/post/study/csapp/lec12/memory-hierarchy.webp)
+![存储层次结构](/image/post/study/csapp/lec12/memory-hierarchy.webp)
 
 存储层次为运行的顶层程序提供一种幻想：在获得最底层的大量容量时，同时具备最顶层的快速访问速度
 
 ## 缓存结构
 
-![通用缓存结构](https://cdn.fancyflow.top/image/post/study/csapp/lec12/common-cache-structure.webp)
+![通用缓存结构](/image/post/study/csapp/lec12/common-cache-structure.webp)
 
 缓存存储下一级存储（内存或者低级缓存）的一部分数据副本  
 
@@ -28,7 +28,7 @@ coverImage:
 - 相联度(E): 每个组中块的数量
 - 容量(C): 缓存中数据的总字节数，$C = B \times S \times E$
 
-![缓存地址分解](https://cdn.fancyflow.top/image/post/study/csapp/lec12/cache-address-decomposition.webp)
+![缓存地址分解](/image/post/study/csapp/lec12/cache-address-decomposition.webp)
 
 内存地址被分解为三个部分：块内偏移、组索引和标签  
 地址按照组索引被映射到缓存中的一个组中，同时对应块记录了内存地址的标记  
@@ -40,14 +40,14 @@ coverImage:
 直接相连缓存中每个组只有一个块，即$E = 1$  
 因此对于组索引相同的两个不同标签的地址，缓存只能存储其中一个
 
-![直接相连缓存](https://cdn.fancyflow.top/image/post/study/csapp/lec12/direct-mapped-cache.webp)
+![直接相连缓存](/image/post/study/csapp/lec12/direct-mapped-cache.webp)
 
 ### 组相联
 
 组相联缓存中每个组有多个块，即$E > 1$，而且有多个组，即$S > 1$
 因此对于组索引相同的两个不同标签的地址，缓存可以存储其中多个
 
-![组相联缓存](https://cdn.fancyflow.top/image/post/study/csapp/lec12/set-associative-cache.webp)
+![组相联缓存](/image/post/study/csapp/lec12/set-associative-cache.webp)
 
 现代处理器中通常使用8路组相联缓存，即每个组有8个块
 
@@ -56,7 +56,7 @@ coverImage:
 全相联缓存中只有一个组，即$S = 1$  
 此时内存地址不再有组索引部分，只有块内偏移和标签两部分  
 
-![全相联缓存](https://cdn.fancyflow.top/image/post/study/csapp/lec12/fully-associative-cache.webp)
+![全相联缓存](/image/post/study/csapp/lec12/fully-associative-cache.webp)
 
 ## 缓存策略
 
@@ -108,7 +108,7 @@ for (i = 0; i < N; i++) {
 
 ## 存储器山
 
-![存储器山](https://cdn.fancyflow.top/image/post/study/csapp/lec12/memory-mountain.webp)
+![存储器山](/image/post/study/csapp/lec12/memory-mountain.webp)
 
 存储器山展示了在不同Size（数组大小）和Stride（遍历步长）下系统读取数据的吞吐量  
 

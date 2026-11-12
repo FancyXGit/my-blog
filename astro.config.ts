@@ -5,12 +5,13 @@ import icon from "astro-icon";
 import robotsTxt from "astro-robots-txt";
 import webmanifest from "astro-webmanifest";
 import { defineConfig, envField } from "astro/config";
-import { siteConfig } from "./src/site.config";
+import { assetBases, siteConfig } from "./src/site.config";
 
 // Remark plugins
 import remarkDirective from "remark-directive"; /* handle ::: directives as nodes */
 import remarkMath from "remark-math";
 import { remarkAdmonitions } from "./src/plugins/remark-admonitions"; /* add admonitions */
+import { remarkAssetBase } from "./src/plugins/remark-asset-base"; /* prefix /image/ with the build's asset host */
 import { remarkReadingTime } from "./src/plugins/remark-reading-time";
 import { remarkLinebreakParagraph } from "./src/plugins/remark-linebreak-paragraph";
 
@@ -27,6 +28,12 @@ import {
 } from "@shikijs/transformers";
 
 // https://astro.build/config
+const siteURL = process.env.SITE_URL ?? "https://fancyflow.top/";
+const isMainlandBuild = new URL(siteURL).hostname.endsWith("fancyflow.cn");
+// Asset origin for this build: override with ASSET_BASE (empty string = same origin).
+const assetBase =
+  process.env.ASSET_BASE ?? (isMainlandBuild ? assetBases.cn : assetBases.top);
+
 export default defineConfig({
   image: {
     domains: ["webmention.io"],
@@ -84,7 +91,14 @@ export default defineConfig({
   markdown: {
     syntaxHighlight: false,
 
-    remarkPlugins: [remarkReadingTime, remarkMath, remarkDirective, remarkAdmonitions, remarkLinebreakParagraph],
+    remarkPlugins: [
+      remarkReadingTime,
+      remarkMath,
+      remarkDirective,
+      remarkAdmonitions,
+      remarkLinebreakParagraph,
+      [remarkAssetBase, { base: assetBase }],
+    ],
     remarkRehype: {
       footnoteLabelProperties: {
         className: [""],
@@ -120,7 +134,7 @@ export default defineConfig({
   // https://docs.astro.build/en/guides/prefetch/
   prefetch: true,
   // Defaults to the international domain; the mainland build sets SITE_URL=https://fancyflow.cn/.
-  site: process.env.SITE_URL ?? "https://fancyflow.top/",
+  site: siteURL,
   vite: {
     build: {
       sourcemap: false,

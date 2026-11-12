@@ -7,7 +7,7 @@ seriesId: csapp
 orderInSeries: 12
 tags: ["学习", "笔记", "CSAPP", "网络"]
 coverImage:
-    src: "https://cdn.fancyflow.top/image/post/study/csapp/lec21/cover.webp"
+    src: "/image/post/study/csapp/lec21/cover.webp"
     alt: "飞鸟与森林"
 ---
 
@@ -106,7 +106,7 @@ int socket(int domain, int type, int protocol);
 - 对于服务器，要`bind`套接字到一个地址和端口，然后`listen`套接字，等待客户端连接
 - 对于客户端，要`connect`套接字到服务器的地址，建立连接
 
-![套接字接口](https://cdn.fancyflow.top/image/post/study/csapp/lec21/socket-interface.webp)
+![套接字接口](/image/post/study/csapp/lec21/socket-interface.webp)
 
 ### 服务端
 
@@ -190,7 +190,7 @@ void freeaddrinfo(struct addrinfo *res);
 
 函数`getaddrinfo`将传入的`res`指针指向一个链表，链表中的每个节点都是一个`struct addrinfo`结构体，包含着`host`的信息
 
-![getaddrinfo返回链表](https://cdn.fancyflow.top/image/post/study/csapp/lec21/getaddrinfo.webp)
+![getaddrinfo返回链表](/image/post/study/csapp/lec21/getaddrinfo.webp)
 
 ***GETNAMEINFO***:
 

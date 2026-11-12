@@ -5,7 +5,7 @@ updatedDate: "2026-07-14"
 description: "String类的实现机制"
 tags: ["工作", "后端", "Java"]
 coverImage:
-    src: "https://cdn.fancyflow.top/image/post/study/javase/3/cover.webp"
+    src: "/image/post/study/javase/3/cover.webp"
     alt: "白墙与绿叶"
 ---
 

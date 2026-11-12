@@ -7,7 +7,7 @@ seriesId: csapp
 orderInSeries: 11
 tags: ["学习", "笔记", "CSAPP", "内存", "操作系统"]
 coverImage:
-    src: "https://cdn.fancyflow.top/image/post/study/csapp/lec19/cover.webp"
+    src: "/image/post/study/csapp/lec19/cover.webp"
     alt: "草原"
 ---
 
@@ -64,7 +64,7 @@ void free(void *ptr);
 空闲块包括头部和尾部，分配块只包括头部
 :::
 
-![隐式空闲链表](https://cdn.fancyflow.top/image/post/study/csapp/lec19/implicit-free-list.webp)
+![隐式空闲链表](/image/post/study/csapp/lec19/implicit-free-list.webp)
 
 :::note
 由于块按8字节对齐，块大小的最低三位总是0，可以用来存储分配状态  
@@ -74,7 +74,7 @@ void free(void *ptr);
 获得一个指向块头部的指针，就可以通过加当前块的大小来获得下一个块的头部指针  
 通过前移一小块读取前一个块的大小，获取前一个块的头部指针
 
-![隐式空闲链表遍历](https://cdn.fancyflow.top/image/post/study/csapp/lec19/implicit-free-list-traversal.webp)
+![隐式空闲链表遍历](/image/post/study/csapp/lec19/implicit-free-list-traversal.webp)
 
 ### 分配
 
@@ -104,9 +104,9 @@ void free(void *ptr);
 
 显式空闲链表的所有块都有头部和尾部，但是在空闲块中新增了两个指针分别指向前后的**空闲块**组成双向链表
 
-![显式空闲链表](https://cdn.fancyflow.top/image/post/study/csapp/lec19/explicit-free-list.webp)
+![显式空闲链表](/image/post/study/csapp/lec19/explicit-free-list.webp)
 
-![显式空闲链表链接](https://cdn.fancyflow.top/image/post/study/csapp/lec19/explicit-free-list-link.webp)
+![显式空闲链表链接](/image/post/study/csapp/lec19/explicit-free-list-link.webp)
 
 :::tip
 使用显式空闲链表使得分配块时无需遍历整个链表，而是只需要遍历空闲块
@@ -119,13 +119,13 @@ void free(void *ptr);
 
 下图展现了后进先出策略时释放一个块的过程
 
-![显式空闲链表释放](https://cdn.fancyflow.top/image/post/study/csapp/lec19/explicit-free-list-release.webp)
+![显式空闲链表释放](/image/post/study/csapp/lec19/explicit-free-list-release.webp)
 
 ## 分离的空闲链表
 
 分离的空闲链表为不同大小的块维护多个空闲链表，每个链表管理一个特定大小范围的块
 
-![分离的空闲链表](https://cdn.fancyflow.top/image/post/study/csapp/lec19/separate-free-lists.webp)
+![分离的空闲链表](/image/post/study/csapp/lec19/separate-free-lists.webp)
 
 ### 简单分离存储
 
@@ -164,7 +164,7 @@ C标准库中的`malloc`和`free`函数通常使用分离适配来管理内存
 例如寄存器保存者一个指向堆的对象的指针，则被视为根节点  
 如果指向的堆中有一个指针指向堆中另一个块，则被指向的块是可达的
 
-![内存有向图](https://cdn.fancyflow.top/image/post/study/csapp/lec19/garbage-collector-memory-graph.webp)
+![内存有向图](/image/post/study/csapp/lec19/garbage-collector-memory-graph.webp)
 
 Java类似语言的垃圾收集器可以维护精确的可达图，但是C/C++的垃圾收集器只能维护一个近似的可达图，因为指针可以被强制转换为整数，或者整数可以被强制转换为指针，这些操作使得垃圾收集器无法准确地识别哪些对象是可达的，哪些对象是不可达的  
 因此，C/C++的垃圾收集器通常采用保守的策略，将所有可能被解释为指针的整数都视为根节点，这可能导致一些不可达对象被错误地保留在内存中，造成内存泄漏  

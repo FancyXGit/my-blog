@@ -7,7 +7,7 @@ seriesId: csapp
 orderInSeries: 5
 tags: ["学习", "笔记", "CSAPP", "并行计算"]
 coverImage:
-    src: "https://cdn.fancyflow.top/image/post/study/csapp/lec10/cover.webp"
+    src: "/image/post/study/csapp/lec10/cover.webp"
     alt: "牛"
 ---
 
@@ -98,7 +98,7 @@ void combine2(vec_ptr v, data_t *dest)
 }
 ```
 
-![代码移动](https://cdn.fancyflow.top/image/post/study/csapp/lec10/code-motion.webp)
+![代码移动](/image/post/study/csapp/lec10/code-motion.webp)
 
 ## 减少内存引用
 
@@ -120,13 +120,13 @@ void combine4(vec_ptr v, data_t *dest)
 }
 ```
 
-![减少内存引用](https://cdn.fancyflow.top/image/post/study/csapp/lec10/less-memory-ref.webp)
+![减少内存引用](/image/post/study/csapp/lec10/less-memory-ref.webp)
 
 ## 减少相关性
 
 一个CPU的性能可以由延迟、发射和吞吐量来衡量
 
-![CPU性能](https://cdn.fancyflow.top/image/post/study/csapp/lec10/cpu-performance.webp)
+![CPU性能](/image/post/study/csapp/lec10/cpu-performance.webp)
 
 - 延迟（Latency）是指完成一个操作所需的时间，通常以时钟周期为单位
 - 发射（Issue）指两个指令之间所需间隔的时钟周期数
@@ -134,9 +134,9 @@ void combine4(vec_ptr v, data_t *dest)
 
 用CPE表示为
 
-![CPU的CPE值](https://cdn.fancyflow.top/image/post/study/csapp/lec10/cpu-cpe.webp)
+![CPU的CPE值](/image/post/study/csapp/lec10/cpu-cpe.webp)
 
-![combine4的CPE](https://cdn.fancyflow.top/image/post/study/csapp/lec10/combine4-cpe.webp)
+![combine4的CPE](/image/post/study/csapp/lec10/combine4-cpe.webp)
 
 可以看到`combine4`的CPE无法突破延迟界限，因为每次迭代都依赖于前一次迭代的结果，不能充分利用吞吐量  
 从汇编角度分析
@@ -154,11 +154,11 @@ void combine4(vec_ptr v, data_t *dest)
 
 画出关键数据流图：
 
-![数据流图](https://cdn.fancyflow.top/image/post/study/csapp/lec10/data-flow.webp)
+![数据流图](/image/post/study/csapp/lec10/data-flow.webp)
 
 将多次循环放到一起可以得出关键路径
 
-![关键路径](https://cdn.fancyflow.top/image/post/study/csapp/lec10/critical-path.webp)
+![关键路径](/image/post/study/csapp/lec10/critical-path.webp)
 
 可以看到每次迭代的`%xmm0`的乘法，也就是`result = result OP val`的操作是关键路径，无法并行化，因此CPE无法突破延迟界限
 
@@ -189,7 +189,7 @@ void combine5(vec_ptr v, data_t *dest)
 
 将循环展开，一次执行多步骤，称为$n \times 1$循环展开，其中$n$是每次迭代执行的步骤数
 
-![循环展开](https://cdn.fancyflow.top/image/post/study/csapp/lec10/unrolling.webp)
+![循环展开](/image/post/study/csapp/lec10/unrolling.webp)
 
 可以看到`combine5`的CPE仍然无法突破延迟界限，这是由于每次迭代的`OP data[i + 1]`的操作依赖于`acc OP data[i]`的结果，仅仅是减少了循环判断次数的性能开销  
 尝试使用多个累计变量，这样的循环展开称为$n \times m$循环展开，其中$n$是每次迭代执行的步骤数，$m$是使用的累计变量数量
@@ -219,11 +219,11 @@ void combine6(vec_ptr v, data_t *dest)
 }
 ```
 
-![多个累计变量的循环展开](https://cdn.fancyflow.top/image/post/study/csapp/lec10/multiple-accumulators.webp)
+![多个累计变量的循环展开](/image/post/study/csapp/lec10/multiple-accumulators.webp)
 
 可以看到`combine6`的CPE突破了延迟界限，因为每次迭代的`acc0 OP data[i]`和`acc1 OP data[i + 1]`的操作可以并行执行，不再依赖于前一次迭代的结果
 
-![combine6的关键路径](https://cdn.fancyflow.top/image/post/study/csapp/lec10/combine6-critical-path.webp)
+![combine6的关键路径](/image/post/study/csapp/lec10/combine6-critical-path.webp)
 
 可以观察到`combine6`的关键路径分为了两条独立的路径  
 
@@ -254,12 +254,12 @@ void combine7(vec_ptr v, data_t *dest)
 }
 ```
 
-![重新结合变换](https://cdn.fancyflow.top/image/post/study/csapp/lec10/reassociating.webp)
+![重新结合变换](/image/post/study/csapp/lec10/reassociating.webp)
 
 结果是令人吃惊的，浮点数的运算性能提高了两倍  
 这是因为重新结合变换改变了计算的顺序，使得每次迭代的`acc OP (data[i] OP data[i + 1])`的操作不再依赖于前一次迭代的结果，可以并行执行
 
-![combine7的关键路径](https://cdn.fancyflow.top/image/post/study/csapp/lec10/combine7-critical-path.webp)
+![combine7的关键路径](/image/post/study/csapp/lec10/combine7-critical-path.webp)
 
 从关键路径可以看出，关键路径上面执行的`mul`操作减少了一半
 
@@ -267,4 +267,4 @@ void combine7(vec_ptr v, data_t *dest)
 
 使用SIMD（Single Instruction, Multiple Data）指令可以同时对多个数据进行操作，进一步提高性能
 
-![使用SIMD并行](https://cdn.fancyflow.top/image/post/study/csapp/lec10/simd.webp)
+![使用SIMD并行](/image/post/study/csapp/lec10/simd.webp)

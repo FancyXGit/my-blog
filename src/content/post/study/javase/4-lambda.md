@@ -5,7 +5,7 @@ updatedDate: "2026-07-15"
 description: "Lambda表达式，函数式接口，方法引用"
 tags: ["工作", "后端", "Java"]
 coverImage:
-    src: "https://cdn.fancyflow.top/image/post/study/javase/4/cover.webp"
+    src: "/image/post/study/javase/4/cover.webp"
     alt: "奶牛小狗"
 ---
 
