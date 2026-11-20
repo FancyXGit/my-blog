@@ -1,7 +1,7 @@
 ---
 title: "记录"
 publishDate: "2026-11-10"
-updatedDate: "2026-11-19"
+updatedDate: "2026-11-20"
 description: "学习UCB CS168的记录"
 tags: ["学习", "笔记", "CS168"]
 seriesId: cs168
@@ -26,3 +26,7 @@ orderInSeries: 99
   - LEC: 06 Routing 2: Distance Vector(continued)
   - BOOK: Chapter 2.1 - 2.4
   - BLOG: LEC01; LEC02; LEC03
+- 2026-11-20
+  - LEC: 07 Routing 3: Link State, Addressing
+  - LEC: 08 Routing 4: Routers
+  - BLOG: LEC04
