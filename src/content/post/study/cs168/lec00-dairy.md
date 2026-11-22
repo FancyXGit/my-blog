@@ -30,3 +30,8 @@ orderInSeries: 99
   - LEC: 07 Routing 3: Link State, Addressing
   - LEC: 08 Routing 4: Routers
   - BLOG: LEC04
+- 2026-11-21
+  - LAB: Project 1A: Traceroute
+- 2026-11-22
+  - LAB: Project 1B: Traceroute
+  - BLOG: LEC05
